@@ -1,14 +1,10 @@
 package coolboys.net;
 
-import java.net.*;
-import java.util.Scanner;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.*;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.fluent.Request;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -20,17 +16,10 @@ public class license {
 	public static boolean initialized = false;
 	
 	private final static CloseableHttpClient httpClient = HttpClients.createDefault();
-	
-	public static void main(String args[]) {
-		Scanner scamer = new Scanner(System.in);
-		System.out.println("Bitte geben sie Ihren Lizenschlüssel ein");
-		String liz = scamer.nextLine();
-		System.out.println(validatekey(liz));
-	}
 
 	public static boolean validatekey(String liz) {
 		System.out.println(liz);
-		HttpGet request = new HttpGet("http://82.165.163.17/api/validatekey?key=" + liz);
+		HttpGet request = new HttpGet("http://82.165.163.17:6/api/validatekey?key=" + liz);
 		try (CloseableHttpResponse response = httpClient.execute(request)) {
             System.out.println(response.getStatusLine().toString());
 

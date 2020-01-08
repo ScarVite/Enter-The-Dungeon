@@ -1,8 +1,8 @@
 package coolboys.net;
 
 import java.awt.Dimension;
-import java.awt.Toolkit;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -10,39 +10,85 @@ import javax.swing.JTextField;
 public class Setup extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	JTextField jTextField1;
+	JButton jButton1;
+	JFrame Keyeingabe;
+	JLabel jLabel1;
+	JLabel jLabel2;
 
-	private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
+	public Setup() {
+		createJFrame();
+
+	}
+
+	private void ButtonPressed(java.awt.event.ActionEvent evt) {
 		if (license.validatekey(jTextField1.getText()) == true) {
 			System.out.println("True");
+			// dispose();
 
 		} else {
 			System.out.println("false");
+			jLabel2 = new JLabel("Das Spiel Startet nun");
+			jLabel2.setBounds(65, 10, 200, 24);
+			add(jLabel2);
+			remove(jLabel1);
+			remove(jButton1);
+			remove(jTextField1);
+			repaint();
+//			new GUI();
 		}
 	}
 
 	public static void main(String args[]) {
-	/*if(datei valid auf true){
-		Spiel Starten
-	}else{
-	datei erstellen und abfrage starten
-	}*/
-		createJFrame();
+		/*
+		 * if(datei valid auf true){ Spiel Starten }else{ datei erstellen und abfrage
+		 * starten }
+		 */
+		java.awt.EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				new Setup().setVisible(true);
+			}
+		});
 	}
 
-	private static void createJFrame() {
-		JFrame Keyeingabe = new JFrame("Enter The Dungeon Setup");
-		Keyeingabe.setSize(new Dimension(300,150));
-		JTextField jTextField1 = new JTextField();
-//		jTextField1.setSize(new Dimension(10,10));
-		jTextField1.setBounds(50,100, 50, 10);
-		JLabel jLabel1 = new JLabel("Bitte geben sie ihren Key ein");
-		jLabel1.setSize(200,24);
-		Keyeingabe.add(jLabel1);
-		Keyeingabe.add(jTextField1);
-		Keyeingabe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		Keyeingabe.setLocationRelativeTo(null);
-		Keyeingabe.setLayout(null);
-		Keyeingabe.validate();
-		Keyeingabe.setVisible(true);
+	private void createJFrame() {
+		setTitle("Enter The Dungeon Setup");
+		setSize(new Dimension(300, 175));
+		jTextField1 = new JTextField();
+		jTextField1.setBounds(75, 50, 150, 20);
+		jLabel1 = new JLabel("Bitte geben sie ihren Key ein");
+		jLabel1.setBounds(65, 10, 200, 24);
+		jButton1 = new JButton("Eingeben");
+		jButton1.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent e) {
+				ButtonPressed(e);
+			}
+		});
+
+		jButton1.setBounds(90, 90, 100, 24);
+		add(jButton1);
+		add(jLabel1);
+		add(jTextField1);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+		setLayout(null);
+		validate();
+		setVisible(true);
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				while (!jTextField1.getText().contains("\n")) {
+					try {
+						Thread.sleep(20);
+					} catch (Exception e) {
+					}
+				}
+				jTextField1.setText(jTextField1.getText().replaceAll("\n", ""));
+				ButtonPressed(null);
+				System.out.println("Hallo !");
+			}
+		}).start();
+
 	}
 }
