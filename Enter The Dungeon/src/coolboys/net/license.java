@@ -13,7 +13,6 @@ import org.apache.http.util.EntityUtils;
 
 public class license {
 	
-	public static boolean initialized = false;
 	
 	private final static CloseableHttpClient httpClient = HttpClients.createDefault();
 
@@ -33,7 +32,7 @@ public class license {
 //	Ich weiß, das ich nen boolean in nen string umwandel und dann wieder zurück, aber ohne das gehts irgendwie nicht
 					result = EntityUtils.toString(entity);
 					if(Boolean.parseBoolean(result) == true) {
-						initialized = true;
+//	In Speicherfile activated = true setzen
 					}
 					return Boolean.parseBoolean(result);
 				} catch (ParseException e) {
