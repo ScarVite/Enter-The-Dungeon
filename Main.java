@@ -1,15 +1,12 @@
-package EnterTheDungeon;
+package enterTheDungeon;
 
 public class Main {
 
 	public static void main(String[] args) {
-		
-		new Gui();
-		new Var();
+
+		new Mainmenu();
 		new Movement();
 		new TastenEingabe();
-	
-
 	}
 
 }

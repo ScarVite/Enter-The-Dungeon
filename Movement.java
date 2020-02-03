@@ -1,4 +1,4 @@
-package EnterTheDungeon;
+package enterTheDungeon;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -8,58 +8,93 @@ public class Movement {
 	Timer movement;
 
 	public Movement() {
+
 		movement = new Timer();
 
 		movement.scheduleAtFixedRate(new TimerTask() {
 
 			@Override
+
 			public void run() {
 
-				if (Var.moveup == true) {
-					if (Var.ym > -20) {
-						Var.ym -= Var.speedup;
+				if (GUI.moveup == true) {
+
+					if (GUI.ym > -20) {
+
+						GUI.ym -= GUI.speedup;
+
 					}
-				} else if (Var.movedown == true) {
-					if (Var.ym <= 860) {
-						Var.ym += Var.speeddown;
+
+				} else if (GUI.movedown == true) {
+
+					if (GUI.ym <= GUI.screenheight - 220) {
+
+						GUI.ym += GUI.speeddown;
+
 					}
+
 				}
 
-				if (Var.moveleft == true) {
-					if (Var.xm > -120) {
-						Var.xm -= Var.speedleft;
-					}
-				} else if (Var.moveright == true) {
-					if (Var.xm <= 1700) {
-						Var.xm += Var.speedright;
-					}
-				}
+				if (GUI.moveleft == true) {
 
-				if (Var.shoot && Var.moveleft == true) {
-					if (Var.xsm > -120) {
-						Var.xsm -= Var.shootspeed;
+					if (GUI.xm > -120) {
+
+						GUI.xm -= GUI.speedleft;
+
 					}
-				} else if (Var.shoot && Var.moveright == true) {
-					if (Var.xsm <= 1700) {
-						Var.xsm += Var.shootspeed;
+
+				} else if (GUI.moveright == true) {
+
+					if (GUI.xm <= GUI.screenwidth - 220) {
+
+						GUI.xm += GUI.speedright;
+
 					}
-					if (Var.shoot && Var.moveup == true) {
-						if (Var.xsm > -20) {
-							Var.xsm -= Var.shootspeed;
+
+				}
+				
+				// Hab hier nen Bissel mit dem Schießen rum probiert aber lösen wir jetzt ja anders 
+
+				if (GUI.shoot && GUI.moveleft == true) {
+
+					if (GUI.xsm > -120) {
+
+						GUI.xsm -= GUI.shootspeed;
+
+					}
+
+				} else if (GUI.shoot && GUI.moveright == true) {
+
+					if (GUI.xsm <= 1700) {
+
+						GUI.xsm += GUI.shootspeed;
+
+					}
+
+					if (GUI.shoot && GUI.moveup == true) {
+
+						if (GUI.xsm > -20) {
+
+							GUI.xsm -= GUI.shootspeed;
+
 						}
-					} else if (Var.shoot && Var.movedown == true) {
-						if (Var.xsm <= 860) {
-							Var.xsm += Var.shootspeed;
+
+					} else if (GUI.shoot && GUI.movedown == true) {
+
+						if (GUI.xsm <= 860) {
+
+							GUI.xsm += GUI.shootspeed;
+
 						}
 
 					}
+
 				}
-			
+
 			}
+
 		}, 0, 10);
-	
+
 	}
 
 }
-
-
