@@ -3,10 +3,6 @@ package coolboys.net;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.nio.charset.StandardCharsets;
-import java.math.BigInteger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -29,7 +25,7 @@ public class Setup extends JFrame implements KeyListener {
 
 
 	private void ButtonPressed(java.awt.event.ActionEvent evt) {
-		Networking.login("admin@scarvite.de", "Peter12");
+//		Networking.login("admin@scarvite.de", "Peter12");
 		if (jTextField1.getText().isEmpty() == false) {
 			if (Networking.validatekey(jTextField1.getText()) == true) {
 				Main.start();
