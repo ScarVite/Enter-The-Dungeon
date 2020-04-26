@@ -16,7 +16,7 @@ function validatekey(paraKey) {
                     resolve(true)
                     var newvalues = { $set: { valid: false } }
                     dbo.collection(db_collection).updateOne(result[0], newvalues, function(err,res) {
-                        console.log(`Removed Code ${result[0].key}`)
+                        console.log(`Removed Key ${result[0].key}`)
                     })
                     db.close()
                 }else{

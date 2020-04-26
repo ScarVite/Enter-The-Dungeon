@@ -11,8 +11,6 @@ var listener = app.listen(6, function() {
 
 app.use(helmet())
 
-var peter = `12 ${listener.address().port}`
-
 app.get('/api/validatekey', async (req, res) => {
     var valid = await keys.validatekey(parseInt(req.query.key))
     res.send(valid)

@@ -30,13 +30,10 @@ function getLeaderBoard() {
                 db.close();
                 if (result.length > 0) {
                     var sorted_result = result;
-                    console.log(result)
                     for (var i = 0; i < result.length; i++) {
                         for (var a = 0; a <= i; a++) {
-                            console.log( a + "   :   " + i)
                             if (result[i].score > sorted_result[a].score) {
                                 var speicher = sorted_result[a]
-                                if(i == 5) console.log(speicher)
                                 sorted_result[a] = result[i];
                                 sorted_result[i] = speicher;
                             }
