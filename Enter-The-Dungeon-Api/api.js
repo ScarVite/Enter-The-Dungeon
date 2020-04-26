@@ -1,48 +1,45 @@
 const express = require('express');
-const fs = require('fs');
-const keys = require('./keys.json')
+const keys = require('./functions/keys.js')
 const app = express();
-const app2 = express();
+var helmet = require('helmet')
 
 const leaderboard = require('./functions/leaderboard.js')
 
-app.listen(6);
+var listener = app.listen(6, function() {
+    console.log(`Enter The API listening on port ${listener.address().port}`)
+});
 
-app.get('/api/validatekey', (req, res) => {
-    let response = validatekey(req.query.key);
-    res.send(response);
+app.use(helmet())
+
+var peter = `12 ${listener.address().port}`
+
+app.get('/api/validatekey', async (req, res) => {
+    var valid = await keys.validatekey(parseInt(req.query.key))
+    res.send(valid)
     if(req.connection.remoteAddress.substring(7) === "82.165.163.17") return;
-    if(response === false) console.log(req.connection.remoteAddress.substring(7) + ' tried to use the key ' + req.query.key);
-    if(response === true) console.log(req.connection.remoteAddress.substring(7) + ' used key ' + req.query.key);
+    if(valid === false) console.log(`${req.connection.remoteAddress.substring(7)}  tried to use the key  ${req.query.key}`);
+    if(valid === true) console.log(`${req.connection.remoteAddress.substring(7)} used key  ${req.query.key}`);
 });
 
 app.get('/api/updateleaderboard', (req, res) => {
     if(req.query.username !== undefined && req.query.score !== undefined && req.query.userId !== undefined){
-        leaderboard.addEntry();
+        leaderboard.addEntry(req.query.username, parseInt(req.query.score), parseInt(req.query.userId));
         res.send(true)
     }
     res.send("Wrong Parameters received");
 });
 
-app.get/'/api/getleaderboard', (req, res) => {
-    
-}
+app.get('/api/getleaderboard', async (req, res) => {
+    var current_leaderboard = await leaderboard.getLeaderBoard();
+    res.send(current_leaderboard)
+});
 
 app.get('/api/status', (req, res) => {
-    res.status(200);
+    res.sendStatus(200);
     res.send();
 });
 
-function validatekey(key) {
-    for (var i = 0; i < keys.length-1; i++) {
-        if (key === keys[i].key && keys[i].valid === true) {
-            return true;
-        }
-    }
-    return false;
-};
 
-app.post('/', (req,res) => {
-
+app.post('/api/addUser', (req,res) => {
+    res.send(`Not Yet Supported`)
 });
-
