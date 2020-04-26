@@ -21,8 +21,9 @@ public class GUI extends JPanel {
 	static int screenwidth = (int) screenSize.getWidth(), screenheight = (int) screenSize.getHeight();
 	static int x;
 	static int y;
-	static int ym = screenheight/2-100, ysm = screenheight/2-10; // Die Ysm und Xsm sind zum Schuss testen gewesen kann man also entfernen
-	static int xm = screenwidth/2-150, xsm = screenwidth/2-10;
+	static int ym = screenheight / 2 - 100, ysm = screenheight / 2 - 10; // Die Ysm und Xsm sind zum Schuss testen
+																			// gewesen kann man also entfernen
+	static int xm = screenwidth / 2 - 150, xsm = screenwidth / 2 - 10;
 	static Label Label1;
 	static BufferedImage bi1, bi2, bi3;
 	static int speedup = 3, speeddown = 3, speedleft = 3, speedright = 3;
@@ -32,13 +33,13 @@ public class GUI extends JPanel {
 	public GUI() {
 
 		jf = new JFrame();
-		
+
 		jf.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		
+
 		jf.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
+
 		jf.setLocationRelativeTo(null);
-		
+
 		draw = new Draw();
 
 		draw.setBounds(0, 0, screenwidth, screenheight);
@@ -56,22 +57,21 @@ public class GUI extends JPanel {
 		Label1.setVisible(true);
 
 		jf.addKeyListener(new TastenEingabe());
-		
+
 		jf.addMouseListener(new Attack());
 
 		jf.setVisible(true);
 
 		try {
 
-			bi1 = ImageIO.read(new File("Bilder/Background1.png"));
+			bi1 = ImageIO.read(new File("Bilder/background.png"));
 
 			bi2 = ImageIO.read(new File("Bilder/Chrakter.png"));
 
 			bi3 = ImageIO.read(new File("Bilder/shoot.png"));
-			
+
 			jf.addMouseListener(new MouseAdapter() {
-				
-				
+
 			});
 
 		} catch (IOException IO) {
@@ -81,18 +81,23 @@ public class GUI extends JPanel {
 			System.out.println("Bild konnte nicht geladen werden");
 
 		}
-		
-
-		
-		
 
 	}
 
+	public static int getXPlayer() {
+		return xm;
+	}
 
+	public static int getYPlayer() {
+		return ym;
+	}
 
+	public static void setXPlayer(int pxPlayer) {
+		xm = pxPlayer;
+	}
 
-
-	
-
+	public static void setYPlayer(int pyPlayer) {
+		xm = pyPlayer;
+	}
 
 }

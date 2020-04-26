@@ -2,12 +2,16 @@ package coolboys.net;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
 import javax.swing.JLabel;
 
 public class Draw extends JLabel {
 
 	private static final long serialVersionUID = 1L;
+	
+	public ArrayList<BufferedImage> bulletlist = new ArrayList<>();
 
 	protected void paintComponent(Graphics g) {
 
@@ -25,14 +29,22 @@ public class Draw extends JLabel {
 
 			g.drawImage(GUI.bi2, GUI.xm, GUI.ym, 300, 200, null);
 			
+			if (GUI.shoot == true) {
+				
+				bulletlist.add(GUI.bi3);
+
+				g.drawImage(GUI.bi3,(int) Attack.xPosStartShoot - 15,(int) Attack.yPosStartShoot - 30, 20, 20, null);
+				
+				Attack.update();
+				
+			}
+			
 
 		}
 		
-		if (GUI.shoot == true) {
 
-			g.drawImage(GUI.bi3, Attack.getxPos() - 15, Attack.getyPos() - 30, 20, 20, null);
-			
-		}
+		
+		
 		
 
 

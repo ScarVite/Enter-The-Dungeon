@@ -25,10 +25,9 @@ public class Setup extends JFrame implements KeyListener {
 
 	private void ButtonPressed(java.awt.event.ActionEvent evt) {
 		if(jTextField1.getText().isEmpty() == false) {
-//			if (license.validatekey(jTextField1.getText()) == true) {
+			if (Networking.validatekey(jTextField1.getText()) == true) {
 				Main.start();
 				this.dispose();
-				System.out.println(4);
 //				System.out.println("True");
 //				jLabel2 = new JLabel("Das Spiel Startet nun");
 //				jLabel2.setBounds(65, 10, 200, 24);
@@ -39,9 +38,9 @@ public class Setup extends JFrame implements KeyListener {
 //				repaint();
 //				return;
 				
-			/**} else {
-				Popup.error("Ihr Key wahr leider Falsch", "Error");
-			}**/
+			} else {
+				Popup.error("Ihr Key war leider Falsch", "Error");
+			}
 		}
 		else {
 			Popup.error("Bitte Geben sie einen Key ein", "Error");
