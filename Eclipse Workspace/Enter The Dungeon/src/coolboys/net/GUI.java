@@ -64,7 +64,7 @@ public class GUI extends JPanel {
 
 		try {
 
-			bi1 = ImageIO.read(new File("Bilder/background.png"));
+			bi1 = ImageIO.read(new File("Bilder/background1.png"));
 
 			bi2 = ImageIO.read(new File("Bilder/Chrakter.png"));
 

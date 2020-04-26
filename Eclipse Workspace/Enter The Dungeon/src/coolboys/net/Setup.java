@@ -3,7 +3,10 @@ package coolboys.net;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.nio.charset.StandardCharsets;
+import java.math.BigInteger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,8 +26,11 @@ public class Setup extends JFrame implements KeyListener {
 		createJFrame();
 	}
 
+
+
 	private void ButtonPressed(java.awt.event.ActionEvent evt) {
-		if(jTextField1.getText().isEmpty() == false) {
+		Networking.login("admin@scarvite.de", "Peter12");
+		if (jTextField1.getText().isEmpty() == false) {
 			if (Networking.validatekey(jTextField1.getText()) == true) {
 				Main.start();
 				this.dispose();
@@ -37,15 +43,14 @@ public class Setup extends JFrame implements KeyListener {
 //				remove(jTextField1);
 //				repaint();
 //				return;
-				
+
 			} else {
 				Popup.error("Ihr Key war leider Falsch", "Error");
 			}
-		}
-		else {
+		} else {
 			Popup.error("Bitte Geben sie einen Key ein", "Error");
 		}
-}
+	}
 
 	public static void main(String args[]) {
 		/*
@@ -76,9 +81,9 @@ public class Setup extends JFrame implements KeyListener {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
-			
+
 			@Override
 			public void keyTyped(KeyEvent e) {
 				System.out.println(e.getKeyCode());
@@ -90,7 +95,7 @@ public class Setup extends JFrame implements KeyListener {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
 		jButton1.setBounds(90, 90, 100, 24);
@@ -128,13 +133,13 @@ public class Setup extends JFrame implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
