@@ -4,19 +4,21 @@ let db_name = "enter-the-dungeon"
 let db_collection = "leaderboard"
 
 function addEntry(name, points, id) {
-    MongoClient.connect(url, function (err, db) {
-        if (err) console.log(err)
-        var dbo = db.db(db_name)
-        var myobj = {
-            username: name,
-            userId: id,
-            score: points
-        }
-        dbo.collection(db_collection).insertOne(myobj, function (err, res) {
-            db.close()
-            if (err) return false
-            console.log(`added entry for player ${name} `)
-            return true;
+    return new Promise(resolve => {
+        MongoClient.connect(url, function (err, db) {
+            if (err) console.log(err)
+            var dbo = db.db(db_name)
+            var myobj = {
+                username: name,
+                userId: id,
+                score: points
+            }
+            dbo.collection(db_collection).insertOne(myobj, function (err, res) {
+                db.close()
+                if (err) resolve(false);
+                console.log(`added entry for player ${name} `)
+                resolve(true);
+            })
         })
     })
 }

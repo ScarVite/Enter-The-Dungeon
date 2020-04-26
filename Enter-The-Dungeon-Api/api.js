@@ -1,15 +1,19 @@
 const express = require('express');
-const keys = require('./functions/keys.js')
-const app = express();
 var helmet = require('helmet')
+const bodyParser = require('body-parser');
+
+const app = express();
 
 const leaderboard = require('./functions/leaderboard.js')
+const keys = require('./functions/keys.js')
+const users = require('./functions/users.js')
 
 var listener = app.listen(6, function() {
     console.log(`Enter The API listening on port ${listener.address().port}`)
 });
 
 app.use(helmet())
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/api/validatekey', async (req, res) => {
     var valid = await keys.validatekey(parseInt(req.query.key))
@@ -19,10 +23,10 @@ app.get('/api/validatekey', async (req, res) => {
     if(valid === true) console.log(`${req.connection.remoteAddress.substring(7)} used key  ${req.query.key}`);
 });
 
-app.get('/api/updateleaderboard', (req, res) => {
+app.get('/api/updateleaderboard', async (req, res) => {
     if(req.query.username !== undefined && req.query.score !== undefined && req.query.userId !== undefined){
-        leaderboard.addEntry(req.query.username, parseInt(req.query.score), parseInt(req.query.userId));
-        res.send(true)
+        var done = await leaderboard.addEntry(req.query.username, parseInt(req.query.score), parseInt(req.query.userId));
+        res.send(done)
     }
     res.send("Wrong Parameters received");
 });
@@ -38,6 +42,13 @@ app.get('/api/status', (req, res) => {
 });
 
 
-app.post('/api/addUser', (req,res) => {
-    res.send(`Not Yet Supported`)
+app.post('/api/addUser', async (req,res) => {
+    if(req.body.username !== undefined && req.body.password !== undefined && req.body.email !== undefined)
+    var done = await users.addUser(req.body.email, req.body.username, req.body.password)
+    res.send(done)
+});
+
+app.post('/api/login', async (req,res) => {
+    var done = await users.checkPassword(req.body.email, req.body.password)
+    res.send(done)
 });
