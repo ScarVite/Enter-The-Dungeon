@@ -18,13 +18,13 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.apache.http.HttpHeaders;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.*;
 
 public class Networking {
+//	Ich weiß, das ich nen boolean in nen string umwandel und dann wieder zurück, aber ohne das gehts irgendwie nicht
 	
 	
 	private final static CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -39,7 +39,6 @@ public class Networking {
             if (entity != null) {
                 String result;
 				try {
-//	Ich weiß, das ich nen boolean in nen string umwandel und dann wieder zurück, aber ohne das gehts irgendwie nicht
 					result = EntityUtils.toString(entity);
 					if(Boolean.parseBoolean(result) == true) {
 //	In Speicherfile activated = true setzen
@@ -185,7 +184,7 @@ public class Networking {
 		return false;
 		}
 	
-	public static  Object login(String Email, String Password) {
+	public static  JSONArray login(String Email, String Password) {
 		String HashedPassword = " ";
 		try {
 			HashedPassword = hashPW(Password);
@@ -214,8 +213,10 @@ public class Networking {
             System.out.println(headers);
             if (entity != null) {
 				try {
+//					jsonarray[0] = entweder true oder false, bei true is an [1] ein object bei false null
 					JSONArray jsonarray = new JSONArray(EntityUtils.toString(entity));
-					return jsonarray.getJSONObject(0);
+					System.out.println(jsonarray.getJSONObject(0));
+					return jsonarray;
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -235,7 +236,6 @@ public class Networking {
 		System.exit(1);
 		return null;
 		}
-
 	
 	protected static String hashPW(String password) throws NoSuchAlgorithmException {
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
