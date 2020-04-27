@@ -64,14 +64,23 @@ public class Networking {
 		return false;
 		}
 	
-	public static boolean updateLeaderboard(String username, int score, int userId) {
-		HttpGet request = new HttpGet("http://82.165.163.17:6/api/updateleaderboard?username=" + username +"&score=" + score + "&userId=" + userId) ;
-		try (CloseableHttpResponse response = httpClient.execute(request)) {
-            System.out.println(response.getStatusLine().toString());
-            HttpEntity entity = response.getEntity();
-            Header headers = entity.getContentType();
-            System.out.println(headers);
-
+	public static boolean updateLeaderboard(String username, int score) {
+		HttpPost post = new HttpPost("http://82.165.163.17:6/api/updateleaderboard") ;
+            List<NameValuePair> urlParameters = new ArrayList<>();
+            urlParameters.add(new BasicNameValuePair("username", username));
+            urlParameters.add(new BasicNameValuePair("score", Integer.toString(score)));
+            try {
+    			post.setEntity(new UrlEncodedFormEntity(urlParameters));
+    		} catch (UnsupportedEncodingException e2) {
+    			// TODO Auto-generated catch block
+    			e2.printStackTrace();
+    		}
+            try (CloseableHttpClient httpClient = HttpClients.createDefault();
+                    CloseableHttpResponse response = httpClient.execute(post)) {
+                System.out.println(response.getStatusLine().toString());
+                HttpEntity entity = response.getEntity();
+                Header headers = entity.getContentType();
+                System.out.println(headers);
             if (entity != null) {
                 String result;
 				try {
@@ -216,7 +225,9 @@ public class Networking {
 				try {
 //					jsonarray[0] = entweder true oder false, bei true is an [1] ein object bei false null
 					JSONArray jsonarray = new JSONArray(EntityUtils.toString(entity));
-					System.out.println(jsonarray.getJSONObject(0));
+					boolean test = jsonarray.getBoolean(0);
+					System.out.println(test);
+//					System.out.println(jsonarray.getJSONObject(1));
 					return jsonarray;
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
