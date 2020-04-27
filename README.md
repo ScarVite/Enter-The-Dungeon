@@ -1,4 +1,4 @@
-# Schulprojekt 12
+# Enter The Dungeon - A School Project
 
 This is Our School Project.
 
