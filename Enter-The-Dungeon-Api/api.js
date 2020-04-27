@@ -49,6 +49,6 @@ app.post('/api/addUser', async (req,res) => {
 });
 
 app.post('/api/login', async (req,res) => {
-    var done = await users.checkPassword(req.body.email, req.body.password)
-    res.send(done)
+    var userObject = await users.login(req.body.email, req.body.password)
+    res.send(userObject)
 });

@@ -8,27 +8,38 @@ function addUser(paraEmail, paraUser, ParaPassword) {
         MongoClient.connect(url, function (err, db) {
             if (err) console.log(err)
             var dbo = db.db(db_name)
-            dbo.collection(db_collection).find({ email: paraEmail }).toArray(function (err, result) {
-                if (result.length < 0) {
-                    resolve(false, "Email bereits vorhanden")
+            dbo.collection(db_collection).find({ username: paraUser }).toArray(function (err, result) {
+                if (result.length > 0) {
+                    var answer = [false, "Username bereits verwendet"]
+                    resolve(answer)
+                    return;
                 }
-                var myobj = {
-                    username: paraUser,
-                    email: paraEmail,
-                    password: ParaPassword
-                }
-                dbo.collection(db_collection).insertOne(myobj, function (err, res) {
-                    db.close()
-                    if (err) resolve(false);
-                    console.log(`added user ${paraUser} into the db `)
-                    resolve(true);
+                dbo.collection(db_collection).find({ email: paraEmail }).toArray(function (err, result) {
+                    if (result.length > 0) {
+                        var answer = [false, "Email bereits vorhanden"]
+                        resolve(answer)
+                        return;
+                    }
+                    var myobj = {
+                        username: paraUser,
+                        email: paraEmail,
+                        password: ParaPassword
+                    }
+                    dbo.collection(db_collection).insertOne(myobj, function (err, res) {
+                        db.close()
+                        if (err) resolve(false);
+                        console.log(`added user ${paraUser} into the db `)
+                        var answer = [true, "Inserted User"]
+                        resolve(answer)
+                        return;
+                    })
                 })
             })
         })
     })
 }
 
-function checkPassword(paraEmail, paraPassword) {
+function login(paraEmail, paraPassword) {
     return new Promise(resolve => {
         MongoClient.connect(url, function (err, db) {
             if (err) console.log(err)
@@ -39,16 +50,19 @@ function checkPassword(paraEmail, paraPassword) {
                 if (err) console.log(err);
                 if (result.length > 0) {
                     if (result[0].password == paraPassword) {
-                        resolve(true)
+                        var answer = [true, result[0]]
+                        resolve(answer)
                         console.log(`Succesfully Logged User ${result[0].username} in`)
                     }
                     else {
                         console.log(`${result[0].username} tried to login`)
-                        resolve(false)
+                        var answer = [false, null]
+                        resolve(answer)
                     }
                 }
                 else {
-                    resolve(false)
+                    var answer = [false, null]
+                    resolve(answer)
                 }
             })
         })
@@ -56,4 +70,4 @@ function checkPassword(paraEmail, paraPassword) {
 }
 
 exports.addUser = addUser;
-exports.checkPassword = checkPassword;
+exports.login = login;
