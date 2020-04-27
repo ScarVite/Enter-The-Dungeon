@@ -99,7 +99,7 @@ public class Networking {
 		return false;
 		}
 
-	public static  JSONArray getLeaderboard() {
+	public static JSONArray getLeaderboard() {
 		HttpGet request = new HttpGet("http://82.165.163.17:6/api/getleaderboard");
 		try (CloseableHttpResponse response = httpClient.execute(request)) {
             System.out.println(response.getStatusLine().toString());
@@ -131,7 +131,7 @@ public class Networking {
 		return null;
 		}
 	
-	public static  boolean addUser(String Email, String Username, String Password) {
+	public static String addUser(String Email, String Username, String Password) {
 		String HashedPassword = " ";
 		try {
 			HashedPassword = hashPW(Password);
@@ -160,10 +160,11 @@ public class Networking {
             Header headers = entity.getContentType();
             System.out.println(headers);
             if (entity != null) {
-                String result;
 				try {
-					result = EntityUtils.toString(entity);
-					return Boolean.parseBoolean(result);
+					JSONArray jsonarray = new JSONArray(EntityUtils.toString(entity));
+					String answ = jsonarray.getString(1);
+					System.out.println(answ);
+					return answ;
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -181,7 +182,7 @@ public class Networking {
 			e1.printStackTrace();
 		}
 		System.exit(1);
-		return false;
+		return null;
 		}
 	
 	public static  JSONArray login(String Email, String Password) {
@@ -237,7 +238,7 @@ public class Networking {
 		return null;
 		}
 	
-	protected static String hashPW(String password) throws NoSuchAlgorithmException {
+	private static String hashPW(String password) throws NoSuchAlgorithmException {
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
 		md.update(password.getBytes(StandardCharsets.UTF_8));
 		byte[] digest = md.digest();
