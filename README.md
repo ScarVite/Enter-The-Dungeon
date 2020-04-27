@@ -3,6 +3,7 @@
 This is Our School Project.
 
 We are Coding a Dungeoncrawler in Java.
+The Backend is handled on a Server and is written in Javascript.
 
 Authors:
 ScarVite#6606
