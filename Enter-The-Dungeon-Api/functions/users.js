@@ -56,12 +56,12 @@ function login(paraEmail, paraPassword) {
                     }
                     else {
                         console.log(`${result[0].username} tried to login`)
-                        var answer = [false, null]
+                        var answer = [false, "Wrong Password"]
                         resolve(answer)
                     }
                 }
                 else {
-                    var answer = [false, null]
+                    var answer = [false, "Wrong Email"]
                     resolve(answer)
                 }
             })
