@@ -85,7 +85,8 @@ public class Networking {
                 String result;
 				try {
 					result = EntityUtils.toString(entity);
-					if(Boolean.parseBoolean(result) == true) {
+					if(Boolean.parseBoolean(result) == false) {
+						Popup.error("Something Went Wrong. Please Try Again", "Error");
 					}
 					return Boolean.parseBoolean(result);
 				} catch (ParseException e) {
@@ -117,6 +118,7 @@ public class Networking {
             System.out.println(headers);
             if (entity != null) {
 				try {
+					if(entity == null) System.exit(2);
 					JSONArray jsonarray = new JSONArray(EntityUtils.toString(entity));
 					System.out.println(jsonarray.getJSONObject(0));
 					return jsonarray;
@@ -194,7 +196,7 @@ public class Networking {
 		return null;
 		}
 	
-	public static  JSONArray login(String Email, String Password) {
+	public static  JSONObject login(String Email, String Password) {
 		String HashedPassword = " ";
 		try {
 			HashedPassword = hashPW(Password);
@@ -225,10 +227,14 @@ public class Networking {
 				try {
 //					jsonarray[0] = entweder true oder false, bei true is an [1] ein object bei false null
 					JSONArray jsonarray = new JSONArray(EntityUtils.toString(entity));
-					boolean test = jsonarray.getBoolean(0);
-					System.out.println(test);
+					boolean found = jsonarray.getBoolean(0);
+					if(found == true) {
+						return jsonarray.getJSONObject(1);
+					}else {
+						String message = jsonarray.getString(1);
+						Popup.error(message, "Error");
+					}
 //					System.out.println(jsonarray.getJSONObject(1));
-					return jsonarray;
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -249,7 +255,8 @@ public class Networking {
 		return null;
 		}
 	
-	private static String hashPW(String password) throws NoSuchAlgorithmException {
+	
+	protected static String hashPW(String password) throws NoSuchAlgorithmException {
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
 		md.update(password.getBytes(StandardCharsets.UTF_8));
 		byte[] digest = md.digest();
@@ -259,3 +266,12 @@ public class Networking {
 	}
 	
 }
+
+class Objekt {
+	String peter = "9028028";
+	int x = 5;
+	public void peter() {
+		System.out.println("hallo");
+	}
+}
+

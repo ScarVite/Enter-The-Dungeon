@@ -25,7 +25,7 @@ public class Setup extends JFrame implements KeyListener {
 
 
 	private void ButtonPressed(java.awt.event.ActionEvent evt) {
-		Networking.updateLeaderboard("ScarVite", 420 );
+		Networking.login("scarvite@aniflix.tv", "Peter13" );
 		if (jTextField1.getText().isEmpty() == false) {
 			if (Networking.validatekey(jTextField1.getText()) == true) {
 				Main.start();
