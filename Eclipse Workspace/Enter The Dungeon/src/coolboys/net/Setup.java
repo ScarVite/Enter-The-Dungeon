@@ -25,7 +25,9 @@ public class Setup extends JFrame implements KeyListener {
 
 
 	private void ButtonPressed(java.awt.event.ActionEvent evt) {
-		Networking.login("scarvite@aniflix.tv", "Peter13" );
+		System.out.println("Hier");
+		Networking.GenerateToken(420);
+		//Networking.updateLeaderboard("ScarVite", 220 );
 		if (jTextField1.getText().isEmpty() == false) {
 			if (Networking.validatekey(jTextField1.getText()) == true) {
 				Main.start();
@@ -73,24 +75,23 @@ public class Setup extends JFrame implements KeyListener {
 				ButtonPressed(e);
 			}
 		});
-		this.addKeyListener(new KeyListener() {
+		jTextField1.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
+
 
 			}
 
 			@Override
 			public void keyTyped(KeyEvent e) {
-				System.out.println(e.getKeyCode());
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					ButtonPressed(null);
-				}
+				
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					ButtonPressed(null);
+				}
 
 			}
 		});
@@ -120,22 +121,27 @@ public class Setup extends JFrame implements KeyListener {
 
 	}
 
+
+// 	idk why this has to be here, since its initialized a few lines higher, but it doesn't work without it
 	@Override
-	public void keyTyped(KeyEvent e) {
+	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-		System.out.println("ghjghj");
+		
 	}
 
-	@Override
-	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
 
-	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
+	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
+
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 }
