@@ -3,23 +3,27 @@ let url = "mongodb://localhost:27017/"
 let db_name = "enter-the-dungeon"
 let db_collection = "leaderboard"
 
-function addEntry(name, points, id) {
-    return new Promise(resolve => {
+function addEntry(name, score, token) {
+    return new Promise(async function(resolve) {
+        if(await CheckToken(token, score)){
         MongoClient.connect(url, function (err, db) {
             if (err) console.log(err)
             var dbo = db.db(db_name)
             var myobj = {
                 username: name,
-                userId: id,
-                score: points
+                score: score
             }
             dbo.collection(db_collection).insertOne(myobj, function (err, res) {
                 db.close()
                 if (err) resolve(false);
                 console.log(`added entry for player ${name} `)
-                resolve(true);
+                resolve([true, null]);
             })
         })
+        } else{
+            console.log(`${name} provided an invalid token`)
+            resolve([false, "Your Provided token is Invalid"])
+        }
     })
 }
 
@@ -49,6 +53,29 @@ function getLeaderBoard() {
             })
         })
     })
+}
+
+async function CheckToken(token, score){
+    return new Promise(resolve => {
+        var tokenArr = token.split("-");
+        var token1 = tokenArr[0].split("")
+        var value2 = 0;
+        
+        var token3 = tokenArr[tokenArr.length-1].split("")
+        var value = 0;
+        token1.forEach(token => {
+            value += parseInt(token);
+        });
+        for(var i = 1; i < tokenArr.length-1;i++){
+            value2 += tokenArr[i];
+        }
+        var value3 = 0;
+        token3.forEach(token => {
+            value3 += parseInt(token);
+        });
+        if(value == 17 && value2 == score && value3 == 21) resolve(true);
+        else resolve(false);
+    });
 }
 
 exports.addEntry = addEntry;

@@ -18,17 +18,17 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.get('/api/validatekey', async (req, res) => {
     var valid = await keys.validatekey(parseInt(req.query.key))
     res.send(valid)
-    if(req.connection.remoteAddress.substring(7) === "82.165.163.17") return;
-    if(valid === false) console.log(`${req.connection.remoteAddress.substring(7)}  tried to use the key  ${req.query.key}`);
-    if(valid === true) console.log(`${req.connection.remoteAddress.substring(7)} used key  ${req.query.key}`);
+//    if(req.connection.remoteAddress.substring(7) === "82.165.163.17") return;
+//    if(valid === false) console.log(`${req.connection.remoteAddress.substring(7)}  tried to use the key  ${req.query.key}`);
+//    if(valid === true) console.log(`${req.connection.remoteAddress.substring(7)} used key  ${req.query.key}`);
 });
 
-app.get('/api/updateleaderboard', async (req, res) => {
-    if(req.query.username !== undefined && req.query.score !== undefined && req.query.userId !== undefined){
-        var done = await leaderboard.addEntry(req.query.username, parseInt(req.query.score), parseInt(req.query.userId));
+app.post('/api/updateleaderboard', async (req, res) => {
+    if(req.body.username !== undefined && req.body.score !== undefined && req.body.token !== undefined ){
+        var done = await leaderboard.addEntry(req.body.username, parseInt(req.body.score), req.body.token);
         res.send(done)
     }
-    res.send("Wrong Parameters received");
+    res.send("Invalid Arguments Supplied");
 });
 
 app.get('/api/getleaderboard', async (req, res) => {
