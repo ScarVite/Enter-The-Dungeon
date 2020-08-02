@@ -5,9 +5,15 @@ import java.util.TimerTask;
 
 public class Movement {
 
-	Timer movement;
+	private Timer movement;
 
-	public Movement() {
+	private GUI gui;
+
+	private static int counter;
+
+	public Movement(GUI pgui) {
+
+		this.gui = pgui;
 
 		movement = new Timer();
 
@@ -17,45 +23,57 @@ public class Movement {
 
 			public void run() {
 
-				if (GUI.moveup == true) {
+				if (gui.isMoveup() == true) {
 
-					if (GUI.ym > -20) {
-
-						GUI.ym -= GUI.speedup;
-
+					if (Spieler.getyPos() > 0) {
+						Spieler.setyPos(Spieler.getyPos() - gui.getSpeed());
 					}
-
-				} else if (GUI.movedown == true) {
-
-					if (GUI.ym <= GUI.screenheight - 220) {
-
-						GUI.ym += GUI.speeddown;
-
-					}
-
 				}
 
-				if (GUI.moveleft == true) {
+				if (gui.isMovedown() == true) {
 
-					if (GUI.xm > -120) {
-
-						GUI.xm -= GUI.speedleft;
-
+					if (Spieler.getyPos() <= gui.getScreenheight() - Spieler.getHeigth()) {
+						Spieler.setyPos(Spieler.getyPos() + gui.getSpeed());
 					}
+				}
 
-				} else if (GUI.moveright == true) {
+				if (gui.isMoveleft() == true) {
 
-					if (GUI.xm <= GUI.screenwidth - 220) {
-
-						GUI.xm += GUI.speedright;
+					if (Spieler.getxPos() > 0) {
+						Spieler.setxPos(Spieler.getxPos() - gui.getSpeed());
 
 					}
 				}
+
+				if (gui.isMoveright() == true) {
+
+					if (Spieler.getxPos() <= gui.getScreenwidth() - Spieler.getWidth()) {
+						Spieler.setxPos(Spieler.getxPos() + gui.getSpeed());
+
+					}
+				}
+
+				updateAlles();
 
 			}
 
 		}, 0, 10);
 
+	}
+
+	private void updateAlles() {
+		MausEingabe.update();
+		Controller.update();
+		Spieler.update();
+		setCounter(getCounter() + 1);
+	}
+
+	public static int getCounter() {
+		return counter;
+	}
+
+	public static void setCounter(int pCounter) {
+		counter = pCounter;
 	}
 
 }

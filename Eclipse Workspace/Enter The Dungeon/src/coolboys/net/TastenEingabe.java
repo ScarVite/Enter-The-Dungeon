@@ -6,64 +6,21 @@ import java.awt.event.KeyListener;
 
 public class TastenEingabe implements KeyListener {
 
-	public void keyTyped(KeyEvent e) {
+	private GUI gui;
 
+	public TastenEingabe(GUI gui) {
+		this.gui = gui;
+	}
+
+	public void keyTyped(KeyEvent e) {
+		gui.keyTyped(e);
 	}
 
 	public void keyPressed(KeyEvent e) {
-
-		if (e.getKeyCode() == KeyEvent.VK_W) {
-
-			GUI.moveup = true;
-
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_S) {
-
-			GUI.movedown = true;
-
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_D) {
-
-			GUI.moveright = true;
-
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_A) {
-
-			GUI.moveleft = true;
-
-		}
-
+		gui.keyPressed(e);
 	}
 
 	public void keyReleased(KeyEvent e) {
-
-		if (e.getKeyCode() == KeyEvent.VK_W) {
-
-			GUI.moveup = false;
-
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_S) {
-
-			GUI.movedown = false;
-
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_D) {
-
-			GUI.moveright = false;
-
-		}
-
-		if (e.getKeyCode() == KeyEvent.VK_A) {
-
-			GUI.moveleft = false;
-
-		}
-
+		gui.keyReleased(e);
 	}
-
 }

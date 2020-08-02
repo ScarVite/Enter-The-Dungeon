@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -274,12 +275,6 @@ public class Networking {
 			int value4 = random.nextInt(17);
 
 			if (value + value1 + value2 + value3 + value4 == 17) {
-
-				System.out.println(value);
-				System.out.println(value1);
-				System.out.println(value2);
-				System.out.println(value3);
-				System.out.println(value4);
 				fertig = false;
 				token = token + Integer.toString(value);
 				token = token + Integer.toString(value1);
@@ -296,7 +291,34 @@ public class Networking {
 		return token;
 	}
 
-	protected static String hashPW(String password) throws NoSuchAlgorithmException {
+	protected static String Tokengen(int Ziel, int lenght, int max) {
+
+		int a = 0;
+		while (a != Ziel) {
+			Random random = new Random();
+			int[] value = new int[lenght];
+
+			for (int i = 0; i < value.length; i++) {
+				value[i] = random.nextInt(max);
+			}
+			String strArray[] = new String[value.length];
+
+			for (int i = 0; i < value.length; i++)
+				strArray[i] = String.valueOf(value[i]);
+			a = 0;
+			for (int i = 0; i < value.length; i++) {
+				a = a + value[i];
+
+			}
+
+			if (a == Ziel) {
+				return Arrays.toString(strArray);
+			}
+		}
+		return "Error";
+	}
+
+	private static String hashPW(String password) throws NoSuchAlgorithmException {
 		MessageDigest md = MessageDigest.getInstance("SHA-256");
 		md.update(password.getBytes(StandardCharsets.UTF_8));
 		byte[] digest = md.digest();
@@ -305,13 +327,4 @@ public class Networking {
 		return hex;
 	}
 
-}
-
-class Objekt {
-	String peter = "9028028";
-	int x = 5;
-
-	public void peter() {
-		System.out.println("hallo");
-	}
 }
