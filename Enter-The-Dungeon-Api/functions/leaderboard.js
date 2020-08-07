@@ -22,7 +22,7 @@ function addEntry(name, score, token) {
         })
         } else{
             console.log(`${name} provided an invalid token`)
-            resolve([false, "Your Provided token is Invalid"])
+            resolve([false, "Your provided token was Invalid."])
         }
     })
 }
@@ -67,7 +67,7 @@ async function CheckToken(token, score){
             value += parseInt(token);
         });
         for(var i = 1; i < tokenArr.length-1;i++){
-            value2 += tokenArr[i];
+            value2 += parseInt(tokenArr[i]);
         }
         var value3 = 0;
         token3.forEach(token => {

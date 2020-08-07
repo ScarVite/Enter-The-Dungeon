@@ -38,7 +38,6 @@ app.get('/api/getleaderboard', async (req, res) => {
 
 app.get('/api/status', (req, res) => {
     res.sendStatus(200);
-    res.send();
 });
 
 
