@@ -75,7 +75,7 @@ public class GUI extends JPanel {
 		spielFrame.setVisible(true);
 
 		try {
-			background = ImageIO.read(new File("Bilder/background.png"));
+			background = ImageIO.read(new File("Bilder/backgrounddiese.png"));
 			spielFrame.addMouseListener(new MouseAdapter() {
 			});
 		} catch (IOException IO) {
