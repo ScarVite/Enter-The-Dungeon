@@ -36,7 +36,7 @@ public class GUI extends JPanel {
 	private boolean movedown = false;
 	private boolean moveleft = false;
 	private boolean moveright = false;
-	private boolean shoot = false;
+	public static boolean shoot = false;
 	private static Label coor;
 	private static GUI gui;
 	private Movement move;

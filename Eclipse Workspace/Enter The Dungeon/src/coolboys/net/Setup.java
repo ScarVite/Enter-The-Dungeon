@@ -23,7 +23,7 @@ public class Setup extends JFrame implements KeyListener {
 	}
 
 
-
+	
 	private void ButtonPressed(java.awt.event.ActionEvent evt) {
 		System.out.println("Hier");
 		Networking.GenerateToken(420);

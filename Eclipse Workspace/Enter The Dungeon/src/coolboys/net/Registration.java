@@ -15,3 +15,4 @@ public class Registration extends JFrame {
 //		Oder Networking.login(String EMail, String Passwod);
 	}
 }
+
