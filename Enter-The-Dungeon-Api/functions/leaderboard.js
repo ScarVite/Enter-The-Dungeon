@@ -6,7 +6,7 @@ let db_collection = "leaderboard"
 function addEntry(name, score, token) {
     return new Promise(async function(resolve) {
         if(await CheckToken(token, score)){
-        MongoClient.connect(url, function (err, db) {
+            MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
             if (err) console.log(err)
             var dbo = db.db(db_name)
             var myobj = {
@@ -29,7 +29,7 @@ function addEntry(name, score, token) {
 
 function getLeaderBoard() {
     return new Promise(resolve => {
-        MongoClient.connect(url, function (err, db) {
+        MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
             if (err) console.log(err)
             var dbo = db.db(db_name)
             dbo.collection(db_collection).find({}).toArray(function (err, result) {
@@ -56,6 +56,7 @@ function getLeaderBoard() {
 }
 
 async function CheckToken(token, score){
+    //Key vor strich muss 17 sein, mitte muss score sein, schluss muss 21 sein
     return new Promise(resolve => {
         var tokenArr = token.split("-");
         var token1 = tokenArr[0].split("")

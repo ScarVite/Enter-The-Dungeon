@@ -5,7 +5,7 @@ let db_collection = "users"
 
 function addUser(paraEmail, paraUser, ParaPassword) {
     return new Promise(resolve => {
-        MongoClient.connect(url, function (err, db) {
+        MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
             if (err) console.log(err)
             var dbo = db.db(db_name)
             dbo.collection(db_collection).find({ username: paraUser }).toArray(function (err, result) {
@@ -41,7 +41,7 @@ function addUser(paraEmail, paraUser, ParaPassword) {
 
 function login(paraEmail, paraPassword) {
     return new Promise(resolve => {
-        MongoClient.connect(url, function (err, db) {
+        MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
             if (err) console.log(err)
             var dbo = db.db(db_name)
             console.log(paraEmail, paraPassword)

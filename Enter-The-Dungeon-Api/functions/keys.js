@@ -4,10 +4,8 @@ let db_name = "enter-the-dungeon";
 let db_collection = "keys";
 
 function validatekey(paraKey) {
-    //Key vor strich muss 17 sein, mitte muss score sein, schluss muss 21 sein
     return new Promise(resolve => {
-    MongoClient.connect(url, function(err, db) {
-        
+        MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
         if (err) console.log(err)
         var dbo = db.db(db_name)
         dbo.collection(db_collection).find({ key: paraKey }).toArray(function(err, result) {
