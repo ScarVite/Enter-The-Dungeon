@@ -1,0 +1,30 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Enter The Dungeon</title>
+    <meta name="description" content="Enter The Dungeon Startingpage + LeaderBoard">
+    <meta name="author" content="ScarVite">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script lang="javascript">
+        function LoadLeaderboard() {
+            $.getJSON("http://82.165.163.17:6/api/getleaderboard", data => {
+                console.log(data)
+                console.log(this)
+            })
+        }
+    </script>
+</head>
+
+<body onload="LoadLeaderboard()">
+    <h1>just a Short test</h1>
+</body>
+
+<style>
+
+</style>
+
+</html>
