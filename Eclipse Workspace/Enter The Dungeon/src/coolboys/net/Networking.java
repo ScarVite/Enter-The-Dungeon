@@ -27,12 +27,15 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.*;
 
 public class Networking {
+	
+	public static String BaseUrl = "https://api.scarvite.de/etd";
+	
 //	Ich weiß, das ich nen boolean in nen string umwandel und dann wieder zurück, aber ohne das gehts irgendwie nicht
 
 	private final static CloseableHttpClient httpClient = HttpClients.createDefault();
 
 	public static boolean validatekey(String key) {
-		HttpGet request = new HttpGet("http://82.165.163.17:6/api/validatekey?key=" + key);
+		HttpGet request = new HttpGet(BaseUrl+"/validatekey?key=" + key);
 		try (CloseableHttpResponse response = httpClient.execute(request)) {
 			System.out.println(response.getStatusLine().toString());
 			HttpEntity entity = response.getEntity();
@@ -67,7 +70,7 @@ public class Networking {
 	}
 
 	public static boolean updateLeaderboard(String username, int score) {
-		HttpPost post = new HttpPost("http://82.165.163.17:6/api/updateleaderboard");
+		HttpPost post = new HttpPost(BaseUrl + "/updateleaderboard");
 		List<NameValuePair> urlParameters = new ArrayList<>();
 		urlParameters.add(new BasicNameValuePair("username", username));
 		urlParameters.add(new BasicNameValuePair("score", Integer.toString(score)));
@@ -114,7 +117,7 @@ public class Networking {
 	}
 
 	public static JSONArray getLeaderboard() {
-		HttpGet request = new HttpGet("http://82.165.163.17:6/api/getleaderboard");
+		HttpGet request = new HttpGet(BaseUrl + "/getleaderboard");
 		try (CloseableHttpResponse response = httpClient.execute(request)) {
 			System.out.println(response.getStatusLine().toString());
 			HttpEntity entity = response.getEntity();
@@ -157,7 +160,7 @@ public class Networking {
 		if (HashedPassword == " ") {
 			System.exit(2);
 		}
-		HttpPost post = new HttpPost("http://82.165.163.17:6/api/addUser");
+		HttpPost post = new HttpPost(BaseUrl + "/addUser");
 		List<NameValuePair> urlParameters = new ArrayList<>();
 		urlParameters.add(new BasicNameValuePair("username", Username));
 		urlParameters.add(new BasicNameValuePair("password", HashedPassword));
@@ -211,7 +214,7 @@ public class Networking {
 		if (HashedPassword == " ") {
 			System.exit(2);
 		}
-		HttpPost post = new HttpPost("http://82.165.163.17:6/api/login");
+		HttpPost post = new HttpPost(BaseUrl + "/login");
 		List<NameValuePair> urlParameters = new ArrayList<>();
 		urlParameters.add(new BasicNameValuePair("email", Email));
 		urlParameters.add(new BasicNameValuePair("password", HashedPassword));
