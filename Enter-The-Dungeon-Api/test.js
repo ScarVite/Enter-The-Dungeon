@@ -1,5 +1,3 @@
-
-
 async function add(){
 var score = 220;
 var token = "33317-200-10-5-5-9921";
