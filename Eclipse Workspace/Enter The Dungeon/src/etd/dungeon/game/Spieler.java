@@ -3,6 +3,7 @@ package etd.dungeon.game;
 import java.awt.Graphics;
 
 import etd.dungeon.game.interfaces.Objekt;
+import etd.dungeon.resource.Sound;
 import etd.dungeon.resource.Texturen;
 
 public class Spieler extends IngameObjekt{

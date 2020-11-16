@@ -27,7 +27,7 @@ public class Texturen {
 			spieler = ImageIO.read(new File("Bilder/Spieler.png"));
 			gegner = ImageIO.read(new File("Bilder/Gegner.png"));
 			schuss = ImageIO.read(new File("Bilder/Schuss.png"));
-			hintergrund = ImageIO.read(new File("Bilder/Hintergrund.png"));
+			hintergrund = ImageIO.read(new File("Bilder/Background.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

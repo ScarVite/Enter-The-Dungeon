@@ -1,9 +1,11 @@
 package etd.dungeon.game;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import etd.dungeon.resource.Sound;
 import etd.dungeon.resource.Texturen;
 
 import java.awt.Dimension;
@@ -30,6 +32,8 @@ public class Game extends JPanel {
 	private JFrame spiel;
 	private Schuss schuss;
 	private Controller c;
+	private Sound sound;
+	private boolean pause = false;
 
 	public Game() {
 		init();
@@ -93,6 +97,16 @@ public class Game extends JPanel {
 		if (key == KeyEvent.VK_D) {
 			spieler.setRight(true);
 		}
+		if(key==KeyEvent.VK_ESCAPE){
+			pause=true;
+			while(pause){
+			 try {
+		            Thread.sleep(10);
+		        } catch (InterruptedException e1) {
+		            e1.printStackTrace();
+		        }
+		}
+		}
 	}
 
 	public void keyReleased(KeyEvent e) {
@@ -114,11 +128,15 @@ public class Game extends JPanel {
 	// MausInput
 
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+		sound = new Sound();
+		String soundPath = "Sound\\Feuerball.wav";
+		sound.playSound(soundPath);
+		sound.getClip().start();
 
 	}
 
 	public void mousePressed(MouseEvent e) {
+		
 	}
 
 	public void mouseReleased(MouseEvent e) {

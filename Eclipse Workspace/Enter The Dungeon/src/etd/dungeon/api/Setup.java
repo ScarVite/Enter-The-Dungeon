@@ -1,9 +1,9 @@
 package etd.dungeon.api;
 
-
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,49 +14,45 @@ import etd.dungeon.game.Mainmenu;
 //import org.omg.CORBA.TIMEOUT;
 
 public class Setup extends JFrame implements KeyListener {
-
-	private static final long serialVersionUID = 1L;
-	JTextField jTextField1;
-	JButton jButton1;
-	JLabel jLabel1;
-	JLabel jLabel2;
-
+	
+	private static final long	serialVersionUID	= 1L;
+	JTextField					jTextField1;
+	JButton						jButton1;
+	JLabel						jLabel1;
+	JLabel						jLabel2;
+	
 	public Setup() {
 		createJFrame();
 	}
-
-
 	
 	private void ButtonPressed(java.awt.event.ActionEvent evt) {
 		System.out.println("Hier");
 		Networking.GenerateToken(420);
-		Networking.updateLeaderboard("ScarVite", 220 );
-		if (jTextField1.getText().isEmpty() == false) {
-			if (Networking.validatekey(jTextField1.getText()) == true) {
+		//Networking.updateLeaderboard("ScarVite", 220);
+		if(jTextField1.getText().isEmpty() == false) {
+			if(true) {
 				new Mainmenu();
 				this.dispose();
-//				System.out.println("True");
-//				jLabel2 = new JLabel("Das Spiel Startet nun");
-//				jLabel2.setBounds(65, 10, 200, 24);
-//				add(jLabel2);
-//				remove(jLabel1);
-//				remove(jButton1);
-//				remove(jTextField1);
-//				repaint();
-//				return;
-
-			} else {
-				Popup.error("Ihr Key war leider Falsch", "Error");
+				// System.out.println("True");
+				// jLabel2 = new JLabel("Das Spiel Startet nun");
+				// jLabel2.setBounds(65, 10, 200, 24);
+				// add(jLabel2);
+				// remove(jLabel1);
+				// remove(jButton1);
+				// remove(jTextField1);
+				// repaint();
+				// return;
+				
 			}
-		} else {
+		}
+		else {
 			Popup.error("Bitte Geben sie einen Key ein", "Error");
 		}
 	}
-
+	
 	public static void main(String args[]) {
 		/*
-		 * if(datei valid auf true){ Spiel Starten }else{ datei erstellen und abfrage
-		 * starten }
+		 * if(datei valid auf true){ Spiel Starten }else{ datei erstellen und abfrage starten }
 		 */
 		java.awt.EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -64,7 +60,7 @@ public class Setup extends JFrame implements KeyListener {
 			}
 		});
 	}
-
+	
 	private void createJFrame() {
 		setTitle("Enter The Dungeon Setup");
 		setSize(new Dimension(300, 175));
@@ -81,21 +77,20 @@ public class Setup extends JFrame implements KeyListener {
 		jTextField1.addKeyListener(new KeyListener() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-
-
+			
 			}
-
+			
 			@Override
 			public void keyTyped(KeyEvent e) {
 				
 			}
-
+			
 			@Override
 			public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
 					ButtonPressed(null);
 				}
-
+				
 			}
 		});
 		jButton1.setBounds(90, 90, 100, 24);
@@ -108,40 +103,35 @@ public class Setup extends JFrame implements KeyListener {
 		validate();
 		setVisible(true);
 		new Thread(new Runnable() {
-
+			
 			@Override
 			public void run() {
-				while (!jTextField1.getText().contains("\n")) {
+				while(!jTextField1.getText().contains("\n")) {
 					try {
 						Thread.sleep(20);
-					} catch (Exception e) {
 					}
+					catch (Exception e) {}
 				}
 				jTextField1.setText(jTextField1.getText().replaceAll("\n", ""));
 				ButtonPressed(null);
 			}
 		}).start();
-
+		
 	}
-
-
-// 	idk why this has to be here, since its initialized a few lines higher, but it doesn't work without it
+	
+	// idk why this has to be here, since its initialized a few lines higher, but it doesn't work without it
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
-
-
-
+	
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
-
-
-
+	
 	@Override
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub

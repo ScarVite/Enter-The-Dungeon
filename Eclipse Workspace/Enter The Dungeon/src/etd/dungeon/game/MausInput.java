@@ -3,13 +3,17 @@ package etd.dungeon.game;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.sound.sampled.Clip;
 import javax.swing.SwingUtilities;
+
+import etd.dungeon.resource.Sound;
 
 public class MausInput implements MouseListener {
 
 	private Game game;
 	private static double xMaus;
 	private static double yMaus;
+
 
 	public MausInput(Game pGame) {
 		this.game = pGame;
@@ -23,6 +27,8 @@ public class MausInput implements MouseListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		game.mousePressed(e);
+	
+		
 	}
 
 	@Override
