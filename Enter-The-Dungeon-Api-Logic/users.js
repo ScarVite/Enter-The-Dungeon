@@ -44,7 +44,6 @@ function login(paraEmail, paraPassword) {
         MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
             if (err) console.log(err)
             var dbo = db.db(db_name)
-            console.log(paraEmail, paraPassword)
             dbo.collection(db_collection).find({ email: paraEmail }).toArray(function (err, result) {
                 db.close()
                 if (err) console.log(err);
