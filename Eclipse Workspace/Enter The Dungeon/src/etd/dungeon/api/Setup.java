@@ -80,7 +80,7 @@ public class Setup extends JFrame implements KeyListener {
 		if (!Key.exists()) {
 			Key.mkdirs();
 		}
-		File Key2 = new File("/EnterTheDungeon/KeyValid");
+		File Key2 = new File(mainFile, "/EnterTheDungeon/KeyValid");
 		System.out.println(Key.getAbsolutePath());
 		if (Key2.exists() && !Key2.isDirectory()) {
 			new Mainmenu();
