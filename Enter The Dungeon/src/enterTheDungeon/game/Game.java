@@ -185,10 +185,7 @@ public class Game extends JPanel {
 			spieler.setRight(true);
 		}
 		if (key == KeyEvent.VK_ESCAPE) {
-			pause = true;
-			}
-		if (key == KeyEvent.VK_P) {
-			pause = false;
+			pause = !pause;
 			}
 		}
 	
