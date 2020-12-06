@@ -3,16 +3,13 @@ package enterTheDungeon.api;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.io.File;
-import java.io.IOException;
-import java.net.URISyntaxException;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import enterTheDungeon.game.Mainmenu;
+import enterTheDungeon.resource.Filesystem;
 
 //import org.omg.CORBA.TIMEOUT;
 
@@ -34,23 +31,9 @@ public class Setup extends JFrame implements KeyListener {
 		// Networking.updateLeaderboard("ScarVite", 220);
 		if (jTextField1.getText().isEmpty() == false) {
 			if (Networking.validatekey(jTextField1.getText())) {
-				File mainFile = new File(System.getProperty("user.home"));
-				try {
-					mainFile = new File(Setup.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-				} catch (URISyntaxException e) {
-					e.printStackTrace();
-				}
-				try {
-					File myObj = new File(mainFile, "/EnterTheDungeon/KeyValid");
-					if (myObj.createNewFile()) {
-						System.out.println("File created: " + myObj.getName());
-					} else {
-						System.out.println("File already exists.");
-					}
-				} catch (IOException e) {
-					System.out.println("An error occurred.");
-					e.printStackTrace();
-				}
+				Filesystem filesystem = new Filesystem();
+				filesystem.createFileIfNotExist("/EnterTheDungeon-Files/KeyValid.txt");
+				filesystem.writeTxtFile("/EnterTheDungeon-Files/KeyValid.txt", "Hiermit-wird-das-Spiel-aktiviert");
 				new Mainmenu();
 				this.dispose();
 				// System.out.println("True");
@@ -66,30 +49,6 @@ public class Setup extends JFrame implements KeyListener {
 			}
 		} else {
 			Popup.error("Bitte Geben sie einen Key ein", "Error");
-		}
-	}
-
-	public static void main(String args[]) {
-		File mainFile = new File(System.getProperty("user.home"));
-		try {
-			mainFile = new File(Setup.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-		File Key = new File(mainFile, "/EnterTheDungeon");
-		if (!Key.exists()) {
-			Key.mkdirs();
-		}
-		File Key2 = new File(mainFile, "/EnterTheDungeon/KeyValid");
-		System.out.println(Key.getAbsolutePath());
-		if (Key2.exists() && !Key2.isDirectory()) {
-			new Mainmenu();
-		} else {
-			java.awt.EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					new Setup().setVisible(true);
-				}
-			});
 		}
 	}
 
