@@ -11,6 +11,8 @@ import enterTheDungeon.game.Game;
 public class Texturen {
 	public BufferedImage gegner;
 	public BufferedImage schuss;
+	public BufferedImage feuerball1;
+	public BufferedImage feuerball2;
 	public BufferedImage hintergrund;
 	public BufferedImage spieler;
 	public BufferedImage shotgun;
@@ -33,6 +35,8 @@ public class Texturen {
 			shotgun = ImageIO.read(new File("Bilder/Shotgun.png"));
 			pistole = ImageIO.read(new File("Bilder/SciFiPistole.png"));
 			hindernis = ImageIO.read(new File("Bilder/Hindernis.png"));
+			feuerball1 = ImageIO.read(new File("Bilder/Feuerball1.png"));
+			feuerball2 = ImageIO.read(new File("Bilder/Feuerball2.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
