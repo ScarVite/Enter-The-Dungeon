@@ -35,26 +35,34 @@ public class LevelCreator {
 	}
 
 	public void createLevel() {
+		createBorder();
 		double x, y, width, height;
 		for (int i = 0; i < game.getAnzGegner(); i++) {
 			x = Math.random() * 1000 + 1;
 			y = Math.random() * 900 + 1;
 			width = 65;
 			height = 65;
-			gegner = new Gegner(x, y, width, height, 3, 3, tex);
+			gegner = new Gegner(x, y, width, height, 3, 3, tex, game);
 			gegnerliste.add(gegner);
 		}
-		
 		for(int i = 0; i < game.getAnzHindernis(); i++) {
 			x = Math.random() * 1000 + 1;
 			y = Math.random() * 900 + 1;
-			width = 65;
-			height = 65;
+			width = Math.random() * 100 + 65;
+			height = width;
 			hindernis = new Hindernis(x, y, width, height, tex);
 			hindernisliste.add(hindernis);
 		}
 
 	}
+	
+	private void createBorder() {
+		hindernisliste.add(new Hindernis(0, 0, 20, 1080, tex)); //links
+		hindernisliste.add(new Hindernis(1900, 0, 20, 1080, tex)); //rechts
+		hindernisliste.add(new Hindernis(0, 0, 1920, 30, tex)); //oben
+		hindernisliste.add(new Hindernis(0, 1000, 1920, 30, tex));
+	}
+	
 	
 	public ArrayList<Gegner> getGegnerliste() {
 		return gegnerliste;
