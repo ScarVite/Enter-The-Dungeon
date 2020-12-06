@@ -37,7 +37,7 @@ public class Game extends JPanel {
 	private ArrayList<Schuss> schussliste;
 	private ArrayList<Gegner> gegnerliste;
 	private ArrayList<Hindernis> hindernisliste;
-	private Sound sound;
+	private Sound sound = new Sound();
 	private MausInput mausinput;
 	private TastaturInput tastinput;
 	private Waffe waffe;
@@ -255,11 +255,12 @@ public class Game extends JPanel {
 	// MausInput
 
 	public void mouseClicked(MouseEvent e) {
-		sound = new Sound();
-		String soundPath = "Sound\\Feuerball.wav";
-		sound.playSound(soundPath);
-		sound.getClip().start();
-		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
+		if (sound.getHintergrundmusik()) {
+			String soundPath = "Sound\\Feuerball.wav";
+			sound.playSound(soundPath);
+			sound.getClip().start();
+			spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
+		}
 
 	}
 
