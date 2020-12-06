@@ -31,7 +31,7 @@ public class Networking {
 	
 	public static String						BaseUrl		= "https://api.scarvite.de/etd";
 	
-	// Ich wei�, das ich nen boolean in nen string umwandel und dann wieder zur�ck, aber ohne das gehts irgendwie nicht
+	// Ich weis, das ich nen boolean in nen string umwandel und dann wieder zur�ck, aber ohne das gehts irgendwie nicht
 	
 	private final static CloseableHttpClient	httpClient	= HttpClients.createDefault();
 	
