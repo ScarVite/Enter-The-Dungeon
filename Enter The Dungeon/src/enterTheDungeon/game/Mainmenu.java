@@ -27,6 +27,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 	private JButton soundAnButton;
 	private JButton backButton;
 	private JPanel options;
+	private JPanel credits;
 	private static JFrame gui;
 	private Sound sound;
 	private JPanel mainmenu;
@@ -78,8 +79,6 @@ public class Mainmenu extends JFrame implements ActionListener {
 
 		options = new JPanel();
 		options.setLayout(null);
-		gui = new JFrame("Enter the Dungeon Einstellung");
-		gui.setSize(screenWidth, screenHeight);
 		options.add(soundButton);
 		options.add(backButton);
 		options.add(mainmenudraw);
@@ -88,23 +87,19 @@ public class Mainmenu extends JFrame implements ActionListener {
 		gui.setLocationRelativeTo(null);
 		gui.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		gui.setVisible(true);
-	
-
 	}
 
 	public void Credits() {
-		options = new JPanel();
-		options.setLayout(null);
-		gui = new JFrame("Enter the Dungeon Einstellung");
-		gui.setSize(screenWidth, screenHeight);
-		options.add(backButton);
-		options.add(mainmenudraw); //Mainmenü hintergrund
-		gui.add(options);
+		credits = new JPanel();
+		credits.setLayout(null);
+		credits.add(backButton);
+		credits.add(mainmenudraw); //Mainmenü hintergrund
+		gui.add(credits);
 		gui.setResizable(false);
 		gui.setLocationRelativeTo(null);
 		gui.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		gui.setVisible(true);
-	}
+		gui.setVisible(true);	
+		}
 
 	private void gameWindow() {
 		gamewindow.add(new Game());
@@ -153,6 +148,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 		backButton = new JButton("Zurück");
 		backButton.setBounds(310, 295, 160, 40);
 		backButton.addActionListener(this);
+		
 
 	}
 
@@ -181,16 +177,18 @@ public class Mainmenu extends JFrame implements ActionListener {
 			System.exit(0);
 		}
 		if (e.getSource() == backButton) {
-			options.setVisible(false);
-			gui.setVisible(false);
+			mainmenu.setVisible(true);
+			mainmenu.add(mainmenudraw);
 		}
-
+		
 		if (e.getSource() == optionsButton) {
 			Einstellung();
+			mainmenu.setVisible(false);
 		}
 
 		if (e.getSource() == creditsButton) {
 			Credits();
+			mainmenu.setVisible(false);	
 		}
 		if (e.getSource() == soundButton) {
 			sound.setHintergrundmusik(false);

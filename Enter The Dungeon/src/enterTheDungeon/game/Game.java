@@ -57,9 +57,11 @@ public class Game extends JPanel {
 		time = new Timer();
 		time.scheduleAtFixedRate(new TimerTask() {
 			@Override
-
-			public void run() {
+			public void run() {	
+			if(pause) {
+				}else {
 				update();
+				}
 			}
 
 		}, 0, 10);
@@ -132,20 +134,12 @@ public class Game extends JPanel {
 		}
 	}
 
-//		} else {
-//			gegner.setVisible(true);
-//		}
-//	}
-
 	private void init() {
 		gegnerliste = new ArrayList<Gegner>();
 		schussliste = new ArrayList<Schuss>();
 		hindernisliste = new ArrayList<Hindernis>();
 		tex = new Texturen(this);
 		spieler = new Spieler(400, 400, 75, 125, 3, 3, tex);
-//		gegner = new Gegner(700, 700, 65, 65, 3, 2, tex);
-//		gegnerliste.add(gegner);
-//		waffe = new Waffe(0, 0, 20, 20, tex);
 		setAnzHindernis(5);
 		setAnzGegner(5);
 		levelcreator = new LevelCreator(this, tex);
@@ -192,15 +186,12 @@ public class Game extends JPanel {
 		}
 		if (key == KeyEvent.VK_ESCAPE) {
 			pause = true;
-			while (pause) {
-				try {
-					Thread.sleep(10);
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-				}
+			}
+		if (key == KeyEvent.VK_P) {
+			pause = false;
 			}
 		}
-	}
+	
 
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();

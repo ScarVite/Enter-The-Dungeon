@@ -22,5 +22,7 @@ public class TastaturInput extends KeyAdapter{
 	public void keyReleased(KeyEvent e) {
 		game.keyReleased(e);
 	}
+	
+	
 }
 
