@@ -34,12 +34,10 @@ public class Game extends JPanel {
 	private Timer time;
 	private Render render;
 	private JFrame spiel;
-	private Schuss schuss;
 	private ArrayList<Schuss> schussliste;
 	private ArrayList<Gegner> gegnerliste;
 	private ArrayList<Hindernis> hindernisliste;
-	private Gegner gegner;
-	private Sound sound = new Sound();
+	private Sound sound;
 	private MausInput mausinput;
 	private TastaturInput tastinput;
 	private Waffe waffe;
@@ -57,11 +55,9 @@ public class Game extends JPanel {
 		time = new Timer();
 		time.scheduleAtFixedRate(new TimerTask() {
 			@Override
-			public void run() {	
-			if(pause) {
-				}else {
+
+			public void run() {
 				update();
-				}
 			}
 
 		}, 0, 10);
@@ -78,6 +74,7 @@ public class Game extends JPanel {
 			hindernis.update();
 		}
 		collision();
+
 	}
 
 	public void render(Graphics g) {
@@ -95,49 +92,92 @@ public class Game extends JPanel {
 		Rectangle spC = spieler.getBounds();
 		waffe = spieler.getWaffe();
 		schussliste = waffe.getSchussarray();
+		collisionSchussMitObject(spC, 1);
+
+		for (Gegner gegner : gegnerliste) {
+			waffe = gegner.getWaffe();
+			schussliste = waffe.getSchussarray();
+			collisionSchussMitObject(spC, 0);
+		}
+
+		for (Hindernis hindernis : hindernisliste) {
+			Rectangle hindi = hindernis.getBounds();
+			if (hindi.intersects(spC) && spieler.isDown()) {
+				spieler.setyPos(spieler.getyPos() - spieler.getSpeed());
+			}
+			if (hindi.intersects(spC) && spieler.isUp()) {
+				spieler.setyPos(spieler.getyPos() + spieler.getSpeed());
+			}
+			if (hindi.intersects(spC) && spieler.isLeft()) {
+				spieler.setxPos(spieler.getxPos() + spieler.getSpeed());
+			}
+			if (hindi.intersects(spC) && spieler.isRight()) {
+				spieler.setxPos(spieler.getxPos() - spieler.getSpeed());
+			}
+
+		}
+	}
+
+	private void collisionSchussMitObject(Rectangle spC, int waffe) {
 		for (int i = 0; i < schussliste.size(); i++) {
 			Rectangle s = schussliste.get(i).getBounds();
 
-			for (int b = 0; b < gegnerliste.size(); b++) {
-				Rectangle g = gegnerliste.get(b).getBounds();
+			for (Gegner gegner : gegnerliste) {
+				Rectangle g = gegner.getBounds();
 
-				if (s.intersects(g)) {
-					System.out.println("getroffen");
-					gegnerliste.remove(b);
+				// schuss und gegner überschneiden && spielerwaffe dann wird gegner getroffen
+				if (g.intersects(s) && waffe == 1) {
+//					gegnerliste.remove(b);
+					gegner.setLeben(gegner.getLeben() - 1);
 					schussliste.remove(i);
 				}
 			}
-			
-			for(Hindernis hindernis : hindernisliste) {
+			// schuss und gegner überschneiden && gegnerwaffe dann wird spieler getroffen
+			if (spC.intersects(s) && waffe == 0) {
+				schussliste.remove(i);
+				spieler.setLeben(spieler.getLeben() - 1);
+				if (spieler.getLeben() == 0) {
+					beendeSpiel();
+				}
+			}
+
+			for (Hindernis hindernis : hindernisliste) {
 				Rectangle hindi = hindernis.getBounds();
-				if(s.intersects(hindi)) {
+				if (s.intersects(hindi)) {
 					schussliste.remove(i);
 				}
-				
 			}
 		}
-		for (Hindernis hindernis : hindernisliste) {
-			Rectangle hindi = hindernis.getBounds();
-			if(hindi.intersects(spC) && spieler.isDown()) {
-				spieler.setyPos(spieler.getyPos() - spieler.getSpeed());
+
+		for (int i = 0; i < gegnerliste.size(); i++) {
+			if (gegnerliste.get(i).getLeben() == 0) {
+				gegnerliste.remove(i);
 			}
-			if(hindi.intersects(spC) && spieler.isUp()) {
-				spieler.setyPos(spieler.getyPos() + spieler.getSpeed());
-			}
-			if(hindi.intersects(spC) && spieler.isLeft()) {
-				spieler.setxPos(spieler.getxPos() + spieler.getSpeed());
-			}
-			if(hindi.intersects(spC) && spieler.isRight()) {
-				spieler.setxPos(spieler.getxPos() - spieler.getSpeed());
-			}
-			
 		}
+
+		if (gegnerliste.size() == 0) {
+			baueLevel();
+			for (int i = 0; i < hindernisliste.size(); i++) {
+				hindernisliste.remove(i);
+			}
+		}
+	}
+
+	private void removeGegner() {
+
+	}
+
+	private void beendeSpiel() {
+		spiel.setVisible(false);
+		spiel.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		System.out.println("beednet");
 	}
 
 	private void init() {
 		gegnerliste = new ArrayList<Gegner>();
 		schussliste = new ArrayList<Schuss>();
 		hindernisliste = new ArrayList<Hindernis>();
+//		gegner = new Gegner(0, 0, 30, 30, 3, 3, tex, this);
 		tex = new Texturen(this);
 		spieler = new Spieler(400, 400, 75, 125, 3, 3, tex);
 		setAnzHindernis(5);
@@ -185,10 +225,16 @@ public class Game extends JPanel {
 			spieler.setRight(true);
 		}
 		if (key == KeyEvent.VK_ESCAPE) {
-			pause = !pause;
+			pause = true;
+			while (pause) {
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e1) {
+					e1.printStackTrace();
+				}
 			}
 		}
-	
+	}
 
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
@@ -209,11 +255,10 @@ public class Game extends JPanel {
 	// MausInput
 
 	public void mouseClicked(MouseEvent e) {
-		if(sound.getHintergrundmusik()) {
-			String soundPath = "Sound\\Feuerball-fixed.wav";
-			sound.playSound(soundPath);
-			sound.getClip().start();
-		}
+		sound = new Sound();
+		String soundPath = "Sound\\Feuerball.wav";
+		sound.playSound(soundPath);
+		sound.getClip().start();
 		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
 
 	}
@@ -234,6 +279,23 @@ public class Game extends JPanel {
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
 
+	}
+
+	// Getter und Setter
+	public double getxPosSpieler() {
+		return spieler.getxPos();
+	}
+
+	public double getyPosSpieler() {
+		return spieler.getyPos();
+	}
+
+	public double getWidthSpieler() {
+		return spieler.getWidth();
+	}
+
+	public double getHeightSpieler() {
+		return spieler.getHeight();
 	}
 
 	public int getAnzGegner() {

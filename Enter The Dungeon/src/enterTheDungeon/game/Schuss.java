@@ -11,6 +11,7 @@ public class Schuss extends StandardObjectData {
 	private double speed = 4;
 	private double xDelta, yDelta;
 	private double xZiel, yZiel;
+	private int bild = 1;
 
 	public Schuss(double pX, double pY, double pWidth, double pHeight, double xZiel, double yZiel, Texturen pTex) {
 		super(pX, pY, pWidth, pHeight, pTex);
@@ -36,6 +37,7 @@ public class Schuss extends StandardObjectData {
 	public void update() {
 		xPos -= xDelta;
 		yPos -= yDelta;
+		bild = getBild();
 //		setxPos(getxPos() -xDelta);
 //		setyPos(getyPos() - yDelta);
 //		xPos = getxPos();
@@ -44,10 +46,23 @@ public class Schuss extends StandardObjectData {
 
 	public void render(Graphics g) {
 		if (isVisible()) {
-			g.drawImage(tex.schuss, (int) xPos, (int) yPos, (int) width, (int) height, null);
+			if (bild == 1) {
+				g.drawImage(tex.feuerball1, (int) xPos, (int) yPos, (int) width, (int) height, null);
+			}
+			if (bild == 2) {
+				g.drawImage(tex.feuerball2, (int) xPos, (int) yPos, (int) width, (int) height, null);
+			}
 			g.setColor(new Color(0).GREEN);
 			g.drawRect((int) xPos, (int) yPos, (int) width, (int) height);
 		}
+	}
+	
+	public int getBild() {
+		return bild;
+	}
+	
+	public void setBild(int pBild) {
+		this.bild = pBild;
 	}
 
 }
