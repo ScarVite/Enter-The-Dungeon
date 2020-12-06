@@ -167,7 +167,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 			sound.getClip().stop();
 			if (sound.getHintergrundmusik()==true) {
 				sound = new Sound();
-				String soundPath = "Sound\\background.wav";
+				String soundPath = "Sound/background.wav";
 				sound.playSound(soundPath);
 				sound.getClip().loop(Clip.LOOP_CONTINUOUSLY);
 				sound.getClip().start();

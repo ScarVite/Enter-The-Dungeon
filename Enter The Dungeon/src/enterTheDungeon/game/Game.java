@@ -222,7 +222,7 @@ public class Game extends JPanel {
 
 	public void mouseClicked(MouseEvent e) {
 		sound = new Sound();
-		String soundPath = "Sound\\Feuerball.wav";
+		String soundPath = "Sound\\Feuerball-fixed.wav";
 		sound.playSound(soundPath);
 		sound.getClip().start();
 		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
