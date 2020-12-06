@@ -8,7 +8,7 @@ function validatekey(paraKey) {
         MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
         if (err) console.log(err)
         var dbo = db.db(db_name)
-        dbo.collection(db_collection).find({ key: paraKey }).toArray(function(err, result) {
+        dbo.collection(db_collection).find({ key: paraKey }).project({ _id: 0 }).toArray(function(err, result) {
             if (err) console.log(err);
             if (result.length > 0) {
                 if(result[0].valid == true){

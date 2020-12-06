@@ -32,7 +32,7 @@ function getLeaderBoard() {
         MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
             if (err) console.log(err)
             var dbo = db.db(db_name)
-            dbo.collection(db_collection).find({}).toArray(function (err, result) {
+            dbo.collection(db_collection).find({}, {"_id": 0}).toArray(function (err, result) {
                 db.close();
                 if (result.length > 0) {
                     var sorted_result = result;
