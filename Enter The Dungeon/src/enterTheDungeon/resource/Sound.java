@@ -8,7 +8,7 @@ import javax.sound.sampled.Clip;
 public class Sound {
 	
 	private Clip clip;
-	private boolean hintergrundmusik = true;
+	private static boolean hintergrundmusik = true;
 
 	//Hauptfunktion für das einlesen und abspielen von Dateien
 	public void playSound(String soundLocation){
@@ -36,8 +36,8 @@ public class Sound {
 		return hintergrundmusik;
 	}
 
-	public void setHintergrundmusik(boolean hintergrundmusik) {
-		this.hintergrundmusik = hintergrundmusik;
+	public void setHintergrundmusik(boolean hintergrundmusikBool) {
+		hintergrundmusik = hintergrundmusikBool;
 	}
 
 

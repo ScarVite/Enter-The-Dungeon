@@ -10,7 +10,10 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import org.json.simple.JSONObject;
+
 import enterTheDungeon.resource.Sound;
+import enterTheDungeon.resource.Filesystem;
 import enterTheDungeon.resource.Mainmenutex;
 
 public class Mainmenu extends JFrame implements ActionListener {
@@ -29,21 +32,29 @@ public class Mainmenu extends JFrame implements ActionListener {
 	private JPanel options;
 	private JPanel credits;
 	private static JFrame gui;
-	private Sound sound;
+	private Sound sound = new Sound();
 	private JPanel mainmenu;
 	private JPanel button;
 	public static JFrame gamewindow = new JFrame();
+	private Filesystem filesystem = new Filesystem();
+	private JSONObject settingsObj = (JSONObject) filesystem.readJsonFileasObject("/EnterTheDungeon-Files/Settings.json");
 	private Mainmenutex Mainmenutex;
 	private ImageIcon imageIcon;
 	private Mainmenudraw mainmenudraw;
 
 	// Mainmenu kreieren und Buttons hinzufï¿½gen
+	@SuppressWarnings("unchecked")
 	public Mainmenu() {
+		if(settingsObj == null) {
+			settingsObj = new JSONObject();
+			settingsObj.put("music", true);
+		}
 		// Hauptmenü Musik wird abgerufen und in einer Schleife abgespielt
-		sound = new Sound();
-		String soundPath = "Sound\\Mainmenu.wav";
-		sound.playSound(soundPath);
-		sound.getClip().loop(Clip.LOOP_CONTINUOUSLY);
+		if((boolean) settingsObj.get("music")) {
+			String soundPath = "Sound\\Mainmenu.wav";
+			sound.playSound(soundPath);
+			sound.getClip().loop(Clip.LOOP_CONTINUOUSLY);
+		}
 
 		screenWidth = 800;
 		screenHeight = 600;
@@ -76,10 +87,10 @@ public class Mainmenu extends JFrame implements ActionListener {
 	}
 
 	public void Einstellung() {
-
 		options = new JPanel();
 		options.setLayout(null);
-		options.add(soundButton);
+		if((boolean) settingsObj.get("music") || sound.getHintergrundmusik()) options.add(soundButton);
+		else options.add(soundAnButton);
 		options.add(backButton);
 		options.add(mainmenudraw);
 		gui.add(options);
