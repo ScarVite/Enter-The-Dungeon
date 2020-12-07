@@ -26,9 +26,6 @@ public class Setup extends JFrame implements KeyListener {
 	}
 
 	private void ButtonPressed(java.awt.event.ActionEvent evt) {
-		System.out.println("Hier");
-		// Networking.GenerateToken(420);
-		// Networking.updateLeaderboard("ScarVite", 220);
 		if (jTextField1.getText().isEmpty() == false) {
 			if (Networking.validatekey(jTextField1.getText())) {
 				Filesystem filesystem = new Filesystem();

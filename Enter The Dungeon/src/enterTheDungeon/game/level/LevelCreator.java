@@ -15,6 +15,8 @@ public class LevelCreator {
 	private Texturen tex;
 	private ArrayList<Gegner> gegnerliste;
 	private ArrayList<Hindernis> hindernisliste;
+	private ArrayList<Portal> portalliste;
+	private Portal portal;
 	private Gegner gegner;
 	private Hindernis hindernis;
 
@@ -56,13 +58,29 @@ public class LevelCreator {
 
 	}
 	
+	
+	
 	private void createBorder() {
-		hindernisliste.add(new Hindernis(0, 0, 20, 1080, tex)); //links
-		hindernisliste.add(new Hindernis(1900, 0, 20, 1080, tex)); //rechts
-		hindernisliste.add(new Hindernis(0, 0, 1920, 30, tex)); //oben
-		hindernisliste.add(new Hindernis(0, 1000, 1920, 30, tex));
+		int width = game.getScreenwidth();
+		int height = game.getScreenheight();
+		hindernisliste.add(new Hindernis(0, 0, 20, height, tex)); //links
+		hindernisliste.add(new Hindernis(width - 20, 0, 20, height, tex)); //rechts
+		hindernisliste.add(new Hindernis(0, 0, width, 30, tex)); //oben
+		hindernisliste.add(new Hindernis(0, height - 80, width, 30, tex));
 	}
 	
+	
+	public void addPortal(Portal pPortal) {
+		portalliste.add(pPortal);
+	}
+	
+	public void removePortal(Portal pPortal) {
+		portalliste.remove(pPortal);
+	}
+	
+	public ArrayList<Portal> getPortalliste(){
+		return portalliste;
+	}
 	
 	public ArrayList<Gegner> getGegnerliste() {
 		return gegnerliste;
