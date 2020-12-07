@@ -201,7 +201,7 @@ public class Game extends JPanel {
 		// Music auf mainmenu music �ndern
 		spiel.setVisible(false);
 		spiel.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		System.out.println("beednet");
+		System.out.println("Spieler tot");
 	}
 
 	private void init() {
@@ -238,10 +238,8 @@ public class Game extends JPanel {
 	}
 
 	public void baueLevel() {
-
 		setAnzGegner(3);
 		setAnzHindernis(2);
-
 		levelcreator.createLevel();
 	}
 
@@ -287,14 +285,12 @@ public class Game extends JPanel {
 	// MausInput
 
 	public void mouseClicked(MouseEvent e) {
+		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
 		if (sound.getHintergrundmusik()) {
 			String soundPath = "Sound\\Feuerball.wav";
-			sound.playSound(soundPath);
+			sound.playSound(soundPath); 
 			sound.getClip().start();
 		}
-		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
-
-		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
 	}
 
 
