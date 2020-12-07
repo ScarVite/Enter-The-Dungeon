@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import enterTheDungeon.api.Networking;
 import enterTheDungeon.api.Setup;
 import enterTheDungeon.game.Mainmenu;
 import enterTheDungeon.game.Oberklassen.User;
@@ -15,6 +16,7 @@ public class Start {
 	private static Filesystem filesystem = new Filesystem();
 
 	public static void main(String args[]) {
+		Networking.login("Email", "Peter");
 		initSystems();
 		if (filesystem.checkForFile("/EnterTheDungeon-Files/User.json"))
 			User.setUser(filesystem.readJsonFileasObject("/EnterTheDungeon-Files/User.json"));
