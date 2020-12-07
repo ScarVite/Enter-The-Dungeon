@@ -16,7 +16,6 @@ public class Start {
 
 	public static void main(String args[]) {
 		initSystems();
-		filesystem.createFolderIfNotExist("/EnterTheDungeon-Files");
 		if (filesystem.checkForFile("/EnterTheDungeon-Files/User.json")) User.setUser(filesystem.readJsonFileasObject("/EnterTheDungeon-Files/User.json"));
 		if (filesystem.compareFileContent("/EnterTheDungeon-Files/KeyValid.txt", "Hiermit-wird-das-Spiel-aktiviert")) new Mainmenu();
 		 else {
@@ -32,6 +31,7 @@ public class Start {
 	private static void initSystems() {
 		try {
 			Filesystem.SetMainPath(Setup.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+			filesystem.createFolderIfNotExist("/EnterTheDungeon-Files");
 			JSONObject obj = new JSONObject();
 			JSONArray arr = new JSONArray();
 			obj.put("music", true);
