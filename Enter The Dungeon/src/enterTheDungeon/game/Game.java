@@ -238,10 +238,15 @@ public class Game extends JPanel {
 	}
 
 	public void baueLevel() {
+<<<<<<< HEAD
 
 		setAnzGegner(3);
 		setAnzHindernis(2);
 
+=======
+		setAnzGegner(10);
+		setAnzHindernis(5);
+>>>>>>> 2e9adaa375cfc4c4eefbde38843945d3d805d133
 		levelcreator.createLevel();
 	}
 
@@ -287,14 +292,18 @@ public class Game extends JPanel {
 	// MausInput
 
 	public void mouseClicked(MouseEvent e) {
+		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
 		if (sound.getHintergrundmusik()) {
 			String soundPath = "Sound\\Feuerball.wav";
-			sound.playSound(soundPath);
+			sound.playSound(soundPath); 
 			sound.getClip().start();
 		}
+<<<<<<< HEAD
 		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
 
 		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
+=======
+>>>>>>> 2e9adaa375cfc4c4eefbde38843945d3d805d133
 	}
 
 

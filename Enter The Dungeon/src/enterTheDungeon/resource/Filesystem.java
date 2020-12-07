@@ -26,6 +26,7 @@ public class Filesystem {
 			try {
 				Object obj = parser.parse(new FileReader(mainPath + path));
 				JSONObject jsonObject = (JSONObject) obj;
+				System.out.println(jsonObject);
 				return jsonObject;
 			} catch (IOException | ParseException e) {
 				// TODO Auto-generated catch block
@@ -70,8 +71,6 @@ public class Filesystem {
 		File Folder = new File(mainPath, path);
 		if (!Folder.exists())
 			Folder.mkdirs();
-		else
-			System.out.println("Folder Exists");
 	}
 
 	public void createFileIfNotExist(String filePath) {
@@ -79,8 +78,6 @@ public class Filesystem {
 			File file = new File(mainPath, filePath);
 			if (!file.exists())
 				file.createNewFile();
-			else
-				System.out.println("File Exists");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

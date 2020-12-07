@@ -30,33 +30,27 @@ import org.json.simple.parser.JSONParser;
 
 import enterTheDungeon.game.Oberklassen.User;
 
-
 public class Networking {
 
-	private static String userToken = new User().getToken();
+	private static String userToken = null;
 	private static String baseUrl = "https://api.scarvite.de/etd";
-
-	// Ich weis, das ich nen boolean in nen string umwandel und dann wieder
-	// zurück, aber ohne das gehts irgendwie nicht
 
 	private final static CloseableHttpClient httpClient = HttpClients.createDefault();
 
 	public static boolean validatekey(String key) {
+		if (userToken == null)
+			userToken = new User().getToken();
 		HttpGet request = new HttpGet(baseUrl + "/validatekey?key=" + key);
-		request.setHeader("Authorization", userToken);
+		request.setHeader("authorization", userToken);
+		System.out.println(userToken);
 		try (CloseableHttpResponse response = httpClient.execute(request)) {
 			System.out.println(response.getStatusLine().toString());
 			HttpEntity entity = response.getEntity();
 			Header headers = entity.getContentType();
 			System.out.println(headers);
 			if (entity != null) {
-				String result;
 				try {
-					result = EntityUtils.toString(entity);
-					if (Boolean.parseBoolean(result) == true) {
-						// In Speicherfile activated = true setzen
-					}
-					return Boolean.parseBoolean(result);
+					return Boolean.parseBoolean(EntityUtils.toString(entity));
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -78,8 +72,11 @@ public class Networking {
 	}
 
 	public static boolean updateLeaderboard(String username, int score) {
+		if (userToken == null)
+			userToken = new User().getToken();
 		System.out.println("hier");
 		HttpPost post = new HttpPost(baseUrl + "/updateleaderboard");
+		post.setHeader("authorization", userToken);
 		/*
 		 * List<NameValuePair> urlParameters = new ArrayList<>(); urlParameters.add(new
 		 * BasicNameValuePair("username", username)); urlParameters.add(new
@@ -116,7 +113,10 @@ public class Networking {
 	}
 
 	public static JSONArray getLeaderboard() {
+		if (userToken == null)
+			userToken = new User().getToken();
 		HttpGet request = new HttpGet(baseUrl + "/getleaderboard");
+		request.setHeader("authorization", userToken);
 		try (CloseableHttpResponse response = httpClient.execute(request)) {
 			System.out.println(response.getStatusLine().toString());
 			HttpEntity entity = response.getEntity();
@@ -161,6 +161,7 @@ public class Networking {
 			System.exit(2);
 		}
 		HttpPost post = new HttpPost(baseUrl + "/addUser");
+		post.setHeader("authorization", userToken);
 		List<NameValuePair> urlParameters = new ArrayList<>();
 		urlParameters.add(new BasicNameValuePair("username", username));
 		urlParameters.add(new BasicNameValuePair("password", hashedPassword));
@@ -183,6 +184,8 @@ public class Networking {
 					JSONObject UserObj;
 					UserObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
 					User.setUser(UserObj);
+					if (userToken == null)
+						userToken = new User().getToken();
 				} catch (ParseException | org.json.simple.parser.ParseException | IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -196,21 +199,19 @@ public class Networking {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		System.exit(1);
 	}
 
 	public static void login(String email, String password) {
-		String hashedPassword = " ";
-		try {
-			hashedPassword = hashPW(password);
-		} catch (NoSuchAlgorithmException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
+		String hashedPassword = password;
+		/*
+		 * try { hashedPassword = hashPW(password); } catch (NoSuchAlgorithmException
+		 * e2) { // TODO Auto-generated catch block e2.printStackTrace(); }
+		 */
 		if (hashedPassword == " ") {
 			System.exit(2);
 		}
 		HttpPost post = new HttpPost(baseUrl + "/login");
+		post.setHeader("authorization", userToken);
 		List<NameValuePair> urlParameters = new ArrayList<>();
 		urlParameters.add(new BasicNameValuePair("email", email));
 		urlParameters.add(new BasicNameValuePair("password", hashedPassword));
@@ -229,9 +230,10 @@ public class Networking {
 			if (entity != null) {
 				try {
 					JSONParser parser = new JSONParser();
-					 JSONObject UserObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
-					 User.setUser(UserObj);
-					
+					JSONObject UserObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
+					User.setUser(UserObj);
+					if (userToken == null)
+						userToken = new User().getToken();
 				} catch (org.json.simple.parser.ParseException | ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -248,38 +250,6 @@ public class Networking {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		System.exit(1);
-	}
-
-	public static String GenerateToken(int score) {
-		String token = " ";
-		Random random = new Random();
-
-		boolean fertig = true;
-
-		while (fertig) {
-
-			int value = random.nextInt(17);
-			int value1 = random.nextInt(17);
-			int value2 = random.nextInt(17);
-			int value3 = random.nextInt(17);
-			int value4 = random.nextInt(17);
-
-			if (value + value1 + value2 + value3 + value4 == 17) {
-				fertig = false;
-				token = token + Integer.toString(value);
-				token = token + Integer.toString(value1);
-				token = token + Integer.toString(value2);
-				token = token + Integer.toString(value3);
-				token = token + Integer.toString(value4);
-				token = token + "-";
-				System.out.println(token);
-
-			}
-
-		}
-
-		return token;
 	}
 
 	protected static String Tokengen(int ziel, int lenght, int max) {
