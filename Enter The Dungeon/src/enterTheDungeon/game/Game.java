@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 
 import enterTheDungeon.resource.*;
 import enterTheDungeon.game.level.LevelCreator;
+import enterTheDungeon.game.level.Portal;
 import enterTheDungeon.game.waffen.Waffe;
 import enterTheDungeon.input.*;
 
@@ -31,7 +32,8 @@ public class Game extends JPanel {
 	private ArrayList<Schuss> schussliste;
 	private ArrayList<Gegner> gegnerliste;
 	private ArrayList<Hindernis> hindernisliste;
-	private Sound sound = new Sound();
+	private ArrayList<Portal> portalliste;
+	private Sound sound;
 	private MausInput mausinput;
 	private TastaturInput tastinput;
 	private Waffe waffe;
@@ -39,7 +41,8 @@ public class Game extends JPanel {
 	private int maxGegner;
 	private int maxHindernis;
 	private boolean pause = false;
-	
+//	private Portal portal;
+//	private boolean isPortal = false;
 	private Pausemenu pausemenu;
 	private Mainmenu mainmenu;
 
@@ -68,24 +71,31 @@ public class Game extends JPanel {
 		spieler.update();
 		gegnerliste = levelcreator.getGegnerliste();
 		hindernisliste = levelcreator.getHindernisliste();
+		portalliste = levelcreator.getPortalliste();
 		for (Gegner gegner : gegnerliste) {
 			gegner.update();
 		}
 		for (Hindernis hindernis : hindernisliste) {
 			hindernis.update();
 		}
+//		for(Portal portal : portalliste) {
+//			portal.update();
+//		}
 		collision();
 
 	}
 
 	public void render(Graphics g) {
 		g.drawImage(tex.hintergrund, 0, 0, getScreenwidth(), getScreenheight(), null);
-		for (Gegner gegner : gegnerliste) {
-			gegner.render(g);
+		for (int i = 0; i < gegnerliste.size(); i++) {
+			gegnerliste.get(i).render(g);
 		}
-		for (Hindernis hindernis : hindernisliste) {
-			hindernis.render(g);
+		for (int i = 0; i < hindernisliste.size(); i++) {
+			hindernisliste.get(i).render(g);
 		}
+//		for (int i = 0; i < portalliste.size(); i++) {
+//			portalliste.get(i).render(g);
+//		}
 		spieler.render(g);
 	}
 
@@ -117,64 +127,85 @@ public class Game extends JPanel {
 			}
 
 		}
+		
+//		for(Portal portal : portalliste) {
+//			Rectangle portalR = portal.getBounds();
+//			if(portalR.intersects(spC)) {
+//				baueLevel();
+//			}
+//		}
 	}
 
 	private void collisionSchussMitObject(Rectangle spC, int waffe) {
 		for (int i = 0; i < schussliste.size(); i++) {
 			Rectangle s = schussliste.get(i).getBounds();
 
-			for (Gegner gegner : gegnerliste) {
-				Rectangle g = gegner.getBounds();
+			for (int b = 0; b < gegnerliste.size(); b++) {
+				Rectangle g = gegnerliste.get(b).getBounds();
 
 				// schuss und gegner überschneiden && spielerwaffe dann wird gegner getroffen
 				if (g.intersects(s) && waffe == 1) {
 //					gegnerliste.remove(b);
-					gegner.setLeben(gegner.getLeben() - 1);
-					schussliste.remove(i);
+					gegnerliste.get(b).setLeben(gegnerliste.get(b).getLeben() - 1);
+					try {
+						schussliste.remove(i);
+					} catch (Exception e) {
+						System.out.println("Fehler1");
+					}
 				}
-			}
-			// schuss und gegner überschneiden && gegnerwaffe dann wird spieler getroffen
-			if (spC.intersects(s) && waffe == 0) {
-				schussliste.remove(i);
-				spieler.setLeben(spieler.getLeben() - 1);
-				if (spieler.getLeben() == 0) {
-					beendeSpiel();
+
+				// schuss und gegner überschneiden && gegnerwaffe dann wird spieler getroffen
+				if (spC.intersects(s) && waffe == 0) {
+					if (!schussliste.isEmpty()) {
+						try {
+							schussliste.remove(i);
+						} catch (Exception e) {
+							System.out.println("Fehler");
+						}
+						spieler.setLeben(spieler.getLeben() - 1);
+						if (spieler.getLeben() == 0) {
+							beendeSpiel();
+						}
+					}
 				}
+
+				if (gegnerliste.get(b).getLeben() == 0) {
+					gegnerliste.remove(b);
+					if (gegnerliste.isEmpty()) {
+						hindernisliste.clear();
+						schussliste.clear();
+//						levelcreator.addPortal(new Portal(50, 50, spieler.getWidth(), spieler.getHeight(), tex));
+						baueLevel();
+					}
+				}
+
 			}
 
-			for (Hindernis hindernis : hindernisliste) {
-				Rectangle hindi = hindernis.getBounds();
-				if (s.intersects(hindi)) {
-					schussliste.remove(i);
+			for (int j = 0; j < hindernisliste.size(); j++) {
+				Rectangle hindi = hindernisliste.get(j).getBounds();
+				if (!schussliste.isEmpty()) {
+					if (s.intersects(hindi)) {
+						try {
+							schussliste.remove(i);
+						} catch (Exception e) {
+							System.out.println("Fehler");
+						}
+					}
 				}
 			}
 		}
-
-		for (int i = 0; i < gegnerliste.size(); i++) {
-			if (gegnerliste.get(i).getLeben() == 0) {
-				gegnerliste.remove(i);
-			}
-		}
-
-		if (gegnerliste.size() == 0) {
-			baueLevel();
-			for (int i = 0; i < hindernisliste.size(); i++) {
-				hindernisliste.remove(i);
-			}
-		}
-	}
-
-	private void removeGegner() {
 
 	}
 
 	private void beendeSpiel() {
+		// Music auf mainmenu music �ndern
 		spiel.setVisible(false);
 		spiel.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		System.out.println("beednet");
 	}
 
 	private void init() {
+		sound = new Sound();
 		gegnerliste = new ArrayList<Gegner>();
 		schussliste = new ArrayList<Schuss>();
 		hindernisliste = new ArrayList<Hindernis>();
@@ -199,13 +230,18 @@ public class Game extends JPanel {
 
 		spiel.setVisible(true);
 
+		for (int i = 0; i < hindernisliste.size(); i++) {
+			hindernisliste.remove(i);
+		}
 		baueLevel();
 
 	}
 
 	public void baueLevel() {
+
 		setAnzGegner(3);
 		setAnzHindernis(2);
+
 		levelcreator.createLevel();
 	}
 
@@ -258,6 +294,7 @@ public class Game extends JPanel {
 		}
 		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
 
+		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
 	}
 
 

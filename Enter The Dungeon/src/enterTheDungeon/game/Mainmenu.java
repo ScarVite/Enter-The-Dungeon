@@ -40,7 +40,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 	public static JFrame gamewindow = new JFrame();
 	private Filesystem filesystem = new Filesystem();
 	private JSONObject settingsObj = (JSONObject) filesystem.readJsonFileasObject("/EnterTheDungeon-Files/Settings.json");
-	private Mainmenutex Mainmenutex;
+	private Mainmenutex mainmenutex;
 	private ImageIcon imageIcon;
 	private Mainmenudraw mainmenudraw;
 
@@ -62,7 +62,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 		screenHeight = 600;
 		mainmenudraw = new Mainmenudraw(this);
 		mainmenudraw.setBounds(0, 0, 800, 600);
-		Mainmenutex = new Mainmenutex(this);
+		mainmenutex = new Mainmenutex(this);
 
 		gui = new JFrame("Enter the Dungeon");
 
@@ -85,7 +85,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 	}
 
 	public void render(Graphics g) {
-		g.drawImage(Mainmenutex.mainmenubild, 0, 0, 800, 600, null);
+		g.drawImage(mainmenutex.mainmenubild, 0, 0, 800, 600, null);
 	}
 
 	public void Einstellung() {

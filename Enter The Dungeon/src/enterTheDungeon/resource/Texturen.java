@@ -18,6 +18,7 @@ public class Texturen {
 	public BufferedImage shotgun;
 	public BufferedImage pistole;
 	public BufferedImage hindernis;
+	public BufferedImage portal;
 	private Game game;
 
 	public Texturen(Game game) {
@@ -37,6 +38,7 @@ public class Texturen {
 			hindernis = ImageIO.read(new File("Bilder/Hindernis.png"));
 			feuerball1 = ImageIO.read(new File("Bilder/Feuerball1.png"));
 			feuerball2 = ImageIO.read(new File("Bilder/Feuerball2.png"));
+			portal = ImageIO.read(new File("Bilder/Portal.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

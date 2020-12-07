@@ -13,6 +13,7 @@ public class Mainmenutex {
 	private Mainmenu mainmenu;
 	public Mainmenutex(Mainmenu mainmenu) {
 		getTextures();
+		this.mainmenu = mainmenu;
 	}
 	private void getTextures() {
 
