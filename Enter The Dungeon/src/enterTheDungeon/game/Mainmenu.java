@@ -26,6 +26,8 @@ public class Mainmenu extends JFrame implements ActionListener {
 	private JButton closeButton;
 	private JButton optionsButton;
 	private JButton creditsButton;
+	
+
 	private JButton soundButton;
 	private JButton soundAnButton;
 	private JButton backButton;
@@ -113,7 +115,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 		}
 
 	private void gameWindow() {
-		gamewindow.add(new Game());
+		gamewindow.add(new Game(this));
 	}
 
 	private void createMainMenuButtons() {
@@ -162,6 +164,22 @@ public class Mainmenu extends JFrame implements ActionListener {
 		
 
 	}
+	public JButton getCloseButton() {
+		return closeButton;
+	}
+
+	public JButton getOptionsButton() {
+		return optionsButton;
+	}
+
+	public JButton getCreditsButton() {
+		return creditsButton;
+	}
+
+	public JButton getBackButton() {
+		return backButton;
+	}
+	
 
 	@Override
 	// Button wird gedrückt wird
@@ -172,7 +190,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 			screenHeight = 1080;
 			gameWindow();
 			sound.getClip().stop();
-			if (sound.getHintergrundmusik()==true) {
+			if (sound.getHintergrundmusik()) {
 				sound = new Sound();
 				String soundPath = "Sound/background.wav";
 				sound.playSound(soundPath);
