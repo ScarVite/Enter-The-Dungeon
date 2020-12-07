@@ -57,10 +57,12 @@ public class LevelCreator {
 	}
 	
 	private void createBorder() {
-		hindernisliste.add(new Hindernis(0, 0, 20, 1080, tex)); //links
-		hindernisliste.add(new Hindernis(1900, 0, 20, 1080, tex)); //rechts
-		hindernisliste.add(new Hindernis(0, 0, 1920, 30, tex)); //oben
-		hindernisliste.add(new Hindernis(0, 1000, 1920, 30, tex));
+		int width = game.getScreenwidth();
+		int height = game.getScreenheight();
+		hindernisliste.add(new Hindernis(0, 0, 20, height, tex)); //links
+		hindernisliste.add(new Hindernis(width-20, 0, 20, height, tex)); //rechts
+		hindernisliste.add(new Hindernis(0, 0, width, 30, tex)); //oben
+		hindernisliste.add(new Hindernis(0, height-80, width, 30, tex));
 	}
 	
 	

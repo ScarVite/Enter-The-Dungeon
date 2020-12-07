@@ -1,7 +1,5 @@
 package enterTheDungeon.game;
 
-import javax.imageio.ImageIO;
-import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -15,11 +13,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -45,10 +39,13 @@ public class Game extends JPanel {
 	private int maxGegner;
 	private int maxHindernis;
 	private boolean pause = false;
+	
+	private Pausemenu pausemenu;
+	private Mainmenu mainmenu;
 
-	public Game() {
+	public Game(Mainmenu pmainmenu) {
 		init();
-
+		this.mainmenu = pmainmenu;
 		for (int i = 0; i < 5; i++) {
 		}
 
@@ -57,7 +54,11 @@ public class Game extends JPanel {
 			@Override
 
 			public void run() {
+				if(pause) {
+
+				}else{
 				update();
+				}
 			}
 
 		}, 0, 10);
@@ -225,16 +226,11 @@ public class Game extends JPanel {
 			spieler.setRight(true);
 		}
 		if (key == KeyEvent.VK_ESCAPE) {
-			pause = true;
-			while (pause) {
-				try {
-					Thread.sleep(10);
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-				}
+			pausemenu = new Pausemenu(mainmenu, null);
+			pause = !pause;
 			}
 		}
-	}
+	
 
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
@@ -259,10 +255,11 @@ public class Game extends JPanel {
 			String soundPath = "Sound\\Feuerball.wav";
 			sound.playSound(soundPath);
 			sound.getClip().start();
-			spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
 		}
+		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
 
 	}
+
 
 	public void mousePressed(MouseEvent e) {
 
@@ -321,6 +318,13 @@ public class Game extends JPanel {
 
 	public int getScreenheight() {
 		return screenheight;
+	}
+	public boolean isPause() {
+		return pause;
+	}
+
+	public void setPause(boolean pause) {
+		this.pause = pause;
 	}
 
 }
