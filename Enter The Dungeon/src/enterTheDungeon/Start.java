@@ -16,19 +16,13 @@ public class Start {
 	private static Filesystem filesystem = new Filesystem();
 
 	public static void main(String args[]) {
-		Networking.login("Email", "Peter");
+		//Networking.login("Email", "Peter");
 		initSystems();
-<<<<<<< HEAD
-		if (filesystem.checkForFile("/EnterTheDungeon-Files/User.json")) User.setUser(filesystem.readJsonFileasObject("/EnterTheDungeon-Files/User.json"));
-		if (filesystem.compareFileContent("/EnterTheDungeon-Files/KeyValid.txt", "Hiermit-wird-das-Spiel-aktiviert")) new Mainmenu();
-		 else {
-=======
 		if (filesystem.checkForFile("/EnterTheDungeon-Files/User.json"))
 			User.setUser(filesystem.readJsonFileasObject("/EnterTheDungeon-Files/User.json"));
 		if (filesystem.compareFileContent("/EnterTheDungeon-Files/KeyValid.txt", "Hiermit-wird-das-Spiel-aktiviert"))
 			new Mainmenu();
 		else {
->>>>>>> 2e9adaa375cfc4c4eefbde38843945d3d805d133
 			java.awt.EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					new Setup().setVisible(true);

@@ -21,12 +21,10 @@ public class Filesystem {
 		File file = new File(mainPath, path);
 		boolean empty = file.exists() && file.length() == 0;
 		JSONParser parser = new JSONParser();
-		System.out.println(empty);
 		if (!empty) {
 			try {
 				Object obj = parser.parse(new FileReader(mainPath + path));
 				JSONObject jsonObject = (JSONObject) obj;
-				System.out.println(jsonObject);
 				return jsonObject;
 			} catch (IOException | ParseException e) {
 				// TODO Auto-generated catch block

@@ -201,7 +201,7 @@ public class Game extends JPanel {
 		// Music auf mainmenu music �ndern
 		spiel.setVisible(false);
 		spiel.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		System.out.println("beednet");
+		System.out.println("Spieler tot");
 	}
 
 	private void init() {
@@ -238,15 +238,8 @@ public class Game extends JPanel {
 	}
 
 	public void baueLevel() {
-<<<<<<< HEAD
-
 		setAnzGegner(3);
 		setAnzHindernis(2);
-
-=======
-		setAnzGegner(10);
-		setAnzHindernis(5);
->>>>>>> 2e9adaa375cfc4c4eefbde38843945d3d805d133
 		levelcreator.createLevel();
 	}
 
@@ -298,12 +291,6 @@ public class Game extends JPanel {
 			sound.playSound(soundPath); 
 			sound.getClip().start();
 		}
-<<<<<<< HEAD
-		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
-
-		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
-=======
->>>>>>> 2e9adaa375cfc4c4eefbde38843945d3d805d133
 	}
 
 

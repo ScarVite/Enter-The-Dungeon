@@ -183,7 +183,12 @@ public class Networking {
 					JSONParser parser = new JSONParser();
 					JSONObject UserObj;
 					UserObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
-					User.setUser(UserObj);
+					if(UserObj.get("error") != null)
+						User.setUser(UserObj);
+					else {
+						JSONObject error = (JSONObject) UserObj.get("error");
+						Popup.error(error.get("message") + " Code: " + error.get("code"), "Something Went Wrong");
+					}
 					if (userToken == null)
 						userToken = new User().getToken();
 				} catch (ParseException | org.json.simple.parser.ParseException | IOException e) {
@@ -231,7 +236,13 @@ public class Networking {
 				try {
 					JSONParser parser = new JSONParser();
 					JSONObject UserObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
-					User.setUser(UserObj);
+					System.out.println(UserObj.get("error"));
+					if(UserObj.get("error") == null)
+						User.setUser(UserObj);
+					else {
+						JSONObject error = (JSONObject) UserObj.get("error");
+						Popup.error(error.get("message") + " Code: " + error.get("code"), "Something Went Wrong");
+					}
 					if (userToken == null)
 						userToken = new User().getToken();
 				} catch (org.json.simple.parser.ParseException | ParseException e) {
