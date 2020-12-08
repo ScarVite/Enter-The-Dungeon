@@ -1,4 +1,4 @@
-package enterTheDungeon.game.Oberklassen;
+package enterTheDungeon.game;
 
 import org.json.simple.JSONObject;
 
