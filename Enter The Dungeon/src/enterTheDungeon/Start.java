@@ -20,7 +20,7 @@ public class Start {
 		initSystems();
 		if (filesystem.checkForFile("/EnterTheDungeon-Files/User.json"))
 			User.setUser(filesystem.readJsonFileasObject("/EnterTheDungeon-Files/User.json"));
-		if (!filesystem.compareFileContent("/EnterTheDungeon-Files/KeyValid.txt", "Hiermit-wird-das-Spiel-aktiviert")) {
+		if (filesystem.compareFileContent("/EnterTheDungeon-Files/KeyValid.txt", "Hiermit-wird-das-Spiel-aktiviert")) {
 			new Mainmenu();
 		}
 		else {
