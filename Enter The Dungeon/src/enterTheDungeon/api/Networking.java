@@ -42,7 +42,6 @@ public class Networking {
 			userToken = new User().getToken();
 		HttpGet request = new HttpGet(baseUrl + "/validatekey?key=" + key);
 		request.setHeader("authorization", userToken);
-		System.out.println(userToken);
 		try (CloseableHttpResponse response = httpClient.execute(request)) {
 			System.out.println(response.getStatusLine().toString());
 			HttpEntity entity = response.getEntity();
@@ -71,10 +70,9 @@ public class Networking {
 		return false;
 	}
 
-	public static boolean updateLeaderboard(String username, int score) {
+	public static void updateLeaderboard(String username, int score) {
 		if (userToken == null)
 			userToken = new User().getToken();
-		System.out.println("hier");
 		HttpPost post = new HttpPost(baseUrl + "/updateleaderboard");
 		post.setHeader("authorization", userToken);
 		/*
@@ -94,7 +92,7 @@ public class Networking {
 			System.out.println(headers);
 			if (entity != null) {
 				try {
-					return true;
+					System.out.println(response.getStatusLine());
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -109,7 +107,6 @@ public class Networking {
 			e1.printStackTrace();
 		}
 		System.exit(1);
-		return false;
 	}
 
 	public static JSONArray getLeaderboard() {
@@ -234,9 +231,9 @@ public class Networking {
 			System.out.println(headers);
 			if (entity != null) {
 				try {
+					if(!EntityUtils.toString(entity).isBlank()) {
 					JSONParser parser = new JSONParser();
 					JSONObject UserObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
-					System.out.println(UserObj.get("error"));
 					if(UserObj.get("error") == null)
 						User.setUser(UserObj);
 					else {
@@ -245,6 +242,10 @@ public class Networking {
 					}
 					if (userToken == null)
 						userToken = new User().getToken();
+					}
+					else {
+						Popup.error(response.getStatusLine().toString(), "Error");
+					}
 				} catch (org.json.simple.parser.ParseException | ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
