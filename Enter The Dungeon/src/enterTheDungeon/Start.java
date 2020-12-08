@@ -8,7 +8,7 @@ import org.json.simple.JSONObject;
 import enterTheDungeon.api.Networking;
 import enterTheDungeon.api.Setup;
 import enterTheDungeon.game.Mainmenu;
-import enterTheDungeon.game.Oberklassen.User;
+import enterTheDungeon.game.User;
 import enterTheDungeon.resource.Filesystem;
 
 public class Start {

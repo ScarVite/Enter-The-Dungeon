@@ -28,7 +28,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import enterTheDungeon.game.Oberklassen.User;
+import enterTheDungeon.game.User;
 
 public class Networking {
 
@@ -264,12 +264,10 @@ public class Networking {
 	}
 
 	protected static String Tokengen(int ziel, int lenght, int max) {
-
 		int a = 0;
 		while (a != ziel) {
 			Random random = new Random();
 			int[] value = new int[lenght];
-
 			for (int i = 0; i < value.length; i++) {
 				value[i] = random.nextInt(max);
 			}
@@ -280,9 +278,7 @@ public class Networking {
 			a = 0;
 			for (int i = 0; i < value.length; i++) {
 				a = a + value[i];
-
 			}
-
 			if (a == ziel) {
 				return Arrays.toString(strArray);
 			}
