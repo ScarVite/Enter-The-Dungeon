@@ -57,10 +57,8 @@ public class Game extends JPanel {
 			@Override
 
 			public void run() {
-				if(pause) {
-
-				}else{
-				update();
+				if(!isPause()) {
+					update();
 				}
 			}
 
@@ -78,9 +76,9 @@ public class Game extends JPanel {
 		for (Hindernis hindernis : hindernisliste) {
 			hindernis.update();
 		}
-//		for(Portal portal : portalliste) {
-//			portal.update();
-//		}
+		for(Portal portal : portalliste) {
+			portal.update();
+		}
 		collision();
 
 	}
@@ -93,47 +91,49 @@ public class Game extends JPanel {
 		for (int i = 0; i < hindernisliste.size(); i++) {
 			hindernisliste.get(i).render(g);
 		}
-//		for (int i = 0; i < portalliste.size(); i++) {
-//			portalliste.get(i).render(g);
-//		}
+		for (int i = 0; i < portalliste.size(); i++) {
+			portalliste.get(i).render(g);
+		}
 		spieler.render(g);
 	}
 
 	private void collision() {
-		Rectangle spC = spieler.getBounds();
+		Rectangle spielerBounds = spieler.getBounds();
 		waffe = spieler.getWaffe();
 		schussliste = waffe.getSchussarray();
-		collisionSchussMitObject(spC, 1);
+		collisionSchussMitObject(spielerBounds, 1);
 
 		for (Gegner gegner : gegnerliste) {
 			waffe = gegner.getWaffe();
 			schussliste = waffe.getSchussarray();
-			collisionSchussMitObject(spC, 0);
+			collisionSchussMitObject(spielerBounds, 0);
 		}
 
 		for (Hindernis hindernis : hindernisliste) {
 			Rectangle hindi = hindernis.getBounds();
-			if (hindi.intersects(spC) && spieler.isDown()) {
+			if (hindi.intersects(spielerBounds) && spieler.isDown()) {
 				spieler.setyPos(spieler.getyPos() - spieler.getSpeed());
 			}
-			if (hindi.intersects(spC) && spieler.isUp()) {
+			if (hindi.intersects(spielerBounds) && spieler.isUp()) {
 				spieler.setyPos(spieler.getyPos() + spieler.getSpeed());
 			}
-			if (hindi.intersects(spC) && spieler.isLeft()) {
+			if (hindi.intersects(spielerBounds) && spieler.isLeft()) {
 				spieler.setxPos(spieler.getxPos() + spieler.getSpeed());
 			}
-			if (hindi.intersects(spC) && spieler.isRight()) {
+			if (hindi.intersects(spielerBounds) && spieler.isRight()) {
 				spieler.setxPos(spieler.getxPos() - spieler.getSpeed());
 			}
 
 		}
 		
-//		for(Portal portal : portalliste) {
-//			Rectangle portalR = portal.getBounds();
-//			if(portalR.intersects(spC)) {
-//				baueLevel();
-//			}
-//		}
+		for(int i = 0; i < portalliste.size(); i++) {
+			Rectangle portalR = portalliste.get(i).getBounds();
+			if(portalR.intersects(spielerBounds)) {
+//				portalliste.remove(i);
+				levelcreator.removePortal(portalliste.get(i));
+				baueLevel();
+			}
+		}
 	}
 
 	private void collisionSchussMitObject(Rectangle spC, int waffe) {
@@ -170,12 +170,9 @@ public class Game extends JPanel {
 				}
 
 				if (gegnerliste.get(b).getLeben() == 0) {
-					gegnerliste.remove(b);
+					levelcreator.removeGegner(gegnerliste.get(b));
 					if (gegnerliste.isEmpty()) {
-						hindernisliste.clear();
-						schussliste.clear();
-//						levelcreator.addPortal(new Portal(50, 50, spieler.getWidth(), spieler.getHeight(), tex));
-						baueLevel();
+						levelcreator.addPortal(new Portal(50, 50, spieler.getWidth(), spieler.getHeight(), tex));
 					}
 				}
 
@@ -230,16 +227,19 @@ public class Game extends JPanel {
 
 		spiel.setVisible(true);
 
-		for (int i = 0; i < hindernisliste.size(); i++) {
-			hindernisliste.remove(i);
-		}
+		
+		
 		baueLevel();
 
 	}
 
 	public void baueLevel() {
+		Rectangle spielerBounds = spieler.getBounds();
+		levelcreator.clearHindernisliste();
+		schussliste.clear();
 		setAnzGegner(3);
 		setAnzHindernis(2);
+		levelcreator.setSpielerRect(spielerBounds);
 		levelcreator.createLevel();
 	}
 
@@ -261,7 +261,7 @@ public class Game extends JPanel {
 		}
 		if (key == KeyEvent.VK_ESCAPE) {
 			pausemenu = new Pausemenu(mainmenu, null);
-			pause = !pause;
+			setPause(!isPause());
 			}
 		}
 	
@@ -327,6 +327,10 @@ public class Game extends JPanel {
 
 	public double getHeightSpieler() {
 		return spieler.getHeight();
+	}
+	
+	public Rectangle spielerBounds() {
+		return spieler.getBounds();
 	}
 
 	public int getAnzGegner() {
