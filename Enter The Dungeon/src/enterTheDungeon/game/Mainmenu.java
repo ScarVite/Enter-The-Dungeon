@@ -1,18 +1,22 @@
 package enterTheDungeon.game;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 
 import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 
 import org.json.simple.JSONObject;
 
 import enterTheDungeon.resource.Sound;
+import enterTheDungeon.input.MausInput;
 import enterTheDungeon.resource.Filesystem;
 import enterTheDungeon.resource.Mainmenutex;
 
@@ -26,7 +30,6 @@ public class Mainmenu extends JFrame implements ActionListener {
 	private JButton closeButton;
 	private JButton optionsButton;
 	private JButton creditsButton;
-
 	private JButton soundButton;
 	private JButton soundAnButton;
 	private JButton backButton;
@@ -35,7 +38,6 @@ public class Mainmenu extends JFrame implements ActionListener {
 	private static JFrame gui;
 	private Sound sound;
 	private JPanel mainmenu;
-	private JPanel button;
 	public static JFrame gamewindow = new JFrame();
 	private Filesystem filesystem = new Filesystem();
 	private JSONObject settingsObj = (JSONObject) filesystem
@@ -71,7 +73,6 @@ public class Mainmenu extends JFrame implements ActionListener {
 		mainmenu.setLayout(null);
 
 		createMainMenuButtons();
-
 		mainmenu.add(startButton);
 		mainmenu.add(closeButton);
 		mainmenu.add(optionsButton);
@@ -85,11 +86,11 @@ public class Mainmenu extends JFrame implements ActionListener {
 		gui.setVisible(true);
 	}
 
-
+//Bild wird aus der Mainmenutexturen Klasse gerendert
 	public void render(Graphics g) {
 		g.drawImage(mainmenutex.mainmenubild, 0, 0, 800, 600, null);
 	}
-
+//Button Funktionen
 	public void Einstellung() {
 		options = new JPanel();
 		options.setLayout(null);
@@ -117,7 +118,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 		gui.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		gui.setVisible(true);
 	}
-
+//Spiel wird erzeugt
 	private void gameWindow() {
 		gamewindow.add(new Game(this));
 	}
@@ -165,6 +166,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 		backButton.setBounds(310, 295, 160, 40);
 		backButton.addActionListener(this);
 
+
 	}
 
 	public JButton getCloseButton() {
@@ -185,7 +187,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	// Button wird gedrückt wird
+	// Button wird gedrückt
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == startButton) {
@@ -193,6 +195,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 			screenHeight = 1080;
 			gameWindow();
 			sound.getClip().stop();
+
 		}
 
 		if (e.getSource() == closeButton) {

@@ -14,7 +14,9 @@ public class Sound {
 
 	public void playSound(String soundLocation){
 		try{
+			// In soundPath kann jetzt immer der Pfad vom Sound gespeichert werden
 				File soundPath = new File(soundLocation);
+				//Der Pfad wird reingeladen und dann abgespielt
 				AudioInputStream soundInput = AudioSystem.getAudioInputStream(soundPath);
 			    clip = AudioSystem.getClip();
 				clip.open(soundInput);

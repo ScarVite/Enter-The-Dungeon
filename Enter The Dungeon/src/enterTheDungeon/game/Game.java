@@ -265,12 +265,17 @@ public class Game extends JPanel {
 		if (key == KeyEvent.VK_D) {
 			spieler.setRight(true);
 		}
+		//Nur wenn das Menü offen ist soll es möglich sein hier wieder Esc zu drücken
 		if (isPausemenuOpen()) {
 			if (key == KeyEvent.VK_ESCAPE) {
 				pausemenu = new Pausemenu(mainmenu, this);
 				pause = !pause;
 				setPausemenuOpen(false);
+				sound.getClip().stop();
 			}
+		}
+		if(pausemenu.isSound()) {
+			sound.getClip().start();
 		}
 	}
 
