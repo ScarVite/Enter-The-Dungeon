@@ -22,6 +22,10 @@ public class Shotgun extends Waffe{
 
 	}
 	
+	public void schiessen() {
+		
+	}
+	
 	public void update() {
 		xPos = getxPos();
 		yPos = getyPos();

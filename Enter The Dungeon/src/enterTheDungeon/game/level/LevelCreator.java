@@ -4,8 +4,6 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import enterTheDungeon.game.Game;
-import enterTheDungeon.game.Gegner;
-import enterTheDungeon.game.Hindernis;
 import enterTheDungeon.game.Schuss;
 import enterTheDungeon.game.Spieler;
 import enterTheDungeon.resource.Texturen;
@@ -40,15 +38,14 @@ public class LevelCreator {
 	}
 
 	public void createLevel() {
-		System.out.println("neue Runde");
 		createBorder();
 		int screeenwidth = game.getScreenwidth();
 		int screenheight = game.getScreenheight();
 		Rectangle spielerRect = game.spielerBounds();
 
 		for (int i = 0; i < game.getAnzHindernis(); i++) {
-			setX(Math.random() * 800 + 1);
-			setY(Math.random() * 800 + 1);
+			setX(Math.random() * (game.getScreenwidth() - 180) + 30);
+			setY(Math.random() * (game.getScreenheight() - 210) + 30);
 			setWidth(150);
 			setHeight(width);
 			hindernis = new Hindernis(x, y, width, height, tex);
@@ -56,8 +53,8 @@ public class LevelCreator {
 		}
 
 		for (int i = 0; i < game.getAnzGegner(); i++) {
-			setX(Math.random() * 1000 + 1);
-			setY(Math.random() * 900 + 1);
+			setX(Math.random() * (game.getScreenwidth() - 30 - 65) + 30);
+			setY(Math.random() * (game.getScreenheight() - 80 - 65) + 30);
 			setWidth(100);
 			setHeight(100);
 			gegner = new Gegner(x, y, getWidth(), getHeight(), 3, 3, tex, game);
@@ -66,41 +63,32 @@ public class LevelCreator {
 
 		for (Hindernis hindernis : hindernisliste) {
 			Rectangle hindi = hindernis.getBounds();
+			
+			while (spielerRect.intersects(hindi)) {
+				hindernis.setxPos(Math.random() * 1000 + 1);
+				hindernis.setyPos(Math.random() * 900 + 1);
+				hindernis.setWidth(150);
+				hindernis.setHeight(150);
+				hindernis.setBounds((int) hindernis.getxPos(), (int) hindernis.getyPos(), (int) hindernis.getWidth(), (int) hindernis.getHeight());
+				hindi = hindernis.getBounds();
+			}
+			
 			for (Gegner gegner : gegnerliste) {
-				Rectangle gegRect = gegner.getBounds();
-				while (hindi.intersects(gegRect)) {
-					System.out.println("Rein Da 1");
-					System.out.println(gegner.getBounds() + "unverändertd");
-					gegner.setxPos(Math.random() * 1000 + 1);
-					gegner.setyPos(Math.random() * 900 + 1);
+				Rectangle gegC = gegner.getBounds();
+				while (hindi.intersects(gegC)) {
+					System.out.println("Rein da");
+					gegner.setxPos(Math.random() * (game.getScreenwidth() - 30 - gegner.getWidth()) + 30);
+					gegner.setyPos(Math.random() * (game.getScreenheight() - 80- gegner.getHeight()) + 30);
 					gegner.setWidth(100);
 					gegner.setHeight(100);
-					gegner.setBounds(gegner.getxPos(), gegner.getyPos(), gegner.getWidth(), gegner.getHeight());
-					System.out.println(gegner.getBounds());
-					gegner.ausgebenPos(gegner.getxPos(), gegner.getyPos());
-					gegRect = gegner.getBounds();
-					if (gegRect.intersects(hindi)) {
-						System.out.println("getroffen");
-					}
+					gegner.setBounds((int) gegner.getxPos(), (int) gegner.getyPos(), (int) gegner.getWidth(),
+							(int) gegner.getHeight());
+					gegC = gegner.getBounds();
 				}
 
 			}
 		}
 
-		for (Hindernis hindernis : hindernisliste) {
-			Rectangle hindi = hindernis.getBounds();
-
-			while (spielerRect.intersects(hindi)) {
-				System.out.println("rein da spieler");
-				hindernis.setxPos(Math.random() * 1000 + 1);
-				hindernis.setyPos(Math.random() * 900 + 1);
-				hindernis.setWidth(150);
-				hindernis.setHeight(150);
-				hindernis.setBounds(hindernis.getxPos(), hindernis.getyPos(), hindernis.getWidth(),
-						hindernis.getHeight());
-				hindi = hindernis.getBounds();
-			}
-		}
 	}
 
 	private void createBorder() {
@@ -109,7 +97,7 @@ public class LevelCreator {
 		hindernisliste.add(new Hindernis(0, 0, 20, height, tex)); // links
 		hindernisliste.add(new Hindernis(width - 20, 0, 20, height, tex)); // rechts
 		hindernisliste.add(new Hindernis(0, 0, width, 30, tex)); // oben
-		hindernisliste.add(new Hindernis(0, height - 80, width, 30, tex));
+		hindernisliste.add(new Hindernis(0, height - 80, width, 30, tex)); //unten
 	}
 
 	public void setSpielerRect(Rectangle pSpieler) {
