@@ -40,7 +40,7 @@ function addUser(paraEmail, paraUser, ParaPassword) {
                             email: paraEmail,
                             token: {
                                 value: token,
-                                created_at: new Date()
+                                created: Math.round(new Date() / 1000)
                             }
                         }
                         dbo.collection("tokens").insertOne(myobj, function (err, res) {
@@ -54,7 +54,7 @@ function addUser(paraEmail, paraUser, ParaPassword) {
                                 email: paraEmail,
                                 token: {
                                     value: token,
-                                    created_at: new Date()
+                                    created: Math.round(new Date() / 1000)
                                 }
                             }
                         })
@@ -71,25 +71,33 @@ function login(paraEmail, paraPassword) {
         MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
             if (err) console.log(err)
             var dbo = db.db(db_name)
-            dbo.collection("tokens").find({ email: paraEmail }).project({ _id: 0 }).toArray(function (err, result) {
+            dbo.collection(db_collection).find({ email: paraEmail }).project({ _id: 0 }).toArray(async function (err, result) {
                 if (err) console.log(err);
                 if (result.length > 0) {
                     if (result[0].password == paraPassword) {
                         delete result[0]["password"];
                         console.log(`Succesfully Logged User ${result[0].username} in`);
-                        var token = Math.random().toString(36).substr(3) + Math.random().toString(36).substr(3) + Math.random().toString(36).substr(3) + Math.random().toString(36).substr(3) + Math.random().toString(36).substr(3);
-                        var myobj = {
-                            username: result[0].username,
-                            email: result[0].email,
-                            token: {
-                                value: token,
-                                created_at: new Date()
-                            }
+                        var token = await checkforToken(paraEmail);
+                        if (!token.error) {
+                            console.log("token found");
+                            resolve(token);
                         }
-                        resolve(myobj);
-                        dbo.collection("tokens").insertOne(myobj, function (err, res) {
-                        db.close();
-                        })
+                        else {
+                            console.log("No Token Found")
+                            var token = Math.random().toString(36).substr(3) + Math.random().toString(36).substr(3) + Math.random().toString(36).substr(3) + Math.random().toString(36).substr(3) + Math.random().toString(36).substr(3);
+                            var myobj = {
+                                username: result[0].username,
+                                email: result[0].email,
+                                token: {
+                                    value: token,
+                                    created: Math.round(new Date() / 1000)
+                                }
+                            }
+                            resolve(myobj);
+                            dbo.collection("tokens").insertOne(myobj, function (err, res) {
+                                db.close();
+                            })
+                        }
                     }
                     else {
                         db.close();
@@ -126,12 +134,34 @@ function checkToken(paraToken) {
                     if (err) console.log(err);
                     resolve(result[0])
                 }
-                else{
+                else {
                     resolve({
                         error: {
                             message: "Something went Wrong",
                             code: 4
                         }
+                    })
+                }
+            })
+        })
+    })
+}
+
+function checkforToken(paraEmail) {
+    return new Promise(resolve => {
+        MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
+            if (err) console.log(err)
+            var dbo = db.db(db_name)
+            dbo.collection("tokens").find({ email: paraEmail }).project({ _id: 0 }).toArray(function (err, result) {
+                db.close()
+                if (result.length > 0) {
+                    if(result[0].token.created < (Math.round(new Date() / 1000) - 1209600))
+                    if (err) console.log(err);
+                    resolve(result[0])
+                }
+                else {
+                    resolve({
+                        error: true
                     })
                 }
             })
