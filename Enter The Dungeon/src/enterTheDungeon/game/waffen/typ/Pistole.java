@@ -9,7 +9,6 @@ import enterTheDungeon.resource.Texturen;
 
 public class Pistole extends Waffe {
 
-	private Pistole pistole;
 	private Schuss schuss;
 
 	public Pistole(double pX, double pY, double pWidth, double pHeight, Texturen pTex) {
@@ -26,12 +25,10 @@ public class Pistole extends Waffe {
 	}
 
 	public void render(Graphics g) {
-		if (isVisible()) {
 			g.drawImage(tex.pistole, (int) xPos, (int) yPos, (int) width, (int) height, null);
 			magazin.render(g);
-			for (int i = 0; i < schussliste.size(); i++) {
+			for (int i  = 0; i <  schussliste.size(); i++) {
 				schussliste.get(i).render(g);
-			}
 		}
 
 	}
@@ -51,7 +48,13 @@ public class Pistole extends Waffe {
 		xPos = pX;
 		yPos = pY;
 		magazin.update(xPos, yPos - 20);
-		for (int i = 0; i < schussliste.size(); i++) {
+		for (int i  = 0; i <  schussliste.size(); i++) {
+			if(schussliste.get(i).getBild() == 1) {
+			schussliste.get(i).setBild(schussliste.get(i).getBild() + 1);
+			}
+			else {
+				schussliste.get(i).setBild(1);
+			}
 			schussliste.get(i).update();
 		}
 	}
