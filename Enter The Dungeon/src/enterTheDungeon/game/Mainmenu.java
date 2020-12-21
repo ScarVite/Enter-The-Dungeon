@@ -54,7 +54,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 		}
 		// Hauptmen� Musik wird abgerufen und in einer Schleife abgespielt
 		if((boolean) settingsObj.get("music")) {
-			sound.playSound("Sound\\Mainmenu.wav");
+			sound.playSound(filesystem.readFile("/sound/Mainmenu.wav"));
 			sound.getClip().loop(Clip.LOOP_CONTINUOUSLY);
 		}
 		else 
@@ -106,7 +106,8 @@ public class Mainmenu extends JFrame implements ActionListener {
 	public void Credits() {
 		credits = new JPanel();
 		credits.setLayout(null);
-		credits.add(backButton);		credits.add(mainmenudraw); //Mainmen� hintergrund
+		credits.add(backButton);		
+		credits.add(mainmenudraw); //Mainmen� hintergrund
 		gui.add(credits);
 		gui.setResizable(false);
 		gui.setLocationRelativeTo(null);
@@ -192,8 +193,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 			gameWindow();
 			if (sound.getHintergrundmusik()) {
 				sound.getClip().stop();
-				String soundPath = "Sound/background.wav";
-				sound.playSound(soundPath);
+				sound.playSound(filesystem.readFile("/sound/background.wav"));
 				sound.getClip().loop(Clip.LOOP_CONTINUOUSLY);
 				sound.getClip().start();
 			}
@@ -231,7 +231,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 		if (e.getSource() == soundAnButton) {
 			if(sound.getHintergrundmusik()) sound.getClip().start();
 			else {
-				sound.playSound("Sound\\Mainmenu.wav");
+				sound.playSound(filesystem.readFile("/sound/Mainmenu.wav"));
 				sound.getClip().loop(Clip.LOOP_CONTINUOUSLY);
 			}
 			sound.setHintergrundmusik(true);

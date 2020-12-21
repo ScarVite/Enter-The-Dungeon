@@ -53,6 +53,7 @@ public class Game extends JPanel {
 	private Mainmenu mainmenu;
 	private RaumOberklasse raum;
 	private int rNr;
+	private Filesystem filesystem;
 
 	public Game(Mainmenu pmainmenu) {
 		init();
@@ -280,6 +281,7 @@ public class Game extends JPanel {
 	}
 
 	private void init() {
+		filesystem = new Filesystem();
 		sound = new Sound();
 		gegnerliste = new ArrayList<Gegner>();
 		schussliste = new ArrayList<Schuss>();
@@ -362,8 +364,7 @@ public class Game extends JPanel {
 	public void mouseClicked(MouseEvent e) {
 		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
 		if (sound.getHintergrundmusik()) {
-			String soundPath = "Sound\\Feuerball.wav";
-			sound.playSound(soundPath);
+			sound.playSound(filesystem.readFile("/sound/Feuerball.wav"));
 			sound.getClip().start();
 		}
 	}
