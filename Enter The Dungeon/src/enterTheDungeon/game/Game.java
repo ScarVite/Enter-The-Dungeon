@@ -7,7 +7,6 @@ import enterTheDungeon.resource.*;
 import enterTheDungeon.game.level.Falle;
 import enterTheDungeon.game.level.Gegner;
 import enterTheDungeon.game.level.Hindernis;
-import enterTheDungeon.game.level.LevelCreator;
 import enterTheDungeon.game.level.Portal;
 import enterTheDungeon.game.level.raum.Raum1;
 import enterTheDungeon.game.level.raum.RaumOberklasse;
