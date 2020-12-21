@@ -6,6 +6,7 @@ import java.awt.event.MouseListener;
 import javax.swing.SwingUtilities;
 
 import enterTheDungeon.game.Game;
+import enterTheDungeon.game.Mainmenu;
 
 public class MausInput implements MouseListener {
 

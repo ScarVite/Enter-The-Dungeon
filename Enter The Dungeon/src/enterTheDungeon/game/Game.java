@@ -1,5 +1,6 @@
 package enterTheDungeon.game;
 
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -45,6 +46,7 @@ public class Game extends JPanel {
 //	private boolean isPortal = false;
 	private Pausemenu pausemenu;
 	private Mainmenu mainmenu;
+	private boolean pausemenuOpen;
 
 	public Game(Mainmenu pmainmenu) {
 		init();
@@ -125,15 +127,12 @@ public class Game extends JPanel {
 			}
 
 		}
-		
-		for(int i = 0; i < portalliste.size(); i++) {
-			Rectangle portalR = portalliste.get(i).getBounds();
-			if(portalR.intersects(spielerBounds)) {
-//				portalliste.remove(i);
-				levelcreator.removePortal(portalliste.get(i));
-				baueLevel();
-			}
-		}
+//		for(Portal portal : portalliste) {
+//			Rectangle portalR = portal.getBounds();
+//			if(portalR.intersects(spC)) {
+//				baueLevel();
+//			}
+//		}
 	}
 
 	private void collisionSchussMitObject(Rectangle spC, int waffe) {
@@ -194,18 +193,15 @@ public class Game extends JPanel {
 
 	}
 
-	private void beendeSpiel() {
-		// Music auf mainmenu music �ndern
-		spiel.setVisible(false);
-		spiel.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		System.out.println("Spieler tot");
-	}
-
 	private void init() {
 		sound = new Sound();
+		sound.playSound("Sound/background.wav");
+		sound.getClip().loop(Clip.LOOP_CONTINUOUSLY);
 		gegnerliste = new ArrayList<Gegner>();
 		schussliste = new ArrayList<Schuss>();
 		hindernisliste = new ArrayList<Hindernis>();
+		pausemenuOpen = true;
+
 //		gegner = new Gegner(0, 0, 30, 30, 3, 3, tex, this);
 		tex = new Texturen(this);
 		spieler = new Spieler(400, 400, 75, 125, 3, 3, tex);
@@ -213,7 +209,7 @@ public class Game extends JPanel {
 		setAnzGegner(5);
 		levelcreator = new LevelCreator(this, tex);
 		mausinput = new MausInput(this);
-		tastinput = new TastaturInput(this);
+		tastinput = new TastaturInput(this, pausemenu);
 		spiel = new JFrame("Enter the Dungeon");
 
 		spiel.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -231,6 +227,15 @@ public class Game extends JPanel {
 		
 		baueLevel();
 
+	}
+
+	private void beendeSpiel() {
+		// Music auf mainmenu music �ndern
+		sound.getClip().stop();
+		sound.playSound("Sound/mainmenu.wav");
+		spiel.setVisible(false);
+		spiel.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		System.out.println("Spieler tot");
 	}
 
 	public void baueLevel() {
@@ -259,12 +264,19 @@ public class Game extends JPanel {
 		if (key == KeyEvent.VK_D) {
 			spieler.setRight(true);
 		}
-		if (key == KeyEvent.VK_ESCAPE) {
-			pausemenu = new Pausemenu(mainmenu, null);
-			setPause(!isPause());
+		//Nur wenn das Men� offen ist soll es m�glich sein hier wieder Esc zu dr�cken
+		if (isPausemenuOpen()) {
+			if (key == KeyEvent.VK_ESCAPE) {
+				pausemenu = new Pausemenu(mainmenu, this);
+				pause = !pause;
+				setPausemenuOpen(false);
+				sound.getClip().stop();
 			}
 		}
-	
+		if(pausemenu.isSound()) {
+			sound.getClip().start();
+		}
+	}
 
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
@@ -285,14 +297,11 @@ public class Game extends JPanel {
 	// MausInput
 
 	public void mouseClicked(MouseEvent e) {
-		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
 		if (sound.getHintergrundmusik()) {
-			String soundPath = "Sound\\Feuerball.wav";
-			sound.playSound(soundPath); 
-			sound.getClip().start();
+			sound.playSound("Sound\\Feuerball.wav");
 		}
+		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
 	}
-
 
 	public void mousePressed(MouseEvent e) {
 
@@ -356,12 +365,21 @@ public class Game extends JPanel {
 	public int getScreenheight() {
 		return screenheight;
 	}
+
 	public boolean isPause() {
 		return pause;
 	}
 
 	public void setPause(boolean pause) {
 		this.pause = pause;
+	}
+
+	public boolean isPausemenuOpen() {
+		return pausemenuOpen;
+	}
+
+	public void setPausemenuOpen(boolean pausemenuopen) {
+		pausemenuOpen = pausemenuopen;
 	}
 
 }
