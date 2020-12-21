@@ -9,6 +9,7 @@ import enterTheDungeon.game.level.Gegner;
 import enterTheDungeon.game.level.Hindernis;
 import enterTheDungeon.game.level.Portal;
 import enterTheDungeon.game.level.raum.Raum1;
+import enterTheDungeon.game.level.LevelCreator;
 import enterTheDungeon.game.level.raum.RaumOberklasse;
 import enterTheDungeon.game.waffen.Schuss;
 import enterTheDungeon.game.waffen.Waffe;
@@ -414,6 +415,12 @@ public class Game extends JPanel {
 	public int getAnzHindernis() {
 		return maxHindernis;
 	}
+	
+	public Rectangle spielerBounds() {
+		return spieler.getBounds();
+	}
+
+
 
 	public void setAnzHindernis(int pMaxHindernis) {
 		this.maxHindernis = pMaxHindernis;
