@@ -39,7 +39,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 	private JPanel button;
 	public static JFrame gamewindow = new JFrame();
 	private Filesystem filesystem = new Filesystem();
-	private JSONObject settingsObj = (JSONObject) filesystem.readJsonFileasObject("/EnterTheDungeon-Files/Settings.json");
+	private JSONObject settingsObj = (JSONObject) filesystem.readJsonFileasObject("/Files/Settings.json");
 	private Mainmenutex mainmenutex;
 	private ImageIcon imageIcon;
 	private Mainmenudraw mainmenudraw;
@@ -50,7 +50,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 		if(settingsObj == null) {
 			settingsObj = new JSONObject();
 			settingsObj.put("music", true);
-			filesystem.writeJsonObjectToFile("/EnterTheDungeon-Files/Settings.json", settingsObj);
+			filesystem.writeJsonObjectToFile("/Files/Settings.json", settingsObj);
 		}
 		// Hauptmenü Musik wird abgerufen und in einer Schleife abgespielt
 		if((boolean) settingsObj.get("music")) {
@@ -223,7 +223,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 			sound.setHintergrundmusik(false);
 			settingsObj.put("music", false);
 			System.out.println(settingsObj);
-			filesystem.writeJsonObjectToFile("/EnterTheDungeon-Files/Settings.json", settingsObj);
+			filesystem.writeJsonObjectToFile("/Files/Settings.json", settingsObj);
 			options.add(soundAnButton);
 			options.remove(soundButton);
 			options.add(mainmenudraw); //Mainmenü hintergrund wird hier bei An und Aus nochmals auf das JPanel geadded sonst wird das Bild nicht angezeigt
@@ -236,7 +236,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 			}
 			sound.setHintergrundmusik(true);
 			settingsObj.put("music", true);
-			filesystem.writeJsonObjectToFile("/EnterTheDungeon-Files/Settings.json", settingsObj);
+			filesystem.writeJsonObjectToFile("/Files/Settings.json", settingsObj);
 			options.remove(soundAnButton);
 			options.add(soundButton);
 			options.add(mainmenudraw);

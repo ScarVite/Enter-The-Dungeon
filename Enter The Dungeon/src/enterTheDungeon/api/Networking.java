@@ -34,6 +34,7 @@ public class Networking {
 
 	private static String userToken = null;
 	private static String baseUrl = "https://api.scarvite.de/etd";
+	private static boolean connected = false;
 
 	private final static CloseableHttpClient httpClient = HttpClients.createDefault();
 
@@ -259,6 +260,24 @@ public class Networking {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+	
+	public static void checkPing() {
+		HttpGet request = new HttpGet("https://api.scarvite.de/status");
+		try (CloseableHttpResponse response = httpClient.execute(request)) {
+			System.out.println(response.getStatusLine().toString());
+			HttpEntity entity = response.getEntity();
+			Header headers = entity.getContentType();
+			System.out.println(headers);
+			if (entity != null) {
+				connected = true;
+			}
+		} catch (IOException e1) {
+			System.out.println("Offline");
+			connected = false;
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
