@@ -8,6 +8,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import enterTheDungeon.game.Mainmenu;
 import enterTheDungeon.resource.Filesystem;
 
@@ -20,6 +23,9 @@ public class Setup extends JFrame implements KeyListener {
 	JButton jButton1;
 	JLabel jLabel1;
 	JLabel jLabel2;
+	private int required = 0;
+	private int progress = 0;
+	private Filesystem filesystem = new Filesystem();
 
 	public Setup() {
 		createJFrame();
@@ -28,7 +34,6 @@ public class Setup extends JFrame implements KeyListener {
 	private void ButtonPressed(java.awt.event.ActionEvent evt) {
 		if (jTextField1.getText().isEmpty() == false) {
 			if (Networking.validatekey(jTextField1.getText())) {
-				Filesystem filesystem = new Filesystem();
 				filesystem.createFileIfNotExist("/Files/KeyValid.txt");
 				filesystem.writeTxtFile("/Files/KeyValid.txt", "Hiermit-wird-das-Spiel-aktiviert");
 				new Mainmenu();
@@ -51,6 +56,18 @@ public class Setup extends JFrame implements KeyListener {
 
 	private void createJFrame() {
 		setTitle("Enter The Dungeon Setup");
+		JSONObject filelist = (JSONObject) Networking.getJSONObject("https://api.scarvite.de/etd-list.json");
+		JSONArray soundfiles = (JSONArray) filelist.get("sound");
+		JSONArray imagefiles = (JSONArray) filelist.get("images");
+		required = imagefiles.size() + soundfiles.size();
+		for(Object sound: soundfiles) {
+			Networking.downloadSoundandSave("https://api.scarvite.de/sound/" + sound.toString(), sound.toString());
+			progress++;
+		}
+		for(Object image: imagefiles) {
+			filesystem.saveImage(Networking.downloadImage("https://api.scarvite.de/image/" + image.toString()), image.toString());
+			progress++;
+		}
 		setSize(new Dimension(300, 175));
 		jTextField1 = new JTextField();
 		jTextField1.setBounds(75, 50, 150, 20);
