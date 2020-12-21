@@ -9,6 +9,7 @@ public class StandardObjectData {
 	protected double xPos, yPos;
 	protected double width, height;
 	protected boolean visible = true;
+	private Rectangle rect;
 	protected Texturen tex;
 
 	public StandardObjectData(double pX, double pY, double pWidth, double pHeight, Texturen pTex) {
@@ -34,8 +35,17 @@ public class StandardObjectData {
 	// Get und Set Methoden für alle Attribute
 	
 	public Rectangle getBounds() {
-		return new Rectangle((int) xPos, (int) yPos, (int) width, (int) height);
-	}	
+		rect = new Rectangle((int) xPos, (int) yPos, (int) width, (int) height);
+		return rect;
+	}
+	
+	public void setBounds(int pX, int pY, int pWidth, int pHeight) {
+		rect.x = pX;
+		rect.y = pY;
+		rect.width = pWidth;
+		rect.height = pHeight;
+		
+	}
 	public double getxPos() {
 		return xPos;
 	}

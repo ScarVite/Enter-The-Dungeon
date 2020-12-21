@@ -2,10 +2,11 @@ package enterTheDungeon.game.level;
 
 import java.awt.Graphics;
 
-import enterTheDungeon.game.Hindernis;
 import enterTheDungeon.resource.Texturen;
 
 public class Portal extends Hindernis{
+	
+	private boolean weiter = true;
 
 	
 	public Portal(double pX, double pY, double pWidth, double pHeight, Texturen pTex) {
@@ -20,6 +21,14 @@ public class Portal extends Hindernis{
 	public void update() {
 		xPos = getxPos();
 		yPos = getyPos();
+	}
+	
+	public boolean getWeiter() {
+		return weiter;
+	}
+	
+	public void setWeiter(boolean pWeiter) {
+		this.weiter = pWeiter;
 	}
 	
 
