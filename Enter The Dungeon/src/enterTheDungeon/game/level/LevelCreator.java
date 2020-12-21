@@ -4,8 +4,8 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import enterTheDungeon.game.Game;
-import enterTheDungeon.game.Schuss;
 import enterTheDungeon.game.Spieler;
+import enterTheDungeon.game.waffen.Schuss;
 import enterTheDungeon.resource.Texturen;
 
 public class LevelCreator {

@@ -28,7 +28,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import enterTheDungeon.game.User;
+import enterTheDungeon.game.Oberklassen.User;
 
 public class Networking {
 
@@ -42,6 +42,7 @@ public class Networking {
 			userToken = new User().getToken();
 		HttpGet request = new HttpGet(baseUrl + "/validatekey?key=" + key);
 		request.setHeader("authorization", userToken);
+		System.out.println(userToken);
 		try (CloseableHttpResponse response = httpClient.execute(request)) {
 			System.out.println(response.getStatusLine().toString());
 			HttpEntity entity = response.getEntity();
@@ -70,9 +71,10 @@ public class Networking {
 		return false;
 	}
 
-	public static void updateLeaderboard(String username, int score) {
+	public static boolean updateLeaderboard(String username, int score) {
 		if (userToken == null)
 			userToken = new User().getToken();
+		System.out.println("hier");
 		HttpPost post = new HttpPost(baseUrl + "/updateleaderboard");
 		post.setHeader("authorization", userToken);
 		/*
@@ -92,7 +94,7 @@ public class Networking {
 			System.out.println(headers);
 			if (entity != null) {
 				try {
-					System.out.println(response.getStatusLine());
+					return true;
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -107,6 +109,7 @@ public class Networking {
 			e1.printStackTrace();
 		}
 		System.exit(1);
+		return false;
 	}
 
 	public static JSONArray getLeaderboard() {
@@ -231,9 +234,9 @@ public class Networking {
 			System.out.println(headers);
 			if (entity != null) {
 				try {
-					if(!EntityUtils.toString(entity).isBlank()) {
 					JSONParser parser = new JSONParser();
 					JSONObject UserObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
+					System.out.println(UserObj.get("error"));
 					if(UserObj.get("error") == null)
 						User.setUser(UserObj);
 					else {
@@ -242,10 +245,6 @@ public class Networking {
 					}
 					if (userToken == null)
 						userToken = new User().getToken();
-					}
-					else {
-						Popup.error(response.getStatusLine().toString(), "Error");
-					}
 				} catch (org.json.simple.parser.ParseException | ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -265,10 +264,12 @@ public class Networking {
 	}
 
 	protected static String Tokengen(int ziel, int lenght, int max) {
+
 		int a = 0;
 		while (a != ziel) {
 			Random random = new Random();
 			int[] value = new int[lenght];
+
 			for (int i = 0; i < value.length; i++) {
 				value[i] = random.nextInt(max);
 			}
@@ -279,7 +280,9 @@ public class Networking {
 			a = 0;
 			for (int i = 0; i < value.length; i++) {
 				a = a + value[i];
+
 			}
+
 			if (a == ziel) {
 				return Arrays.toString(strArray);
 			}

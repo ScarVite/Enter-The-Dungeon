@@ -35,7 +35,7 @@ public class Texturen {
 			spieler = ImageIO.read(new File("Bilder/Spieler.png"));
 			gegner = ImageIO.read(new File("Bilder/Gegner.png"));
 			schuss = ImageIO.read(new File("Bilder/Schuss.png"));
-			hintergrund = ImageIO.read(new File("Bilder/Background.png"));
+			hintergrund = ImageIO.read(new File("Bilder/Background1.png"));
 			shotgun = ImageIO.read(new File("Bilder/Shotgun.png"));
 			pistole = ImageIO.read(new File("Bilder/SciFiPistole.png"));
 			hindernis = ImageIO.read(new File("Bilder/Hindernis.png"));

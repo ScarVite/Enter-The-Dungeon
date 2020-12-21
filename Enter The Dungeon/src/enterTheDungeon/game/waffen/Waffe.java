@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.awt.Graphics;
 
-import enterTheDungeon.game.Schuss;
 import enterTheDungeon.game.Oberklassen.StandardObjectData;
 import enterTheDungeon.game.waffen.typ.Pistole;
 import enterTheDungeon.resource.Texturen;
@@ -19,7 +18,7 @@ public class Waffe extends StandardObjectData {
 	protected int feuerrate;
 	protected int schussnr;
 	protected ArrayList<Schuss> schussliste;
-
+	protected boolean renderable;
 	public Waffe(double pX, double pY, double pWidth, double pHeight, Texturen pTex) {
 		super(pX, pY, pWidth, pHeight, pTex);
 		
@@ -69,6 +68,14 @@ public class Waffe extends StandardObjectData {
 
 	public void setFeuerrate(int feuerrate) {
 		this.feuerrate = feuerrate;
+	}
+
+	public boolean isRenderable() {
+		return renderable;
+	}
+
+	public void setRenderable(boolean renderable) {
+		this.renderable = renderable;
 	}
 
 	public Waffe getTyp() {
