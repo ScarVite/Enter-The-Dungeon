@@ -137,8 +137,11 @@ public class Filesystem {
 		
 	}
 
-	public static void SetMainPath(URI path) {
-		mainPath = new File(path);
+	public static void SetMainPath(String path) {
+		File Folder = new File(path, "/Enter-The-Dungeon");
+		if (!Folder.exists())
+			Folder.mkdirs();
+		mainPath = new File(path, "/Enter-The-Dungeon");
 	}
 
 }

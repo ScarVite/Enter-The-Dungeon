@@ -29,8 +29,8 @@ public class Setup extends JFrame implements KeyListener {
 		if (jTextField1.getText().isEmpty() == false) {
 			if (Networking.validatekey(jTextField1.getText())) {
 				Filesystem filesystem = new Filesystem();
-				filesystem.createFileIfNotExist("/EnterTheDungeon-Files/KeyValid.txt");
-				filesystem.writeTxtFile("/EnterTheDungeon-Files/KeyValid.txt", "Hiermit-wird-das-Spiel-aktiviert");
+				filesystem.createFileIfNotExist("/Files/KeyValid.txt");
+				filesystem.writeTxtFile("/Files/KeyValid.txt", "Hiermit-wird-das-Spiel-aktiviert");
 				new Mainmenu();
 				this.dispose();
 				// System.out.println("True");

@@ -1,7 +1,5 @@
 package enterTheDungeon;
 
-import java.net.URISyntaxException;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -16,14 +14,13 @@ public class Start {
 	private static Filesystem filesystem = new Filesystem();
 
 	public static void main(String args[]) {
-		//Networking.login("Email", "Peter");
+		// Networking.login("Email", "Peter");
 		initSystems();
-		if (filesystem.checkForFile("/EnterTheDungeon-Files/User.json"))
-			User.setUser(filesystem.readJsonFileasObject("/EnterTheDungeon-Files/User.json"));
-		if (filesystem.compareFileContent("/EnterTheDungeon-Files/KeyValid.txt", "Hiermit-wird-das-Spiel-aktiviert")) {
+		if (filesystem.checkForFile("/Files/User.json"))
+			User.setUser(filesystem.readJsonFileasObject("/Files/User.json"));
+		if (filesystem.compareFileContent("/Files/KeyValid.txt", "Hiermit-wird-das-Spiel-aktiviert")) {
 			new Mainmenu();
-		}
-		else {
+		} else {
 			java.awt.EventQueue.invokeLater(new Runnable() {
 				public void run() {
 					new Setup().setVisible(true);
@@ -34,27 +31,23 @@ public class Start {
 
 	@SuppressWarnings("unchecked")
 	private static void initSystems() {
-		try {
-			Filesystem.SetMainPath(Setup.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-			filesystem.createFolderIfNotExist("/EnterTheDungeon-Files");
-			JSONObject obj = new JSONObject();
-			JSONArray arr = new JSONArray();
-			if (!filesystem.checkForFile("/EnterTheDungeon-Files/Settings.json")) {
-				obj.put("music", true);
-				filesystem.writeJsonObjectToFile("/EnterTheDungeon-Files/Settings.json", obj);
-			}
-			obj.clear();
-			if (!filesystem.checkForFile("/EnterTheDungeon-Files/User.json")) {
-				obj.put("music", true);
-				filesystem.writeJsonObjectToFile("/EnterTheDungeon-Files/User.json", obj);
-			}
-			obj.clear();
-			if (!filesystem.checkForFile("/EnterTheDungeon-Files/Save.json")) {
-				filesystem.writeJsonArrayToFile("/EnterTheDungeon-Files/Save.json", arr);
-			}
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		// Networking.checkPing();
+		Filesystem.SetMainPath(System.getProperty("user.home"));
+		filesystem.createFolderIfNotExist("/Files");
+		JSONObject obj = new JSONObject();
+		JSONArray arr = new JSONArray();
+		if (!filesystem.checkForFile("/Files/Settings.json")) {
+			obj.put("music", true);
+			filesystem.writeJsonObjectToFile("/Files/Settings.json", obj);
+		}
+		obj.clear();
+		if (!filesystem.checkForFile("/Files/User.json")) {
+			obj.put("music", true);
+			filesystem.writeJsonObjectToFile("/Files/User.json", obj);
+		}
+		obj.clear();
+		if (!filesystem.checkForFile("/Files/Save.json")) {
+			filesystem.writeJsonArrayToFile("/Files/Save.json", arr);
 		}
 	}
 

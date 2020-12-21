@@ -404,10 +404,6 @@ public class Game extends JPanel {
 		return spieler.getHeight();
 	}
 
-	public Rectangle spielerBounds() {
-		return spieler.getBounds();
-	}
-
 	public int getAnzGegner() {
 		return maxGegner;
 	}
