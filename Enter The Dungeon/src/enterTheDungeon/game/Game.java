@@ -1,5 +1,6 @@
 package enterTheDungeon.game;
 
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -51,6 +52,7 @@ public class Game extends JPanel {
 	private Mainmenu mainmenu;
 	private RaumOberklasse raum;
 	private int rNr;
+	private boolean pausemenuOpen;
 
 	public Game(Mainmenu pmainmenu) {
 		init();
@@ -79,7 +81,6 @@ public class Game extends JPanel {
 		gegnerliste = raumliste.get(rNr).getGegnerliste();
 		hindernisliste = raumliste.get(rNr).getHindernisliste();
 		portalliste = raumliste.get(rNr).getPortalliste();
-
 		collision();
 
 	}
@@ -206,7 +207,6 @@ public class Game extends JPanel {
 					raumliste.get(rNr).removeGegner(gegnerliste.get(b));
 					if (gegnerliste.isEmpty()) {
 						raum.setGegnerliste(gegnerliste);
-						// Portal für das nächste Level
 						int max = raum.getMaxRaum() - 1;
 						int nr = raum.getRaumNr();
 						Portal portal;
@@ -215,7 +215,6 @@ public class Game extends JPanel {
 							portal.setWeiter(true);
 							raumliste.get(rNr).addPortal(portal);
 						}
-
 						// Portal für das vorherige Level
 						if (nr != 0) {
 							portal = new Portal(800, 800, spieler.getWidth(), spieler.getHeight(), tex);
@@ -243,18 +242,15 @@ public class Game extends JPanel {
 
 	}
 
-	private void beendeSpiel() {
-		// Music auf mainmenu music �ndern
-		spiel.setVisible(false);
-		spiel.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		System.out.println("Spieler tot");
-	}
-
 	private void init() {
 		sound = new Sound();
+		sound.playSound("Sound/background.wav");
+		sound.getClip().loop(Clip.LOOP_CONTINUOUSLY);
 		gegnerliste = new ArrayList<Gegner>();
 		schussliste = new ArrayList<Schuss>();
 		hindernisliste = new ArrayList<Hindernis>();
+		pausemenuOpen = true;
+
 //		gegner = new Gegner(0, 0, 30, 30, 3, 3, tex, this);
 		tex = new Texturen(this);
 		spieler = new Spieler(400, 400, 35, 60, 3, 3, tex);
@@ -262,7 +258,7 @@ public class Game extends JPanel {
 		raum = new RaumOberklasse(this, tex);
 
 		mausinput = new MausInput(this);
-		tastinput = new TastaturInput(this);
+		tastinput = new TastaturInput(this, pausemenu);
 		spiel = new JFrame("Enter the Dungeon");
 
 		spiel.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -275,9 +271,17 @@ public class Game extends JPanel {
 		spiel.add(render);
 
 		spiel.setVisible(true);
-
 		baueLevel();
 
+	}
+
+	private void beendeSpiel() {
+		// Music auf mainmenu music �ndern
+		sound.getClip().stop();
+		sound.playSound("Sound/mainmenu.wav");
+		spiel.setVisible(false);
+		spiel.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		System.out.println("Spieler tot");
 	}
 
 	public void baueLevel() {
@@ -304,9 +308,17 @@ public class Game extends JPanel {
 		if (key == KeyEvent.VK_D) {
 			spieler.setRight(true);
 		}
-		if (key == KeyEvent.VK_ESCAPE) {
-			pausemenu = new Pausemenu(mainmenu, null);
-			setPause(!isPause());
+		//Nur wenn das Men� offen ist soll es m�glich sein hier wieder Esc zu dr�cken
+		if (isPausemenuOpen()) {
+			if (key == KeyEvent.VK_ESCAPE) {
+				pausemenu = new Pausemenu(mainmenu, this);
+				pause = !pause;
+				setPausemenuOpen(false);
+				sound.getClip().stop();
+			}
+		}
+		if(pausemenu.isSound()) {
+			sound.getClip().start();
 		}
 	}
 
@@ -329,12 +341,12 @@ public class Game extends JPanel {
 	// MausInput
 
 	public void mouseClicked(MouseEvent e) {
-		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
 		if (sound.getHintergrundmusik()) {
 			String soundPath = "Sound\\Feuerball.wav";
 			sound.playSound(soundPath);
 			sound.getClip().start();
 		}
+		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
 	}
 
 	public void mousePressed(MouseEvent e) {
@@ -372,6 +384,10 @@ public class Game extends JPanel {
 	public double getHeightSpieler() {
 		return spieler.getHeight();
 	}
+	
+	public Rectangle spielerBounds() {
+		return spieler.getBounds();
+	}
 
 	public Rectangle spielerBounds() {
 		return spieler.getBounds();
@@ -407,6 +423,14 @@ public class Game extends JPanel {
 
 	public void setPause(boolean pause) {
 		this.pause = pause;
+	}
+
+	public boolean isPausemenuOpen() {
+		return pausemenuOpen;
+	}
+
+	public void setPausemenuOpen(boolean pausemenuopen) {
+		pausemenuOpen = pausemenuopen;
 	}
 
 }

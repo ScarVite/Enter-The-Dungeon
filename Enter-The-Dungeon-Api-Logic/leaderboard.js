@@ -15,14 +15,26 @@ function addEntry(name, score, token) {
             }
             dbo.collection(db_collection).insertOne(myobj, function (err, res) {
                 db.close()
-                if (err) resolve(false);
+                if (err){
+                    resolve({
+                        error: {
+                            message: "Something went Wrong",
+                            code: 4
+                        }
+                    })
+                }
                 console.log(`added entry for player ${name} `)
-                resolve([true, null]);
+                resolve(true);
             })
         })
         } else{
             console.log(`${name} provided an invalid token`)
-            resolve([false, "Your provided token was Invalid."])
+            resolve({
+                error: {
+                    message: "Your Provided Token was Invalid",
+                    code: 5
+                }
+            })
         }
     })
 }
@@ -32,23 +44,17 @@ function getLeaderBoard() {
         MongoClient.connect(url, { useUnifiedTopology: true }, function (err, db) {
             if (err) console.log(err)
             var dbo = db.db(db_name)
-            dbo.collection(db_collection).find({}, {"_id": 0}).toArray(function (err, result) {
+            dbo.collection(db_collection).find().sort({ score: -1 }).project({ _id: 0 }).toArray(function (err, result) {
                 db.close();
                 if (result.length > 0) {
-                    var sorted_result = result;
-                    for (var i = 0; i < result.length; i++) {
-                        for (var a = 0; a <= i; a++) {
-                            if (result[i].score > sorted_result[a].score) {
-                                var speicher = sorted_result[a]
-                                sorted_result[a] = result[i];
-                                sorted_result[i] = speicher;
-                            }
-                        }
-                    }
-                    resolve(sorted_result)
+                    resolve(result)
                 } else {
-                    result = undefined;
-                    resolve(result);
+                    resolve({
+                        error: {
+                            message: "Something went Wrong",
+                            code: 4
+                        }
+                    })
                 }
             })
         })
