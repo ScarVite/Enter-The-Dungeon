@@ -8,7 +8,7 @@ import org.json.simple.JSONObject;
 import enterTheDungeon.api.Networking;
 import enterTheDungeon.api.Setup;
 import enterTheDungeon.game.Mainmenu;
-import enterTheDungeon.game.Oberklassen.User;
+import enterTheDungeon.game.User;
 import enterTheDungeon.resource.Filesystem;
 
 public class Start {
@@ -20,8 +20,9 @@ public class Start {
 		initSystems();
 		if (filesystem.checkForFile("/EnterTheDungeon-Files/User.json"))
 			User.setUser(filesystem.readJsonFileasObject("/EnterTheDungeon-Files/User.json"));
-		if (filesystem.compareFileContent("/EnterTheDungeon-Files/KeyValid.txt", "Hiermit-wird-das-Spiel-aktiviert"))
+		if (filesystem.compareFileContent("/EnterTheDungeon-Files/KeyValid.txt", "Hiermit-wird-das-Spiel-aktiviert")) {
 			new Mainmenu();
+		}
 		else {
 			java.awt.EventQueue.invokeLater(new Runnable() {
 				public void run() {
@@ -41,6 +42,11 @@ public class Start {
 			if (!filesystem.checkForFile("/EnterTheDungeon-Files/Settings.json")) {
 				obj.put("music", true);
 				filesystem.writeJsonObjectToFile("/EnterTheDungeon-Files/Settings.json", obj);
+			}
+			obj.clear();
+			if (!filesystem.checkForFile("/EnterTheDungeon-Files/User.json")) {
+				obj.put("music", true);
+				filesystem.writeJsonObjectToFile("/EnterTheDungeon-Files/User.json", obj);
 			}
 			obj.clear();
 			if (!filesystem.checkForFile("/EnterTheDungeon-Files/Save.json")) {
