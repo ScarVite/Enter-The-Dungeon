@@ -9,7 +9,7 @@ public class Falle extends StandardObjectData {
 
 	private int animation = 1;
 	private int ctr = 0;
-	private boolean up = true;
+	private boolean aufgeklappt = false; 
 
 	public Falle(double pX, double pY, double pWidth, double pHeight, Texturen pTex) {
 		super(pX, pY, pWidth, pHeight, pTex);
@@ -23,11 +23,18 @@ public class Falle extends StandardObjectData {
 				setAnimation(getAnimation() + 1);
 				ctr = 0;
 			}
-			if (getAnimation() == 5) {
+			if (animation == 5) {
 				ctr = 0;
 				setAnimation(1);
 			}
-
+			
+			if(animation == 3) {
+				setAufgeklappt(true);
+			}
+			else {
+				setAufgeklappt(false);
+			}
+			
 	}
 
 	public void render(Graphics g) {
@@ -48,6 +55,14 @@ public class Falle extends StandardObjectData {
 
 	public void setAnimation(int pAnimation) {
 		this.animation = pAnimation;
+	}
+
+	public boolean isAufgeklappt() {
+		return aufgeklappt;
+	}
+
+	public void setAufgeklappt(boolean aufgeklappt) {
+		this.aufgeklappt = aufgeklappt;
 	}
 
 }

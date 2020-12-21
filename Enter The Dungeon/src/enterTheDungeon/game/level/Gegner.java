@@ -25,6 +25,7 @@ public class Gegner extends ExtendedObjectData {
 		super(pX, pY, pWidth, pHeight, pLeben, pSpeed, pTex);
 		pistole = new Pistole(pX, pY, pWidth, pHeight, pTex);
 		this.game = pGame;
+		pistole.setRenderable(false);
 	}
 
 	public void update() {
@@ -38,7 +39,7 @@ public class Gegner extends ExtendedObjectData {
 		yZiel = game.getyPosSpieler() + game.getHeightSpieler() / 2;
 		feuerrate++;
 //		
-		if (feuerrate >= Math.random() * 400 + 90) {
+		if (feuerrate >= 100) {
 			pistole.schiessen(xZiel, yZiel);
 			feuerrate = 0;
 		}
@@ -64,7 +65,7 @@ public class Gegner extends ExtendedObjectData {
 	}
 
 	private void laufen() {
-		setxPos(getxPos() + 1);
+//		setxPos(getxPos() + 1);
 		setRight(true);
 	}
 	
