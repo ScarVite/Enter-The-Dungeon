@@ -95,7 +95,6 @@ public class Networking {
 	public static boolean updateLeaderboard(String username, int score) {
 		if (userToken == null)
 			userToken = new User().getToken();
-		System.out.println("hier");
 		HttpPost post = new HttpPost(baseUrl + "/updateleaderboard");
 		post.setHeader("authorization", userToken);
 		/*

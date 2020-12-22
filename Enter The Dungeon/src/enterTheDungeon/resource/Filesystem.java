@@ -168,6 +168,10 @@ public class Filesystem {
 	public File getMainPath() {
 		return mainPath;
 	}
+	
+	public boolean fileNotEmpty(String filePath) {
+		return (new File(mainPath, filePath).length() > 0);
+	}
 
 	public static void SetMainPath(String path) {
 		File Folder = new File(path, "/Enter-The-Dungeon");

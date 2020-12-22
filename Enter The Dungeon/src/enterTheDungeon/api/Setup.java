@@ -1,12 +1,17 @@
 package enterTheDungeon.api;
 
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -23,8 +28,6 @@ public class Setup extends JFrame implements KeyListener {
 	JButton jButton1;
 	JLabel jLabel1;
 	JLabel jLabel2;
-	private int required = 0;
-	private int progress = 0;
 	private Filesystem filesystem = new Filesystem();
 
 	public Setup() {
@@ -56,18 +59,6 @@ public class Setup extends JFrame implements KeyListener {
 
 	private void createJFrame() {
 		setTitle("Enter The Dungeon Setup");
-		JSONObject filelist = (JSONObject) Networking.getJSONObject("https://api.scarvite.de/etd-list.json");
-		JSONArray soundfiles = (JSONArray) filelist.get("sound");
-		JSONArray imagefiles = (JSONArray) filelist.get("images");
-		required = imagefiles.size() + soundfiles.size();
-		for(Object sound: soundfiles) {
-			Networking.downloadSoundandSave("https://api.scarvite.de/sound/" + sound.toString(), sound.toString());
-			progress++;
-		}
-		for(Object image: imagefiles) {
-			filesystem.saveImage(Networking.downloadImage("https://api.scarvite.de/image/" + image.toString()), image.toString());
-			progress++;
-		}
 		setSize(new Dimension(300, 175));
 		jTextField1 = new JTextField();
 		jTextField1.setBounds(75, 50, 150, 20);
