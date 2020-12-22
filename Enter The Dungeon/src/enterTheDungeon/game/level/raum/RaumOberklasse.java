@@ -21,6 +21,8 @@ public class RaumOberklasse {
 	protected ArrayList<Falle> fallenliste;
 	protected ArrayList<Portal> portalliste;
 	protected ArrayList<RaumOberklasse> raumliste;
+	private ArrayList<Hindernis> hindernisOben, hindernisUnten, hindernisRechts, hindernisLinks;
+
 	protected RaumOberklasse raum;
 	protected Portal portal;
 	protected Gegner gegner;
@@ -35,16 +37,24 @@ public class RaumOberklasse {
 	private Raum2 raum2;
 	private Raum3 raum3;
 	private Raum4 raum4;
+	private Raum5 raum5;
+	private Raum6 raum6;
 
 	public RaumOberklasse(Game pGame, Texturen pTex) {
 		this.game = pGame;
 		this.tex = pTex;
 
-		hindernisliste = new ArrayList<Hindernis>();
 		gegnerliste = new ArrayList<Gegner>();
 		fallenliste = new ArrayList<Falle>();
 		portalliste = new ArrayList<Portal>();
 		raumliste = new ArrayList<RaumOberklasse>();
+
+		hindernisliste = new ArrayList<Hindernis>();
+		// SubHidnernis für Gegner KI
+		hindernisOben = new ArrayList<Hindernis>();
+		hindernisUnten = new ArrayList<Hindernis>();
+		hindernisRechts = new ArrayList<Hindernis>();
+		hindernisLinks = new ArrayList<Hindernis>();
 
 	}
 
@@ -55,6 +65,7 @@ public class RaumOberklasse {
 		hindernisliste.add(new Hindernis(width - 35, 0, 20, height, tex)); // rechts
 		hindernisliste.add(new Hindernis(0, 0, width, 30, tex)); // oben
 		hindernisliste.add(new Hindernis(0, height - 60, width, 30, tex)); // unten
+		setHindernisliste(hindernisliste);
 	}
 
 	public void erstelleLevel() {
@@ -62,19 +73,64 @@ public class RaumOberklasse {
 		raumliste.add(raum2 = new Raum2(game, tex));
 		raumliste.add(raum3 = new Raum3(game, tex));
 		raumliste.add(raum4 = new Raum4(game, tex));
+		raumliste.add(raum5 = new Raum5(game, tex));
+		raumliste.add(raum6 = new Raum6(game, tex));
 
 		raum1.erstelleRaum();
 		raum2.erstelleRaum();
 		raum3.erstelleRaum();
 		raum4.erstelleRaum();
+		raum5.erstelleRaum();
+		raum6.erstelleRaum();
 
 		setMaxRaum(raumliste.size());
 
 	}
 
+	protected void erstelleSubHindernisOben() {
+		for (int i = 0; i < hindernisliste.size(); i++) {
+			int x = (int) hindernisliste.get(i).getxPos();
+			int y = (int) hindernisliste.get(i).getyPos() - 10;
+			int width = (int) hindernisliste.get(i).getWidth();
+			hindernisOben.add(new Hindernis(x, y, width, 1, tex));
+		}
+		setHindernisOben(hindernisOben);
+	}
+
+	protected void erstelleSubHindernisUnten() {
+		for (int i = 0; i < hindernisliste.size(); i++) {
+			int x = (int) hindernisliste.get(i).getxPos();
+			int y = (int) hindernisliste.get(i).getyPos() + (int) hindernisliste.get(i).getHeight() + 10;
+			int width = (int) hindernisliste.get(i).getWidth();
+			hindernisUnten.add(new Hindernis(x, y, width, 1, tex));
+		}
+		setHindernisUnten(hindernisUnten);
+	}
+
+	protected void erstelleSubHindernisRechts() {
+		for (int i = 0; i < hindernisliste.size(); i++) {
+			int x = (int) (hindernisliste.get(i).getxPos() + hindernisliste.get(i).getWidth() + 10);
+			int y = (int) hindernisliste.get(i).getyPos();
+			int height = (int) hindernisliste.get(i).getHeight();
+			hindernisRechts.add(new Hindernis(x, y, 1, height, tex));
+		}
+		setHindernisRechts(hindernisRechts);
+	}
+
+	protected void erstelleSubHindernisLinks() {
+		for (int i = 0; i < hindernisliste.size(); i++) {
+			int x = (int) (hindernisliste.get(i).getxPos() - 10);
+			int y = (int) hindernisliste.get(i).getyPos();
+			int height = (int) hindernisliste.get(i).getHeight();
+			hindernisLinks.add(new Hindernis(x, y, 1, height, tex));
+		}
+		setHindernisLinks(hindernisLinks);
+	}
+
 	public void starteRaum(int pRaumNr) {
 		setRaumNr(pRaumNr);
 
+			
 //		raum1.erstelleRaum();
 //		raum2.erstelleRaum();
 	}
@@ -94,6 +150,10 @@ public class RaumOberklasse {
 		}
 		for (int i = 0; i < hindernisliste.size(); i++) {
 			hindernisliste.get(i).update();
+			hindernisOben.get(i).update();
+			hindernisUnten.get(i).update();
+			hindernisRechts.get(i).update();
+			hindernisLinks.get(i).update();
 		}
 		for (int i = 0; i < fallenliste.size(); i++) {
 			fallenliste.get(i).update();
@@ -113,11 +173,11 @@ public class RaumOberklasse {
 		for (int i = 0; i < fallenliste.size(); i++) {
 			fallenliste.get(i).render(g);
 		}
-		for (int i = 0; i < gegnerliste.size(); i++) {
-			gegnerliste.get(i).render(g);
-		}
 		for (int i = 0; i < hindernisliste.size(); i++) {
 			hindernisliste.get(i).render(g);
+		}
+		for (int i = 0; i < gegnerliste.size(); i++) {
+			gegnerliste.get(i).render(g);
 		}
 
 	}
@@ -176,6 +236,38 @@ public class RaumOberklasse {
 
 	public void setHindernisliste(ArrayList<Hindernis> hindernisliste) {
 		this.hindernisliste = hindernisliste;
+	}
+
+	public ArrayList<Hindernis> getHindernisOben() {
+		return hindernisOben;
+	}
+
+	public void setHindernisOben(ArrayList<Hindernis> hindernisOben) {
+		this.hindernisOben = hindernisOben;
+	}
+
+	public ArrayList<Hindernis> getHindernisUnten() {
+		return hindernisUnten;
+	}
+
+	public void setHindernisUnten(ArrayList<Hindernis> hindernisUnten) {
+		this.hindernisUnten = hindernisUnten;
+	}
+
+	public ArrayList<Hindernis> getHindernisRechts() {
+		return hindernisRechts;
+	}
+
+	public void setHindernisRechts(ArrayList<Hindernis> hindernisRechts) {
+		this.hindernisRechts = hindernisRechts;
+	}
+
+	public ArrayList<Hindernis> getHindernisLinks() {
+		return hindernisLinks;
+	}
+
+	public void setHindernisLinks(ArrayList<Hindernis> hindernisLinks) {
+		this.hindernisLinks = hindernisLinks;
 	}
 
 	public ArrayList<Gegner> getGegnerliste() {
@@ -284,8 +376,12 @@ public class RaumOberklasse {
 
 	public void clearHindernisliste() {
 		hindernisliste.clear();
+		hindernisOben.clear();
+		hindernisUnten.clear();
+		hindernisRechts.clear();
+		hindernisLinks.clear();
 	}
-	
+
 	public int getxSpawn() {
 		return xSpawn;
 	}

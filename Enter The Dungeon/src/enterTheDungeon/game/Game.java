@@ -37,6 +37,7 @@ public class Game extends JPanel {
 	private ArrayList<Schuss> schussliste;
 	private ArrayList<Gegner> gegnerliste;
 	private ArrayList<Hindernis> hindernisliste;
+	private ArrayList<Hindernis> hindernisOben, hindernisUnten, hindernisRechts, hindernisLinks;
 	private ArrayList<Portal> portalliste;
 	private ArrayList<Falle> fallenliste;
 	private ArrayList<RaumOberklasse> raumliste;
@@ -59,8 +60,6 @@ public class Game extends JPanel {
 	public Game(Mainmenu pmainmenu) {
 		init();
 		this.mainmenu = pmainmenu;
-		for (int i = 0; i < 5; i++) {
-		}
 
 		time = new Timer();
 		time.scheduleAtFixedRate(new TimerTask() {
@@ -83,6 +82,10 @@ public class Game extends JPanel {
 		fallenliste = raumliste.get(rNr).getFallenliste();
 		gegnerliste = raumliste.get(rNr).getGegnerliste();
 		hindernisliste = raumliste.get(rNr).getHindernisliste();
+		setHindernisOben(raumliste.get(rNr).getHindernisOben());
+		setHindernisUnten(raumliste.get(rNr).getHindernisUnten());
+		setHindernisRechts(raumliste.get(rNr).getHindernisRechts());
+		setHindernisLinks(raumliste.get(rNr).getHindernisLinks());
 		portalliste = raumliste.get(rNr).getPortalliste();
 
 		collision();
@@ -129,33 +132,34 @@ public class Game extends JPanel {
 			if (hindi.intersects(spielerBounds) && spieler.isRight()) {
 				spieler.setxPos(spieler.getxPos() - spieler.getSpeed());
 			}
-			for (Gegner gegner : gegnerliste) {
-				Rectangle geg = gegner.getBounds();
-				if (hindi.intersects(geg) && gegner.isDown()) {
-					gegner.setyPos(gegner.getyPos() - gegner.getSpeed());
-				}
-				if (hindi.intersects(geg) && gegner.isUp()) {
-					gegner.setyPos(gegner.getyPos() + gegner.getSpeed());
-				}
-				if (hindi.intersects(geg) && gegner.isLeft()) {
-					gegner.setxPos(gegner.getxPos() + gegner.getSpeed());
-				}
-				if (hindi.intersects(geg) && gegner.isRight()) {
-					gegner.setxPos(gegner.getxPos() - gegner.getSpeed());
-				}
-			}
+			
+//			for (Gegner gegner : gegnerliste) {
+//				Rectangle geg = gegner.getBounds();
+//				if (hindi.intersects(geg) && gegner.isDown()) {
+//					gegner.setyPos(gegner.getyPos() - gegner.getSpeed());
+//				}
+//				if (hindi.intersects(geg) && gegner.isUp()) {
+//					gegner.setyPos(gegner.getyPos() + gegner.getSpeed());
+//				}
+//				if (hindi.intersects(geg) && gegner.isLeft()) {
+//					gegner.setxPos(gegner.getxPos() + gegner.getSpeed());
+//				}
+//				if (hindi.intersects(geg) && gegner.isRight()) {
+//					gegner.setxPos(gegner.getxPos() - gegner.getSpeed());
+//				}
+//			}
 
-			for (Falle falle : fallenliste) {
-				boolean aufgeklappt = falle.isAufgeklappt();
-				boolean getroffen = spieler.isGetroffenVonFalle();
-				Rectangle falleRect = falle.getBounds();
-				falle.setBounds((int) falle.getxPos() + 10, (int) falle.getyPos() + 10, (int) falle.getWidth() - 20,
-						(int) falle.getHeight() - 20);
-				if (falleRect.intersects(spielerBounds) && !getroffen && aufgeklappt) {
-					spieler.setGetroffenVonFalle(true);
-					spieler.setLeben(spieler.getLeben() - 1);
-				}
-
+		}
+		
+		for (Falle falle : fallenliste) {
+			boolean aufgeklappt = falle.isAufgeklappt();
+			boolean getroffen = spieler.isGetroffenVonFalle();
+			Rectangle falleRect = falle.getBounds();
+			falle.setBounds((int) falle.getxPos() + 10, (int) falle.getyPos() + 10, (int) falle.getWidth() - 20,
+					(int) falle.getHeight() - 20);
+			if (falleRect.intersects(spielerBounds) && !getroffen && aufgeklappt) {
+				spieler.setGetroffenVonFalle(true);
+				spieler.setLeben(spieler.getLeben() - 1);
 			}
 
 		}
@@ -179,9 +183,10 @@ public class Game extends JPanel {
 					raumliste.get(rNr).removePortal(portalliste.get(i));
 					raum.starteRaum(rNr);
 					spieler.setxPos(raumliste.get(rNr).getxSpawn());
-					spieler.setyPos(raumliste.get(rNr).getySpawn());		
+					spieler.setyPos(raumliste.get(rNr).getySpawn());
 				}
 				schussliste.clear();
+				raum.clearHindernisliste();
 			}
 
 		}
@@ -195,7 +200,7 @@ public class Game extends JPanel {
 	private void collisionSchussMitObject(Rectangle spC, int waffe) {
 		for (int i = 0; i < schussliste.size(); i++) {
 			Rectangle s = schussliste.get(i).getBounds();
-
+			schussOutOfBounds(i);
 			for (int b = 0; b < gegnerliste.size(); b++) {
 				Rectangle g = gegnerliste.get(b).getBounds();
 
@@ -271,6 +276,12 @@ public class Game extends JPanel {
 
 	}
 
+	private void schussOutOfBounds(int i) {
+		if (schussliste.get(i).isOutOfBounds()) {
+			schussliste.remove(i);
+		}
+	}
+
 	public void beendeSpiel() {
 //		 Music auf mainmenu music �ndern
 		mainmenu.setSpielOffen(false);
@@ -288,10 +299,14 @@ public class Game extends JPanel {
 		gegnerliste = new ArrayList<Gegner>();
 		schussliste = new ArrayList<Schuss>();
 		hindernisliste = new ArrayList<Hindernis>();
+		hindernisOben = new ArrayList<Hindernis>();
+		hindernisUnten = new ArrayList<Hindernis>();
+		hindernisRechts = new ArrayList<Hindernis>();
+		hindernisLinks = new ArrayList<Hindernis>();
 		pausemenuOpen = true;
 //		gegner = new Gegner(0, 0, 30, 30, 3, 3, tex, this);
 		tex = new Texturen(this);
-		spieler = new Spieler(400, 400, 35, 60, 6, 3, tex);
+		spieler = new Spieler(200, 400, 35, 60, 6, 3, tex);
 //		levelcreator = new LevelCreator(this, tex);
 		raum = new RaumOberklasse(this, tex);
 
@@ -414,6 +429,54 @@ public class Game extends JPanel {
 	public double getHeightSpieler() {
 		return spieler.getHeight();
 	}
+	
+	public Rectangle getSpielerBounds() {
+		return spieler.getBounds();
+	}
+
+	public ArrayList<Hindernis> getHindernisListe() {
+		return hindernisliste;
+	}
+
+	public ArrayList<Hindernis> getHindernisliste() {
+		return hindernisliste;
+	}
+
+	public void setHindernisliste(ArrayList<Hindernis> hindernisliste) {
+		this.hindernisliste = hindernisliste;
+	}
+
+	public ArrayList<Hindernis> getHindernisOben() {
+		return hindernisOben;
+	}
+
+	public void setHindernisOben(ArrayList<Hindernis> hindernisOben) {
+		this.hindernisOben = hindernisOben;
+	}
+
+	public ArrayList<Hindernis> getHindernisRechts() {
+		return hindernisRechts;
+	}
+
+	public void setHindernisRechts(ArrayList<Hindernis> hindernisRechts) {
+		this.hindernisRechts = hindernisRechts;
+	}
+
+	public ArrayList<Hindernis> getHindernisLinks() {
+		return hindernisLinks;
+	}
+
+	public void setHindernisLinks(ArrayList<Hindernis> hindernisLinks) {
+		this.hindernisLinks = hindernisLinks;
+	}
+	
+	public ArrayList<Hindernis> getHindernisUnten() {
+		return hindernisUnten;
+	}
+
+	public void setHindernisUnten(ArrayList<Hindernis> hindernisUnten) {
+		this.hindernisUnten = hindernisUnten;
+	}
 
 	public int getAnzGegner() {
 		return maxGegner;
@@ -432,6 +495,10 @@ public class Game extends JPanel {
 	}
 
 
+
+	public Rectangle spielerBounds() {
+		return spieler.getBounds();
+	}
 
 	public void setAnzHindernis(int pMaxHindernis) {
 		this.maxHindernis = pMaxHindernis;
@@ -453,6 +520,8 @@ public class Game extends JPanel {
 	public void setPause(boolean pause) {
 		this.pause = pause;
 	}
+	
+	
 
 	public boolean isPausemenuOpen() {
 		return pausemenuOpen;

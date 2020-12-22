@@ -122,6 +122,10 @@ public class Raum4 extends RaumOberklasse {
 
 		setHindernisliste(hindernisliste);
 		setGegnerliste(gegnerliste);
+		erstelleSubHindernisOben();
+		erstelleSubHindernisUnten();
+		erstelleSubHindernisRechts();
+		erstelleSubHindernisLinks();
 
 	}
 
