@@ -494,12 +494,6 @@ public class Game extends JPanel {
 		return spieler.getBounds();
 	}
 
-
-
-	public Rectangle spielerBounds() {
-		return spieler.getBounds();
-	}
-
 	public void setAnzHindernis(int pMaxHindernis) {
 		this.maxHindernis = pMaxHindernis;
 	}
