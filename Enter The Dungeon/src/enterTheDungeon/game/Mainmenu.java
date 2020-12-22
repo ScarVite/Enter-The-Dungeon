@@ -125,7 +125,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 		startButton.setBounds(310, 155, 160, 40);
 		startButton.addActionListener(this);
 		//Bild auf den Button zeichnen
-		imageIcon = new ImageIcon("Bilder/startbutton.png");
+		imageIcon = new ImageIcon(filesystem.getMainPath() + "/images/startbutton.png");
 		startButton.setIcon(imageIcon);
 		//Boarder 
 		startButton.setBorderPainted(false);
