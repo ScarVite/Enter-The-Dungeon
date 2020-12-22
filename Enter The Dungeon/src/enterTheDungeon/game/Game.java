@@ -1,16 +1,17 @@
 package enterTheDungeon.game;
 
-import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import enterTheDungeon.resource.*;
+import enterTheDungeon.game.level.Falle;
 import enterTheDungeon.game.level.Gegner;
 import enterTheDungeon.game.level.Hindernis;
-import enterTheDungeon.game.level.LevelCreator;
 import enterTheDungeon.game.level.Portal;
 import enterTheDungeon.game.level.raum.Raum1;
+import enterTheDungeon.game.level.LevelCreator;
 import enterTheDungeon.game.level.raum.RaumOberklasse;
+import enterTheDungeon.game.waffen.Schuss;
 import enterTheDungeon.game.waffen.Waffe;
 import enterTheDungeon.input.*;
 
@@ -26,9 +27,8 @@ import java.util.TimerTask;
 
 public class Game extends JPanel {
 
-	private static Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
-	private int screenwidth = (int) screensize.getWidth();
-	private int screenheight = (int) screensize.getHeight();
+	private int screenwidth = 1920;
+	private int screenheight = 1080;
 	private Texturen tex;
 	private Spieler spieler;
 	private Timer time;
@@ -37,7 +37,9 @@ public class Game extends JPanel {
 	private ArrayList<Schuss> schussliste;
 	private ArrayList<Gegner> gegnerliste;
 	private ArrayList<Hindernis> hindernisliste;
+	private ArrayList<Hindernis> hindernisOben, hindernisUnten, hindernisRechts, hindernisLinks;
 	private ArrayList<Portal> portalliste;
+	private ArrayList<Falle> fallenliste;
 	private ArrayList<RaumOberklasse> raumliste;
 	private Sound sound;
 	private MausInput mausinput;
@@ -50,15 +52,14 @@ public class Game extends JPanel {
 //	private boolean isPortal = false;
 	private Pausemenu pausemenu;
 	private Mainmenu mainmenu;
+	private boolean pausemenuOpen;
 	private RaumOberklasse raum;
 	private int rNr;
-	private boolean pausemenuOpen;
+	private Filesystem filesystem;
 
 	public Game(Mainmenu pmainmenu) {
 		init();
 		this.mainmenu = pmainmenu;
-		for (int i = 0; i < 5; i++) {
-		}
 
 		time = new Timer();
 		time.scheduleAtFixedRate(new TimerTask() {
@@ -78,9 +79,15 @@ public class Game extends JPanel {
 		raumliste = raum.getRaumliste();
 		raumliste.get(rNr).update();
 		spieler.update();
+		fallenliste = raumliste.get(rNr).getFallenliste();
 		gegnerliste = raumliste.get(rNr).getGegnerliste();
 		hindernisliste = raumliste.get(rNr).getHindernisliste();
+		setHindernisOben(raumliste.get(rNr).getHindernisOben());
+		setHindernisUnten(raumliste.get(rNr).getHindernisUnten());
+		setHindernisRechts(raumliste.get(rNr).getHindernisRechts());
+		setHindernisLinks(raumliste.get(rNr).getHindernisLinks());
 		portalliste = raumliste.get(rNr).getPortalliste();
+
 		collision();
 
 	}
@@ -99,7 +106,8 @@ public class Game extends JPanel {
 	}
 
 	private void collision() {
-		Rectangle spielerBounds = spieler.getBounds();
+		Rectangle spielerBounds;
+		spielerBounds = spieler.getBounds();
 		waffe = spieler.getWaffe();
 		schussliste = waffe.getSchussarray();
 		collisionSchussMitObject(spielerBounds, 1);
@@ -124,24 +132,37 @@ public class Game extends JPanel {
 			if (hindi.intersects(spielerBounds) && spieler.isRight()) {
 				spieler.setxPos(spieler.getxPos() - spieler.getSpeed());
 			}
-			for (Gegner gegner : gegnerliste) {
-				Rectangle geg = gegner.getBounds();
-				if (hindi.intersects(geg) && gegner.isDown()) {
-					gegner.setyPos(gegner.getyPos() - gegner.getSpeed());
-				}
-				if (hindi.intersects(geg) && gegner.isUp()) {
-					gegner.setyPos(gegner.getyPos() + gegner.getSpeed());
-				}
-				if (hindi.intersects(geg) && gegner.isLeft()) {
-					gegner.setxPos(gegner.getxPos() + gegner.getSpeed());
-				}
-				if (hindi.intersects(geg) && gegner.isRight()) {
-					gegner.setxPos(gegner.getxPos() - gegner.getSpeed());
-				}
+			
+//			for (Gegner gegner : gegnerliste) {
+//				Rectangle geg = gegner.getBounds();
+//				if (hindi.intersects(geg) && gegner.isDown()) {
+//					gegner.setyPos(gegner.getyPos() - gegner.getSpeed());
+//				}
+//				if (hindi.intersects(geg) && gegner.isUp()) {
+//					gegner.setyPos(gegner.getyPos() + gegner.getSpeed());
+//				}
+//				if (hindi.intersects(geg) && gegner.isLeft()) {
+//					gegner.setxPos(gegner.getxPos() + gegner.getSpeed());
+//				}
+//				if (hindi.intersects(geg) && gegner.isRight()) {
+//					gegner.setxPos(gegner.getxPos() - gegner.getSpeed());
+//				}
+//			}
+
+		}
+		
+		for (Falle falle : fallenliste) {
+			boolean aufgeklappt = falle.isAufgeklappt();
+			boolean getroffen = spieler.isGetroffenVonFalle();
+			Rectangle falleRect = falle.getBounds();
+			falle.setBounds((int) falle.getxPos() + 10, (int) falle.getyPos() + 10, (int) falle.getWidth() - 20,
+					(int) falle.getHeight() - 20);
+			if (falleRect.intersects(spielerBounds) && !getroffen && aufgeklappt) {
+				spieler.setGetroffenVonFalle(true);
+				spieler.setLeben(spieler.getLeben() - 1);
 			}
 
 		}
-
 		for (int i = 0; i < portalliste.size(); i++) {
 			Rectangle portalR = portalliste.get(i).getBounds();
 			if (portalR.intersects(spielerBounds)) {
@@ -153,60 +174,54 @@ public class Game extends JPanel {
 					rNr++;
 					raumliste.get(rNr).removePortal(portalliste.get(i));
 					raum.starteRaum(rNr);
-					spieler.setxPos(500);
-					spieler.setyPos(500);
+					spieler.setxPos(raumliste.get(rNr).getxSpawn());
+					spieler.setyPos(raumliste.get(rNr).getySpawn());
 
 					// vorletzter Raum
 				} else if (!weiter) {
 					rNr--;
 					raumliste.get(rNr).removePortal(portalliste.get(i));
 					raum.starteRaum(rNr);
-					spieler.setxPos(500);
-					spieler.setyPos(500);
+					spieler.setxPos(raumliste.get(rNr).getxSpawn());
+					spieler.setyPos(raumliste.get(rNr).getySpawn());
 				}
-
+				schussliste.clear();
+				raum.clearHindernisliste();
 			}
 
 		}
+
+		if (spieler.getLeben() <= 0) {
+			beendeSpiel();
+		}
+
 	}
 
 	private void collisionSchussMitObject(Rectangle spC, int waffe) {
 		for (int i = 0; i < schussliste.size(); i++) {
 			Rectangle s = schussliste.get(i).getBounds();
-
+			schussOutOfBounds(i);
 			for (int b = 0; b < gegnerliste.size(); b++) {
 				Rectangle g = gegnerliste.get(b).getBounds();
 
 				// schuss und gegner überschneiden && spielerwaffe dann wird gegner getroffen
 				if (g.intersects(s) && waffe == 1) {
 //					gegnerliste.remove(b);
-					gegnerliste.get(b).setLeben(gegnerliste.get(b).getLeben() - 1);
 					try {
-						schussliste.remove(i);
-					} catch (Exception e) {
-						System.out.println("Fehler1");
-					}
-				}
 
-				// schuss und gegner überschneiden && gegnerwaffe dann wird spieler getroffen
-				if (spC.intersects(s) && waffe == 0) {
-					if (!schussliste.isEmpty()) {
-						try {
-							schussliste.remove(i);
-						} catch (Exception e) {
-							System.out.println("Fehler");
-						}
-						spieler.setLeben(spieler.getLeben() - 1);
-						if (spieler.getLeben() == 0) {
-							beendeSpiel();
-						}
+						schussliste.remove(i);
+
+					} catch (Exception e) {
+						// TODO: handle exception
 					}
+					gegnerliste.get(b).setLeben(gegnerliste.get(b).getLeben() - 1);
 				}
 
 				if (gegnerliste.get(b).getLeben() == 0) {
 					raumliste.get(rNr).removeGegner(gegnerliste.get(b));
 					if (gegnerliste.isEmpty()) {
 						raum.setGegnerliste(gegnerliste);
+						// Portal für das nächste Level
 						int max = raum.getMaxRaum() - 1;
 						int nr = raum.getRaumNr();
 						Portal portal;
@@ -215,6 +230,7 @@ public class Game extends JPanel {
 							portal.setWeiter(true);
 							raumliste.get(rNr).addPortal(portal);
 						}
+
 						// Portal für das vorherige Level
 						if (nr != 0) {
 							portal = new Portal(800, 800, spieler.getWidth(), spieler.getHeight(), tex);
@@ -226,6 +242,23 @@ public class Game extends JPanel {
 
 			}
 
+			// schuss und gegner überschneiden && gegnerwaffe dann wird spieler getroffen
+
+			boolean spielerGetroffen = spieler.isGetroffenVonSchuss();
+			if (spC.intersects(s) && waffe == 0 && !spielerGetroffen) {
+				if (!schussliste.isEmpty()) {
+					try {
+						schussliste.remove(i);
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
+
+					spieler.setGetroffenVonSchuss(true);
+					spieler.setLeben(spieler.getLeben() - 1);
+
+				}
+
+			}
 			for (int j = 0; j < hindernisliste.size(); j++) {
 				Rectangle hindi = hindernisliste.get(j).getBounds();
 				if (!schussliste.isEmpty()) {
@@ -238,22 +271,42 @@ public class Game extends JPanel {
 					}
 				}
 			}
+
 		}
 
 	}
 
+	private void schussOutOfBounds(int i) {
+		if (schussliste.get(i).isOutOfBounds()) {
+			schussliste.remove(i);
+		}
+	}
+
+	public void beendeSpiel() {
+//		 Music auf mainmenu music �ndern
+		mainmenu.setSpielOffen(false);
+		hindernisliste.clear();
+		fallenliste.clear();
+		gegnerliste.clear();
+		portalliste.clear();
+		spiel.setVisible(false);
+		spiel.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+	}
+
 	private void init() {
+		filesystem = new Filesystem();
 		sound = new Sound();
-		sound.playSound("Sound/background.wav");
-		sound.getClip().loop(Clip.LOOP_CONTINUOUSLY);
 		gegnerliste = new ArrayList<Gegner>();
 		schussliste = new ArrayList<Schuss>();
 		hindernisliste = new ArrayList<Hindernis>();
+		hindernisOben = new ArrayList<Hindernis>();
+		hindernisUnten = new ArrayList<Hindernis>();
+		hindernisRechts = new ArrayList<Hindernis>();
+		hindernisLinks = new ArrayList<Hindernis>();
 		pausemenuOpen = true;
-
 //		gegner = new Gegner(0, 0, 30, 30, 3, 3, tex, this);
 		tex = new Texturen(this);
-		spieler = new Spieler(400, 400, 35, 60, 3, 3, tex);
+		spieler = new Spieler(200, 400, 35, 60, 6, 3, tex);
 //		levelcreator = new LevelCreator(this, tex);
 		raum = new RaumOberklasse(this, tex);
 
@@ -261,27 +314,21 @@ public class Game extends JPanel {
 		tastinput = new TastaturInput(this, pausemenu);
 		spiel = new JFrame("Enter the Dungeon");
 
-		spiel.setExtendedState(JFrame.MAXIMIZED_BOTH);
+//		spiel.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		spiel.setBounds(0, 0, screenwidth, screenwidth);
+		spiel.setFocusable(true);
 		spiel.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		spiel.setLocationRelativeTo(null);
 		spiel.addKeyListener(tastinput);
 		spiel.addMouseListener(mausinput);
 		render = new Render(this);
-		render.setBounds(0, 0, screenwidth, screenheight);
+//		render.setBounds(0, 0, screenwidth, screenheight);
 		spiel.add(render);
 
 		spiel.setVisible(true);
+
 		baueLevel();
 
-	}
-
-	private void beendeSpiel() {
-		// Music auf mainmenu music �ndern
-		sound.getClip().stop();
-		sound.playSound("Sound/mainmenu.wav");
-		spiel.setVisible(false);
-		spiel.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		System.out.println("Spieler tot");
 	}
 
 	public void baueLevel() {
@@ -308,7 +355,6 @@ public class Game extends JPanel {
 		if (key == KeyEvent.VK_D) {
 			spieler.setRight(true);
 		}
-		//Nur wenn das Men� offen ist soll es m�glich sein hier wieder Esc zu dr�cken
 		if (isPausemenuOpen()) {
 			if (key == KeyEvent.VK_ESCAPE) {
 				pausemenu = new Pausemenu(mainmenu, this);
@@ -341,12 +387,11 @@ public class Game extends JPanel {
 	// MausInput
 
 	public void mouseClicked(MouseEvent e) {
+		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
 		if (sound.getHintergrundmusik()) {
-			String soundPath = "Sound\\Feuerball.wav";
-			sound.playSound(soundPath);
+			sound.playSound(filesystem.readFile("/sound/Feuerball.wav"));
 			sound.getClip().start();
 		}
-		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
 	}
 
 	public void mousePressed(MouseEvent e) {
@@ -385,12 +430,52 @@ public class Game extends JPanel {
 		return spieler.getHeight();
 	}
 	
-	public Rectangle spielerBounds() {
+	public Rectangle getSpielerBounds() {
 		return spieler.getBounds();
 	}
 
-	public Rectangle spielerBounds() {
-		return spieler.getBounds();
+	public ArrayList<Hindernis> getHindernisListe() {
+		return hindernisliste;
+	}
+
+	public ArrayList<Hindernis> getHindernisliste() {
+		return hindernisliste;
+	}
+
+	public void setHindernisliste(ArrayList<Hindernis> hindernisliste) {
+		this.hindernisliste = hindernisliste;
+	}
+
+	public ArrayList<Hindernis> getHindernisOben() {
+		return hindernisOben;
+	}
+
+	public void setHindernisOben(ArrayList<Hindernis> hindernisOben) {
+		this.hindernisOben = hindernisOben;
+	}
+
+	public ArrayList<Hindernis> getHindernisRechts() {
+		return hindernisRechts;
+	}
+
+	public void setHindernisRechts(ArrayList<Hindernis> hindernisRechts) {
+		this.hindernisRechts = hindernisRechts;
+	}
+
+	public ArrayList<Hindernis> getHindernisLinks() {
+		return hindernisLinks;
+	}
+
+	public void setHindernisLinks(ArrayList<Hindernis> hindernisLinks) {
+		this.hindernisLinks = hindernisLinks;
+	}
+	
+	public ArrayList<Hindernis> getHindernisUnten() {
+		return hindernisUnten;
+	}
+
+	public void setHindernisUnten(ArrayList<Hindernis> hindernisUnten) {
+		this.hindernisUnten = hindernisUnten;
 	}
 
 	public int getAnzGegner() {
@@ -403,6 +488,16 @@ public class Game extends JPanel {
 
 	public int getAnzHindernis() {
 		return maxHindernis;
+	}
+	
+	public Rectangle spielerBounds() {
+		return spieler.getBounds();
+	}
+
+
+
+	public Rectangle spielerBounds() {
+		return spieler.getBounds();
 	}
 
 	public void setAnzHindernis(int pMaxHindernis) {
@@ -417,6 +512,7 @@ public class Game extends JPanel {
 		return screenheight;
 	}
 
+
 	public boolean isPause() {
 		return pause;
 	}
@@ -424,6 +520,8 @@ public class Game extends JPanel {
 	public void setPause(boolean pause) {
 		this.pause = pause;
 	}
+	
+	
 
 	public boolean isPausemenuOpen() {
 		return pausemenuOpen;

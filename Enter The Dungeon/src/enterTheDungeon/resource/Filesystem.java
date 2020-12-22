@@ -5,13 +5,24 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.URI;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Scanner;
+
+import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioFileFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
 
 public class Filesystem {
 
@@ -134,11 +145,58 @@ public class Filesystem {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		
+	}
+	
+	public File readFile(String filePath) {
+		System.out.println("hier");
+		return new File(mainPath, filePath);
 	}
 
-	public static void SetMainPath(URI path) {
-		mainPath = new File(path);
+	
+	public void saveImage(Image image, String name) {
+		this.createFolderIfNotExist("/images");
+		//this.createFileIfNotExist(mainPath + "/images/" + name);
+		File imagefile = new File(mainPath + "/images/" + name); 
+		try {
+			ImageIO.write(this.toBufferedImage(image), "png", imagefile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public File getMainPath() {
+		return mainPath;
+	}
+	
+	public boolean fileNotEmpty(String filePath) {
+		return (new File(mainPath, filePath).length() > 0);
+	}
+
+	public static void SetMainPath(String path) {
+		File Folder = new File(path, "/Enter-The-Dungeon");
+		if (!Folder.exists())
+			Folder.mkdirs();
+		mainPath = new File(path, "/Enter-The-Dungeon");
+	}
+	
+	private BufferedImage toBufferedImage(Image img)
+	{
+	    if (img instanceof BufferedImage)
+	    {
+	        return (BufferedImage) img;
+	    }
+
+	    // Create a buffered image with transparency
+	    BufferedImage bimage = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+	    // Draw the image on to the buffered image
+	    Graphics2D bGr = bimage.createGraphics();
+	    bGr.drawImage(img, 0, 0, null);
+	    bGr.dispose();
+
+	    // Return the buffered image
+	    return bimage;
 	}
 
 }

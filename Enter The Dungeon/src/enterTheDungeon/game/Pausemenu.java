@@ -94,4 +94,3 @@ public class Pausemenu extends JFrame implements ActionListener {
 		this.sound = sound;
 	}
 }
-

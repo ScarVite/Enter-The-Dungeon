@@ -1,22 +1,18 @@
 package enterTheDungeon.game;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
 
 import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
 
 import org.json.simple.JSONObject;
 
 import enterTheDungeon.resource.Sound;
-import enterTheDungeon.input.MausInput;
 import enterTheDungeon.resource.Filesystem;
 import enterTheDungeon.resource.Mainmenutex;
 
@@ -30,34 +26,35 @@ public class Mainmenu extends JFrame implements ActionListener {
 	private JButton closeButton;
 	private JButton optionsButton;
 	private JButton creditsButton;
+
 	private JButton soundButton;
 	private JButton soundAnButton;
 	private JButton backButton;
 	private JPanel options;
 	private JPanel credits;
 	private static JFrame gui;
-	private Sound sound;
+	private Sound sound = new Sound();
 	private JPanel mainmenu;
+	private JPanel button;
 	public static JFrame gamewindow = new JFrame();
 	private Filesystem filesystem = new Filesystem();
-	private JSONObject settingsObj = (JSONObject) filesystem
-			.readJsonFileasObject("/EnterTheDungeon-Files/Settings.json");
+	private JSONObject settingsObj = (JSONObject) filesystem.readJsonFileasObject("/Files/Settings.json");
 	private Mainmenutex mainmenutex;
 	private ImageIcon imageIcon;
 	private Mainmenudraw mainmenudraw;
+	private boolean spielOffen = false;
 
 	// Mainmenu kreieren und Buttons hinzufï¿½gen
 	@SuppressWarnings("unchecked")
 	public Mainmenu() {
-		sound = new Sound();
 		if (settingsObj == null) {
 			settingsObj = new JSONObject();
 			settingsObj.put("music", true);
-			filesystem.writeJsonObjectToFile("/EnterTheDungeon-Files/Settings.json", settingsObj);
+			filesystem.writeJsonObjectToFile("/Files/Settings.json", settingsObj);
 		}
-		// Hauptmenü Musik wird abgerufen und in einer Schleife abgespielt
+		// Hauptmenï¿½ Musik wird abgerufen und in einer Schleife abgespielt
 		if ((boolean) settingsObj.get("music")) {
-			sound.playSound("Sound\\Mainmenu.wav");
+			sound.playSound(filesystem.readFile("/sound/Mainmenu.wav"));
 			sound.getClip().loop(Clip.LOOP_CONTINUOUSLY);
 		} else
 			sound.setHintergrundmusik(false);
@@ -73,6 +70,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 		mainmenu.setLayout(null);
 
 		createMainMenuButtons();
+
 		mainmenu.add(startButton);
 		mainmenu.add(closeButton);
 		mainmenu.add(optionsButton);
@@ -86,11 +84,10 @@ public class Mainmenu extends JFrame implements ActionListener {
 		gui.setVisible(true);
 	}
 
-//Bild wird aus der Mainmenutexturen Klasse gerendert
 	public void render(Graphics g) {
 		g.drawImage(mainmenutex.mainmenubild, 0, 0, 800, 600, null);
 	}
-//Button Funktionen
+
 	public void Einstellung() {
 		options = new JPanel();
 		options.setLayout(null);
@@ -111,25 +108,26 @@ public class Mainmenu extends JFrame implements ActionListener {
 		credits = new JPanel();
 		credits.setLayout(null);
 		credits.add(backButton);
-		credits.add(mainmenudraw); // Mainmenü hintergrund
+		credits.add(mainmenudraw); // Mainmenï¿½ hintergrund
 		gui.add(credits);
 		gui.setResizable(false);
 		gui.setLocationRelativeTo(null);
 		gui.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		gui.setVisible(true);
 	}
-//Spiel wird erzeugt
+
 	private void gameWindow() {
 		gamewindow.add(new Game(this));
+		spielOffen = true;
 	}
 
 	private void createMainMenuButtons() {
-		// Hauptmenü
+		// Hauptmenï¿½
 		startButton = new JButton("Spielen");
 		startButton.setBounds(310, 155, 160, 40);
 		startButton.addActionListener(this);
 		// Bild auf den Button zeichnen
-		imageIcon = new ImageIcon("Bilder/startbutton.png");
+		imageIcon = new ImageIcon(filesystem.getMainPath() + "/images/startbutton.png");
 		startButton.setIcon(imageIcon);
 		// Boarder
 		startButton.setBorderPainted(false);
@@ -152,7 +150,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 //		closeButton.setIcon(new ImageIcon("Bilder/closebutton.png"));
 		closeButton.setBorderPainted(false);
 
-		// Untermenüs
+		// Untermenï¿½s
 
 		soundButton = new JButton("Ton aus");
 		soundButton.setBounds(310, 225, 160, 40);
@@ -162,10 +160,9 @@ public class Mainmenu extends JFrame implements ActionListener {
 		soundAnButton.setBounds(310, 225, 160, 40);
 		soundAnButton.addActionListener(this);
 
-		backButton = new JButton("Zurück");
+		backButton = new JButton("Zurï¿½ck");
 		backButton.setBounds(310, 295, 160, 40);
 		backButton.addActionListener(this);
-
 
 	}
 
@@ -187,15 +184,21 @@ public class Mainmenu extends JFrame implements ActionListener {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	// Button wird gedrückt
+	// Button wird gedrï¿½ckt
 	public void actionPerformed(ActionEvent e) {
 
 		if (e.getSource() == startButton) {
 			screenWidth = 1920;
 			screenHeight = 1080;
-			gameWindow();
-			sound.getClip().stop();
-
+			if (!spielOffen) {
+				gameWindow();
+				if (sound.getHintergrundmusik()) {
+					sound.getClip().stop();
+					sound.playSound(filesystem.readFile("/sound/background.wav"));
+					sound.getClip().loop(Clip.LOOP_CONTINUOUSLY);
+					sound.getClip().start();
+				}
+			}
 		}
 
 		if (e.getSource() == closeButton) {
@@ -218,34 +221,38 @@ public class Mainmenu extends JFrame implements ActionListener {
 			mainmenu.setVisible(false);
 		}
 		if (e.getSource() == soundButton) {
-			if (sound.getHintergrundmusik()) {
+			if (sound.getHintergrundmusik())
 				sound.getClip().stop();
-			}
 			sound.setHintergrundmusik(false);
 			settingsObj.put("music", false);
 			System.out.println(settingsObj);
-			filesystem.writeJsonObjectToFile("/EnterTheDungeon-Files/Settings.json", settingsObj);
+			filesystem.writeJsonObjectToFile("/Files/Settings.json", settingsObj);
 			options.add(soundAnButton);
 			options.remove(soundButton);
-			options.add(mainmenudraw); // Mainmenü hintergrund wird hier bei An und Aus nochmals auf das JPanel geadded
+			options.add(mainmenudraw); // Mainmenï¿½ hintergrund wird hier bei An und Aus nochmals auf das JPanel
+										// geadded
 										// sonst wird das Bild nicht angezeigt
 		}
 		if (e.getSource() == soundAnButton) {
-			if (sound.getHintergrundmusik()) {
+			if (sound.getHintergrundmusik())
 				sound.getClip().start();
-			} else {
-				sound.playSound("Sound/mainmenu.wav");
+			else {
+				sound.playSound(filesystem.readFile("/sound/Mainmenu.wav"));
 				sound.getClip().loop(Clip.LOOP_CONTINUOUSLY);
 			}
 			sound.setHintergrundmusik(true);
 			settingsObj.put("music", true);
-			filesystem.writeJsonObjectToFile("/EnterTheDungeon-Files/Settings.json", settingsObj);
+			filesystem.writeJsonObjectToFile("/Files/Settings.json", settingsObj);
 			options.remove(soundAnButton);
 			options.add(soundButton);
 			options.add(mainmenudraw);
 
 		}
 
+	}
+	
+	public void setSpielOffen(Boolean par) {
+		spielOffen = par;
 	}
 
 }

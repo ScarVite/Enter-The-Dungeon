@@ -25,26 +25,26 @@ public class Texturen {
 	private Game game;
 
 	public Texturen(Game game) {
-
+		this.game = game;
 		getTextures();
 	}
 
 	private void getTextures() {
-
 		try {
-			spieler = ImageIO.read(new File("Bilder/Spieler.png"));
-			gegner = ImageIO.read(new File("Bilder/Gegner.png"));
-			schuss = ImageIO.read(new File("Bilder/Schuss.png"));
-			hintergrund = ImageIO.read(new File("Bilder/Background.png"));
-			shotgun = ImageIO.read(new File("Bilder/Shotgun.png"));
-			pistole = ImageIO.read(new File("Bilder/SciFiPistole.png"));
-			hindernis = ImageIO.read(new File("Bilder/Hindernis.png"));
-			feuerball1 = ImageIO.read(new File("Bilder/Feuerball1.png"));
-			feuerball2 = ImageIO.read(new File("Bilder/Feuerball2.png"));
-			portal = ImageIO.read(new File("Bilder/Portal.png"));
-			falleZU = ImageIO.read(new File("Bilder/FalleZu.png"));
-			falleBereit = ImageIO.read(new File("Bilder/FalleBereit.png"));
-			falleOffen = ImageIO.read(new File("Bilder/FalleOffen.png"));
+			Filesystem filesystem = new Filesystem();
+			spieler = ImageIO.read(filesystem.readFile("/images/Spieler.png"));
+			gegner = ImageIO.read(filesystem.readFile("/images/Gegner.png"));
+			schuss = ImageIO.read(filesystem.readFile("/images/Schuss.png"));
+			hintergrund = ImageIO.read(filesystem.readFile("/images/Background1.png"));
+			shotgun = ImageIO.read(filesystem.readFile("/images/Shotgun.png"));
+			pistole = ImageIO.read(filesystem.readFile("/images/SciFiPistole.png"));
+			hindernis = ImageIO.read(filesystem.readFile("/images/Hindernis.png"));
+			feuerball1 = ImageIO.read(filesystem.readFile("/images/Feuerball1.png"));
+			feuerball2 = ImageIO.read(filesystem.readFile("/images/Feuerball2.png"));
+			portal = ImageIO.read(filesystem.readFile("/images/Portal.png"));
+			falleZU = ImageIO.read(filesystem.readFile("/images/FalleZu.png"));
+			falleBereit = ImageIO.read(filesystem.readFile("/images/FalleBereit.png"));
+			falleOffen = ImageIO.read(filesystem.readFile("/images/FalleOffen.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

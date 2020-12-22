@@ -4,8 +4,8 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import enterTheDungeon.game.Game;
-import enterTheDungeon.game.Schuss;
 import enterTheDungeon.game.Spieler;
+import enterTheDungeon.game.waffen.Schuss;
 import enterTheDungeon.resource.Texturen;
 
 public class LevelCreator {
@@ -19,7 +19,7 @@ public class LevelCreator {
 	private Gegner gegner;
 	private Rectangle spieler;
 	private Hindernis hindernis;
-	private double x, y, width, height; // fÃ¼r Hindernisse
+	private double x, y, width, height; // für Hindernisse
 
 	public LevelCreator(Game pGame, Texturen pTex) {
 
@@ -63,7 +63,7 @@ public class LevelCreator {
 
 		for (Hindernis hindernis : hindernisliste) {
 			Rectangle hindi = hindernis.getBounds();
-			
+
 			while (spielerRect.intersects(hindi)) {
 				hindernis.setxPos(Math.random() * 1000 + 1);
 				hindernis.setyPos(Math.random() * 900 + 1);
@@ -72,7 +72,7 @@ public class LevelCreator {
 				hindernis.setBounds((int) hindernis.getxPos(), (int) hindernis.getyPos(), (int) hindernis.getWidth(), (int) hindernis.getHeight());
 				hindi = hindernis.getBounds();
 			}
-			
+
 			for (Gegner gegner : gegnerliste) {
 				Rectangle gegC = gegner.getBounds();
 				while (hindi.intersects(gegC)) {

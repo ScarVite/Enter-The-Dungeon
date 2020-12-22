@@ -1,8 +1,20 @@
 package enterTheDungeon.api;
 
+import java.io.InputStream;
+import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+import java.awt.Image;
+import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -10,6 +22,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -28,12 +47,14 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import enterTheDungeon.game.User;
+import enterTheDungeon.game.Oberklassen.User;
+import enterTheDungeon.resource.Filesystem;
 
 public class Networking {
 
 	private static String userToken = null;
 	private static String baseUrl = "https://api.scarvite.de/etd";
+	private static boolean connected = false;
 
 	private final static CloseableHttpClient httpClient = HttpClients.createDefault();
 
@@ -42,6 +63,7 @@ public class Networking {
 			userToken = new User().getToken();
 		HttpGet request = new HttpGet(baseUrl + "/validatekey?key=" + key);
 		request.setHeader("authorization", userToken);
+		System.out.println(userToken);
 		try (CloseableHttpResponse response = httpClient.execute(request)) {
 			System.out.println(response.getStatusLine().toString());
 			HttpEntity entity = response.getEntity();
@@ -70,7 +92,7 @@ public class Networking {
 		return false;
 	}
 
-	public static void updateLeaderboard(String username, int score) {
+	public static boolean updateLeaderboard(String username, int score) {
 		if (userToken == null)
 			userToken = new User().getToken();
 		HttpPost post = new HttpPost(baseUrl + "/updateleaderboard");
@@ -92,7 +114,7 @@ public class Networking {
 			System.out.println(headers);
 			if (entity != null) {
 				try {
-					System.out.println(response.getStatusLine());
+					return true;
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -107,6 +129,7 @@ public class Networking {
 			e1.printStackTrace();
 		}
 		System.exit(1);
+		return false;
 	}
 
 	public static JSONArray getLeaderboard() {
@@ -180,7 +203,7 @@ public class Networking {
 					JSONParser parser = new JSONParser();
 					JSONObject UserObj;
 					UserObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
-					if(UserObj.get("error") != null)
+					if (UserObj.get("error") != null)
 						User.setUser(UserObj);
 					else {
 						JSONObject error = (JSONObject) UserObj.get("error");
@@ -231,10 +254,10 @@ public class Networking {
 			System.out.println(headers);
 			if (entity != null) {
 				try {
-					if(!EntityUtils.toString(entity).isBlank()) {
 					JSONParser parser = new JSONParser();
 					JSONObject UserObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
-					if(UserObj.get("error") == null)
+					System.out.println(UserObj.get("error"));
+					if (UserObj.get("error") == null)
 						User.setUser(UserObj);
 					else {
 						JSONObject error = (JSONObject) UserObj.get("error");
@@ -242,10 +265,6 @@ public class Networking {
 					}
 					if (userToken == null)
 						userToken = new User().getToken();
-					}
-					else {
-						Popup.error(response.getStatusLine().toString(), "Error");
-					}
 				} catch (org.json.simple.parser.ParseException | ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -264,11 +283,88 @@ public class Networking {
 		}
 	}
 
+	public static void checkPing() {
+		HttpGet request = new HttpGet("https://api.scarvite.de/status");
+		try (CloseableHttpResponse response = httpClient.execute(request)) {
+			System.out.println(response.getStatusLine().toString());
+			HttpEntity entity = response.getEntity();
+			Header headers = entity.getContentType();
+			System.out.println(headers);
+			if (entity != null) {
+				connected = true;
+			}
+		} catch (IOException e1) {
+			System.out.println("Offline");
+			connected = false;
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
+	public static JSONObject getJSONObject(String link) {
+		HttpGet request = new HttpGet(link);
+		request.setHeader("authorization", userToken);
+		try (CloseableHttpResponse response = httpClient.execute(request)) {
+			System.out.println(response.getStatusLine().toString());
+			HttpEntity entity = response.getEntity();
+			Header headers = entity.getContentType();
+			System.out.println(headers);
+			if (entity != null) {
+				try {
+					JSONParser parser = new JSONParser();
+					JSONObject jsonobject = (JSONObject) parser.parse(EntityUtils.toString(entity));
+					System.out.println(jsonobject.get(0));
+					return jsonobject;
+				} catch (org.json.simple.parser.ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+		} catch (ClientProtocolException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		System.exit(1);
+		return null;
+	}
+
+	public static Image downloadImage(String link) {
+		try {
+			URL url = new URL(link);
+			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+			return ImageIO.read(connection.getInputStream());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public static void downloadSoundandSave(String url, String name) {
+		Filesystem filesystem = new Filesystem();
+		try (InputStream in = URI.create(url).toURL().openStream()) {
+			filesystem.createFolderIfNotExist("/sound");
+			Files.copy(in, Paths.get(filesystem.getMainPath() + "/sound/" + name));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	protected static String Tokengen(int ziel, int lenght, int max) {
+
 		int a = 0;
 		while (a != ziel) {
 			Random random = new Random();
 			int[] value = new int[lenght];
+
 			for (int i = 0; i < value.length; i++) {
 				value[i] = random.nextInt(max);
 			}
@@ -279,7 +375,9 @@ public class Networking {
 			a = 0;
 			for (int i = 0; i < value.length; i++) {
 				a = a + value[i];
+
 			}
+
 			if (a == ziel) {
 				return Arrays.toString(strArray);
 			}

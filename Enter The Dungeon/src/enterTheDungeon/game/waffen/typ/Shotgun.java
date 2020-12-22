@@ -29,7 +29,7 @@ public class Shotgun extends Waffe{
 	public void update() {
 		xPos = getxPos();
 		yPos = getyPos();
-		magazin.update(xPos, yPos);
+		magazin.update();
 	}
 
 }
