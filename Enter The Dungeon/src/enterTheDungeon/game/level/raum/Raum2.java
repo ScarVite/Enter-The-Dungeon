@@ -42,10 +42,16 @@ public class Raum2 extends RaumOberklasse {
 
 		for (int i = 150; i < width; i += width / anzGegner) {
 
-			gegner = new Gegner(i, 400, 65, 65, 3, 3, tex, game);
+			gegner = new Gegner(i, 400, 65, 65, 3, 2, tex, game);
 			gegnerliste.add(gegner);
 		}
 		
+		setHindernisliste(hindernisliste);
+		setGegnerliste(gegnerliste);
+		erstelleSubHindernisOben();
+		erstelleSubHindernisUnten();
+		erstelleSubHindernisRechts();
+		erstelleSubHindernisLinks();
 		
 		
 

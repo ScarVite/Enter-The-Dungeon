@@ -17,13 +17,11 @@ public class Raum1 extends RaumOberklasse {
 		setAnzFallen(0);
 		setAnzGegner(2);
 		setRaum(this);
-		setxSpawn(500);
-		setySpawn(100);
+		
 	}
 
 	public void erstelleRaum() {
 		
-		System.out.println();
 		createBorder();
 		int width = game.getScreenwidth();
 		int height = game.getScreenheight();
@@ -35,20 +33,23 @@ public class Raum1 extends RaumOberklasse {
 			}
 
 		}
+//		for (int i = 550; i < width; i += width / 1) {
 
-		for (int i = 550; i < width; i += width / 3) {
-
-			gegner = new Gegner(i, 400, 65, 65, 3, 3, tex, game);
+			gegner = new Gegner(300, 500, 65, 65, 3, 2, tex, game);
 			gegnerliste.add(gegner);
-		}
+//		}
 		
-		for (int i = 150; i < width; i += width / 3) {
-
-			gegner = new Gegner(i, 700, 65, 65, 3, 3, tex, game);
-			gegnerliste.add(gegner);
-		}
+//		for (int i = 150; i < width; i += width / 1) {
+//
+//			gegner = new Gegner(i, 700, 65, 65, 3, 2, tex, game);
+//			gegnerliste.add(gegner);
+//		}
 		setHindernisliste(hindernisliste);
 		setGegnerliste(gegnerliste);
+		erstelleSubHindernisOben();
+		erstelleSubHindernisUnten();
+		erstelleSubHindernisRechts();
+		erstelleSubHindernisLinks();
 
 	}
 

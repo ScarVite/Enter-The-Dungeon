@@ -63,6 +63,10 @@ public class Raum3 extends RaumOberklasse {
 
 		setHindernisliste(hindernisliste);
 		setGegnerliste(gegnerliste);
+		erstelleSubHindernisOben();
+		erstelleSubHindernisUnten();
+		erstelleSubHindernisRechts();
+		erstelleSubHindernisLinks();
 
 	}
 
