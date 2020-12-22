@@ -273,6 +273,7 @@ public class Game extends JPanel {
 
 	public void beendeSpiel() {
 //		 Music auf mainmenu music �ndern
+		mainmenu.setSpielOffen(false);
 		hindernisliste.clear();
 		fallenliste.clear();
 		gegnerliste.clear();
