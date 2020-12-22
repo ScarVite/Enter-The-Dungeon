@@ -11,19 +11,15 @@ public class Sound {
 	private static boolean hintergrundmusik = true;
 
 	//Hauptfunktion für das einlesen und abspielen von Dateien
-
-	public void playSound(String soundLocation){
+	public void playSound(File soundFile){
 		try{
-			// In soundPath kann jetzt immer der Pfad vom Sound gespeichert werden
-				File soundPath = new File(soundLocation);
-				//Der Pfad wird reingeladen und dann abgespielt
-				AudioInputStream soundInput = AudioSystem.getAudioInputStream(soundPath);
+				AudioInputStream soundInput = AudioSystem.getAudioInputStream(soundFile);
 			    clip = AudioSystem.getClip();
 				clip.open(soundInput);
 				clip.start();
 			}
-		catch (Exception e){
-			e.printStackTrace();
+		catch (Exception ex){
+			ex.printStackTrace();
 		}
 	}
 	
@@ -42,4 +38,6 @@ public class Sound {
 	public void setHintergrundmusik(boolean hintergrundmusikBool) {
 		hintergrundmusik = hintergrundmusikBool;
 	}
+
+
 }

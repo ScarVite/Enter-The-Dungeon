@@ -16,9 +16,9 @@ public class Mainmenutex {
 		this.mainmenu = mainmenu;
 	}
 	private void getTextures() {
-					//Bild wird hier reingeladen
+		Filesystem filesystem = new Filesystem();
 				try {
-					mainmenubild = ImageIO.read(new File("Bilder/mainmenu.png"));
+					mainmenubild = ImageIO.read(filesystem.readFile("/images/mainmenu.png"));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

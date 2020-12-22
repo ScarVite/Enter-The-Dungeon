@@ -3,7 +3,6 @@ package enterTheDungeon.game.waffen;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import enterTheDungeon.game.Schuss;
 import enterTheDungeon.resource.Texturen;
 
 public class Magazin extends Waffe {
@@ -21,9 +20,9 @@ public class Magazin extends Waffe {
 		this.magazinsize = typ.getMagazinsize();
 	}
 
-	public void update(double pX,double pY) {
-		this.xPos = pX;
-		this.yPos = pY;
+	public void update() {
+//		this.xPos = pX;
+//		this.yPos = pY;
 		schussnr = typ.getSchussnr();
 		for (int i = 0; i < schussliste.size(); i++) {
 			schussliste.get(i).update();

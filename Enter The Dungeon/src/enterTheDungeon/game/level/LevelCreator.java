@@ -4,10 +4,8 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import enterTheDungeon.game.Game;
-import enterTheDungeon.game.Gegner;
-import enterTheDungeon.game.Hindernis;
-import enterTheDungeon.game.Schuss;
 import enterTheDungeon.game.Spieler;
+import enterTheDungeon.game.waffen.Schuss;
 import enterTheDungeon.resource.Texturen;
 
 public class LevelCreator {
@@ -21,7 +19,7 @@ public class LevelCreator {
 	private Gegner gegner;
 	private Rectangle spieler;
 	private Hindernis hindernis;
-	private double x, y, width, height; // fÃ¼r Hindernisse
+	private double x, y, width, height; // für Hindernisse
 
 	public LevelCreator(Game pGame, Texturen pTex) {
 
@@ -41,73 +39,53 @@ public class LevelCreator {
 
 	public void createLevel() {
 		createBorder();
-		boolean collision = true;
 		int screeenwidth = game.getScreenwidth();
 		int screenheight = game.getScreenheight();
 		Rectangle spielerRect = game.spielerBounds();
 
 		for (int i = 0; i < game.getAnzHindernis(); i++) {
-			setX(Math.random() * 800 + 1);
-			setY(Math.random() * 800 + 1);
-			setWidth(Math.random() * 100 + 65);
+			setX(Math.random() * (game.getScreenwidth() - 180) + 30);
+			setY(Math.random() * (game.getScreenheight() - 210) + 30);
+			setWidth(150);
 			setHeight(width);
 			hindernis = new Hindernis(x, y, width, height, tex);
 			hindernisliste.add(hindernis);
 		}
 
 		for (int i = 0; i < game.getAnzGegner(); i++) {
-			setX(Math.random() * 1000 + 1);
-			setY(Math.random() * 900 + 1);
-			setWidth(65);
-			setHeight(65);
-			gegner = new Gegner(x, y, width, height, 3, 3, tex, game);
+			setX(Math.random() * (game.getScreenwidth() - 30 - 65) + 30);
+			setY(Math.random() * (game.getScreenheight() - 80 - 65) + 30);
+			setWidth(100);
+			setHeight(100);
+			gegner = new Gegner(x, y, getWidth(), getHeight(), 3, 3, tex, game);
 			gegnerliste.add(gegner);
 		}
 
-		for (int i = 0; i < gegnerliste.size(); i++) {
-			Rectangle gegRect = gegnerliste.get(i).getBounds();
-			for (Hindernis hindernis : hindernisliste) {
-				Rectangle hindi = hindernis.getBounds();
+		for (Hindernis hindernis : hindernisliste) {
+			Rectangle hindi = hindernis.getBounds();
 
-				if (hindi.intersects(gegRect)) {
-					System.out.println("hallo");
-					collision = true;
-					while (collision) {
-						System.out.println("Rein Da 1");
-						gegnerliste.remove(gegner);
-						setX(Math.random() * 1000 + 1);
-						setY(Math.random() * 900 + 1);
-						setWidth(Math.random() * 100 + 65);
-						setHeight(width);
-						gegner = new Gegner(getX(), getY(), getWidth(), getHeight(), 3, 3, tex, game);
-						gegnerliste.add(gegner);
-						if (!hindi.intersects(gegRect)) {
-							collision = false;
-						}
-					}
-				}
+			while (spielerRect.intersects(hindi)) {
+				hindernis.setxPos(Math.random() * 1000 + 1);
+				hindernis.setyPos(Math.random() * 900 + 1);
+				hindernis.setWidth(150);
+				hindernis.setHeight(150);
+				hindernis.setBounds((int) hindernis.getxPos(), (int) hindernis.getyPos(), (int) hindernis.getWidth(), (int) hindernis.getHeight());
+				hindi = hindernis.getBounds();
 			}
-		}
-		
-		for (int i = 0; i < hindernisliste.size(); i++) {
-			Rectangle hindi = hindernisliste.get(i).getBounds();
-			
-			if (spielerRect.intersects(hindi)) {
-				collision = true;
-				System.out.println("hallo2");
-				while (collision) {
-					System.out.println("rein da spieler");
-					hindernisliste.remove(hindernis);
-					setX(Math.random() * 1000 + 1);
-					setY(Math.random() * 900 + 1);
-					setWidth(Math.random() * 100 + 65);
-					setHeight(width);
-					hindernis = new Hindernis(getX(), getY(), getWidth(), getHeight(), tex);
-					hindernisliste.add(hindernis);
-					if (!hindi.intersects(spielerRect)) {
-						collision = false;
-					}
+
+			for (Gegner gegner : gegnerliste) {
+				Rectangle gegC = gegner.getBounds();
+				while (hindi.intersects(gegC)) {
+					System.out.println("Rein da");
+					gegner.setxPos(Math.random() * (game.getScreenwidth() - 30 - gegner.getWidth()) + 30);
+					gegner.setyPos(Math.random() * (game.getScreenheight() - 80- gegner.getHeight()) + 30);
+					gegner.setWidth(100);
+					gegner.setHeight(100);
+					gegner.setBounds((int) gegner.getxPos(), (int) gegner.getyPos(), (int) gegner.getWidth(),
+							(int) gegner.getHeight());
+					gegC = gegner.getBounds();
 				}
+
 			}
 		}
 
@@ -119,7 +97,7 @@ public class LevelCreator {
 		hindernisliste.add(new Hindernis(0, 0, 20, height, tex)); // links
 		hindernisliste.add(new Hindernis(width - 20, 0, 20, height, tex)); // rechts
 		hindernisliste.add(new Hindernis(0, 0, width, 30, tex)); // oben
-		hindernisliste.add(new Hindernis(0, height - 80, width, 30, tex));
+		hindernisliste.add(new Hindernis(0, height - 80, width, 30, tex)); //unten
 	}
 
 	public void setSpielerRect(Rectangle pSpieler) {

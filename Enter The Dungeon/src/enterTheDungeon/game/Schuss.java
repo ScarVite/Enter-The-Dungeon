@@ -10,11 +10,16 @@ public class Schuss extends StandardObjectData {
 
 	private double speed = 4;
 	private double xDelta, yDelta;
-	private double xZiel, yZiel;
-	private int bild = 1;
+	private double xZiel, yZiel, x, y;
+	private int bild = 0;
 
 	public Schuss(double pX, double pY, double pWidth, double pHeight, double xZiel, double yZiel, Texturen pTex) {
 		super(pX, pY, pWidth, pHeight, pTex);
+
+		this.xZiel = xZiel;
+		this.yZiel = yZiel;
+		this.x = pX;
+		this.y = pY;
 
 		xDelta = pX - xZiel;
 		yDelta = pY - yZiel;
@@ -24,43 +29,39 @@ public class Schuss extends StandardObjectData {
 		xDelta *= speed;
 		yDelta *= speed;
 
-//		deltaX = x - xZiel;
-//		deltaY = y - yZiel;
-//		tangente = (float) Math.hypot(deltaX, deltaY);
-//		deltaX /= tangente;
-//		deltaY /= tangente;
-//		deltaX *= speed;
-//		deltaY *= speed;
-
 	}
 
 	public void update() {
 		xPos -= xDelta;
 		yPos -= yDelta;
 		bild = getBild();
-//		setxPos(getxPos() -xDelta);
-//		setyPos(getyPos() - yDelta);
-//		xPos = getxPos();
-//		yPos = getyPos();
 	}
 
 	public void render(Graphics g) {
-		if (isVisible()) {
-			if (bild == 1) {
-				g.drawImage(tex.feuerball1, (int) xPos, (int) yPos, (int) width, (int) height, null);
-			}
-			if (bild == 2) {
-				g.drawImage(tex.feuerball2, (int) xPos, (int) yPos, (int) width, (int) height, null);
-			}
-			g.setColor(new Color(0).GREEN);
-			g.drawRect((int) xPos, (int) yPos, (int) width, (int) height);
+		int uff = 0;
+		while (uff < 1000) {
+			uff++;
+			xZiel -= xDelta;
+			yZiel -= yDelta;
 		}
+		
+		g.drawLine((int) xPos, (int) yPos, (int) xZiel, (int) yZiel);
+
+		if (bild == 1) {
+			g.drawImage(tex.feuerball1, (int) xPos, (int) yPos, (int) width, (int) height, null);
+		}
+		if (bild == 2) {
+			g.drawImage(tex.feuerball2, (int) xPos, (int) yPos, (int) width, (int) height, null);
+		}
+
+		g.setColor(new Color(0).GREEN);
+		g.drawRect((int) xPos, (int) yPos, (int) width, (int) height);
 	}
-	
+
 	public int getBild() {
 		return bild;
 	}
-	
+
 	public void setBild(int pBild) {
 		this.bild = pBild;
 	}
