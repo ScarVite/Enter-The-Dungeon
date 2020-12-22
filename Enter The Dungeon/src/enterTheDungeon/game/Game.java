@@ -51,6 +51,7 @@ public class Game extends JPanel {
 //	private boolean isPortal = false;
 	private Pausemenu pausemenu;
 	private Mainmenu mainmenu;
+	private boolean pausemenuOpen;
 	private RaumOberklasse raum;
 	private int rNr;
 	private Filesystem filesystem;
@@ -286,6 +287,7 @@ public class Game extends JPanel {
 		gegnerliste = new ArrayList<Gegner>();
 		schussliste = new ArrayList<Schuss>();
 		hindernisliste = new ArrayList<Hindernis>();
+		pausemenuOpen = true;
 //		gegner = new Gegner(0, 0, 30, 30, 3, 3, tex, this);
 		tex = new Texturen(this);
 		spieler = new Spieler(400, 400, 35, 60, 6, 3, tex);
@@ -293,7 +295,7 @@ public class Game extends JPanel {
 		raum = new RaumOberklasse(this, tex);
 
 		mausinput = new MausInput(this);
-		tastinput = new TastaturInput(this);
+		tastinput = new TastaturInput(this, pausemenu);
 		spiel = new JFrame("Enter the Dungeon");
 
 //		spiel.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -337,9 +339,16 @@ public class Game extends JPanel {
 		if (key == KeyEvent.VK_D) {
 			spieler.setRight(true);
 		}
-		if (key == KeyEvent.VK_ESCAPE) {
-			pausemenu = new Pausemenu(mainmenu, null);
-			setPause(!isPause());
+		if (isPausemenuOpen()) {
+			if (key == KeyEvent.VK_ESCAPE) {
+				pausemenu = new Pausemenu(mainmenu, this);
+				pause = !pause;
+				setPausemenuOpen(false);
+				sound.getClip().stop();
+			}
+		}
+		if(pausemenu.isSound()) {
+			sound.getClip().start();
 		}
 	}
 
@@ -435,12 +444,21 @@ public class Game extends JPanel {
 		return screenheight;
 	}
 
+
 	public boolean isPause() {
 		return pause;
 	}
 
 	public void setPause(boolean pause) {
 		this.pause = pause;
+	}
+
+	public boolean isPausemenuOpen() {
+		return pausemenuOpen;
+	}
+
+	public void setPausemenuOpen(boolean pausemenuopen) {
+		pausemenuOpen = pausemenuopen;
 	}
 
 }
