@@ -18,7 +18,7 @@ public class Pistole extends Waffe {
 		setSchussarray(this.schussliste);
 		setSchussnr(magazinsize - 2);
 		magazin = new Magazin(30, 1000, 15, 15, magazinsize, this, pTex);
-
+		setReichweite(500);
 		setTyp(this);
 //		schussarray = new Schuss [magazinsize];
 
@@ -40,7 +40,7 @@ public class Pistole extends Waffe {
 		if (schussnr < 0) {
 			setSchussnr(magazinsize - 1);
 		}
-		schuss = new Schuss(berechneXMitte(), berechneYMitte(), 25, 25, pX, pY, tex);
+		schuss = new Schuss(berechneXMitte(), berechneYMitte(), 25, 25, pX, pY, reichweite,tex);
 		schussliste.add(schuss);
 		setSchussnr(schussnr - 1);
 

@@ -1,20 +1,8 @@
 package enterTheDungeon.api;
 
-import java.io.InputStream;
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
-import java.awt.Image;
-import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -22,13 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-
-import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -48,7 +29,6 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import enterTheDungeon.game.Oberklassen.User;
-import enterTheDungeon.resource.Filesystem;
 
 public class Networking {
 
@@ -95,6 +75,7 @@ public class Networking {
 	public static boolean updateLeaderboard(String username, int score) {
 		if (userToken == null)
 			userToken = new User().getToken();
+		System.out.println("hier");
 		HttpPost post = new HttpPost(baseUrl + "/updateleaderboard");
 		post.setHeader("authorization", userToken);
 		/*
@@ -203,7 +184,7 @@ public class Networking {
 					JSONParser parser = new JSONParser();
 					JSONObject UserObj;
 					UserObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
-					if (UserObj.get("error") != null)
+					if(UserObj.get("error") != null)
 						User.setUser(UserObj);
 					else {
 						JSONObject error = (JSONObject) UserObj.get("error");
@@ -257,7 +238,7 @@ public class Networking {
 					JSONParser parser = new JSONParser();
 					JSONObject UserObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
 					System.out.println(UserObj.get("error"));
-					if (UserObj.get("error") == null)
+					if(UserObj.get("error") == null)
 						User.setUser(UserObj);
 					else {
 						JSONObject error = (JSONObject) UserObj.get("error");
@@ -282,7 +263,7 @@ public class Networking {
 			e1.printStackTrace();
 		}
 	}
-
+	
 	public static void checkPing() {
 		HttpGet request = new HttpGet("https://api.scarvite.de/status");
 		try (CloseableHttpResponse response = httpClient.execute(request)) {
@@ -298,63 +279,6 @@ public class Networking {
 			connected = false;
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}
-	}
-
-	public static JSONObject getJSONObject(String link) {
-		HttpGet request = new HttpGet(link);
-		request.setHeader("authorization", userToken);
-		try (CloseableHttpResponse response = httpClient.execute(request)) {
-			System.out.println(response.getStatusLine().toString());
-			HttpEntity entity = response.getEntity();
-			Header headers = entity.getContentType();
-			System.out.println(headers);
-			if (entity != null) {
-				try {
-					JSONParser parser = new JSONParser();
-					JSONObject jsonobject = (JSONObject) parser.parse(EntityUtils.toString(entity));
-					System.out.println(jsonobject.get(0));
-					return jsonobject;
-				} catch (org.json.simple.parser.ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-
-		} catch (ClientProtocolException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		System.exit(1);
-		return null;
-	}
-
-	public static Image downloadImage(String link) {
-		try {
-			URL url = new URL(link);
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			return ImageIO.read(connection.getInputStream());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public static void downloadSoundandSave(String url, String name) {
-		Filesystem filesystem = new Filesystem();
-		try (InputStream in = URI.create(url).toURL().openStream()) {
-			filesystem.createFolderIfNotExist("/sound");
-			Files.copy(in, Paths.get(filesystem.getMainPath() + "/sound/" + name));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 	}
 

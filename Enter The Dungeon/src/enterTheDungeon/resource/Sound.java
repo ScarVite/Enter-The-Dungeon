@@ -11,9 +11,10 @@ public class Sound {
 	private static boolean hintergrundmusik = true;
 
 	//Hauptfunktion für das einlesen und abspielen von Dateien
-	public void playSound(File soundFile){
+	public void playSound(String soundLocation){
 		try{
-				AudioInputStream soundInput = AudioSystem.getAudioInputStream(soundFile);
+			File soundPath = new File(soundLocation);
+				AudioInputStream soundInput = AudioSystem.getAudioInputStream(soundPath);
 			    clip = AudioSystem.getClip();
 				clip.open(soundInput);
 				clip.start();

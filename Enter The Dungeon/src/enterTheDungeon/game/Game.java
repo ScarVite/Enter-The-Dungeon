@@ -52,10 +52,8 @@ public class Game extends JPanel {
 //	private boolean isPortal = false;
 	private Pausemenu pausemenu;
 	private Mainmenu mainmenu;
-	private boolean pausemenuOpen;
 	private RaumOberklasse raum;
 	private int rNr;
-	private Filesystem filesystem;
 
 	public Game(Mainmenu pmainmenu) {
 		init();
@@ -284,7 +282,6 @@ public class Game extends JPanel {
 
 	public void beendeSpiel() {
 //		 Music auf mainmenu music �ndern
-		mainmenu.setSpielOffen(false);
 		hindernisliste.clear();
 		fallenliste.clear();
 		gegnerliste.clear();
@@ -294,7 +291,6 @@ public class Game extends JPanel {
 	}
 
 	private void init() {
-		filesystem = new Filesystem();
 		sound = new Sound();
 		gegnerliste = new ArrayList<Gegner>();
 		schussliste = new ArrayList<Schuss>();
@@ -303,7 +299,7 @@ public class Game extends JPanel {
 		hindernisUnten = new ArrayList<Hindernis>();
 		hindernisRechts = new ArrayList<Hindernis>();
 		hindernisLinks = new ArrayList<Hindernis>();
-		pausemenuOpen = true;
+
 //		gegner = new Gegner(0, 0, 30, 30, 3, 3, tex, this);
 		tex = new Texturen(this);
 		spieler = new Spieler(200, 400, 35, 60, 6, 3, tex);
@@ -311,7 +307,7 @@ public class Game extends JPanel {
 		raum = new RaumOberklasse(this, tex);
 
 		mausinput = new MausInput(this);
-		tastinput = new TastaturInput(this, pausemenu);
+		tastinput = new TastaturInput(this);
 		spiel = new JFrame("Enter the Dungeon");
 
 //		spiel.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -355,16 +351,9 @@ public class Game extends JPanel {
 		if (key == KeyEvent.VK_D) {
 			spieler.setRight(true);
 		}
-		if (isPausemenuOpen()) {
-			if (key == KeyEvent.VK_ESCAPE) {
-				pausemenu = new Pausemenu(mainmenu, this);
-				pause = !pause;
-				setPausemenuOpen(false);
-				sound.getClip().stop();
-			}
-		}
-		if(pausemenu.isSound()) {
-			sound.getClip().start();
+		if (key == KeyEvent.VK_ESCAPE) {
+			pausemenu = new Pausemenu(mainmenu, null);
+			setPause(!isPause());
 		}
 	}
 
@@ -389,7 +378,8 @@ public class Game extends JPanel {
 	public void mouseClicked(MouseEvent e) {
 		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
 		if (sound.getHintergrundmusik()) {
-			sound.playSound(filesystem.readFile("/sound/Feuerball.wav"));
+			String soundPath = "Sound\\Feuerball.wav";
+			sound.playSound(soundPath);
 			sound.getClip().start();
 		}
 	}
@@ -489,12 +479,6 @@ public class Game extends JPanel {
 	public int getAnzHindernis() {
 		return maxHindernis;
 	}
-	
-	public Rectangle spielerBounds() {
-		return spieler.getBounds();
-	}
-
-
 
 	public Rectangle spielerBounds() {
 		return spieler.getBounds();
@@ -512,7 +496,6 @@ public class Game extends JPanel {
 		return screenheight;
 	}
 
-
 	public boolean isPause() {
 		return pause;
 	}
@@ -522,13 +505,5 @@ public class Game extends JPanel {
 	}
 	
 	
-
-	public boolean isPausemenuOpen() {
-		return pausemenuOpen;
-	}
-
-	public void setPausemenuOpen(boolean pausemenuopen) {
-		pausemenuOpen = pausemenuopen;
-	}
 
 }

@@ -1,20 +1,12 @@
 package enterTheDungeon.api;
 
 import java.awt.Dimension;
-import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import enterTheDungeon.game.Mainmenu;
 import enterTheDungeon.resource.Filesystem;
@@ -28,7 +20,6 @@ public class Setup extends JFrame implements KeyListener {
 	JButton jButton1;
 	JLabel jLabel1;
 	JLabel jLabel2;
-	private Filesystem filesystem = new Filesystem();
 
 	public Setup() {
 		createJFrame();
@@ -37,6 +28,7 @@ public class Setup extends JFrame implements KeyListener {
 	private void ButtonPressed(java.awt.event.ActionEvent evt) {
 		if (jTextField1.getText().isEmpty() == false) {
 			if (Networking.validatekey(jTextField1.getText())) {
+				Filesystem filesystem = new Filesystem();
 				filesystem.createFileIfNotExist("/Files/KeyValid.txt");
 				filesystem.writeTxtFile("/Files/KeyValid.txt", "Hiermit-wird-das-Spiel-aktiviert");
 				new Mainmenu();

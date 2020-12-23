@@ -6,20 +6,22 @@ import java.awt.Graphics;
 import enterTheDungeon.game.Oberklassen.StandardObjectData;
 import enterTheDungeon.resource.Texturen;
 
-public class Schuss extends StandardObjectData {
+public class Schuss extends Waffe {
 
 	private double speed = 4;
 	private double xDelta, yDelta;
-	private double xZiel, yZiel, x, y;
+	private double xZiel, yZiel, xStart, yStart;
 	private int bild = 0;
+	private int reichweite;
+	private boolean outOfBounds;
 
-	public Schuss(double pX, double pY, double pWidth, double pHeight, double xZiel, double yZiel, Texturen pTex) {
+	public Schuss(double pX, double pY, double pWidth, double pHeight, double xZiel, double yZiel, int reichweite,Texturen pTex) {
 		super(pX, pY, pWidth, pHeight, pTex);
-
+		this.reichweite = reichweite;
 		this.xZiel = xZiel;
 		this.yZiel = yZiel;
-		this.x = pX;
-		this.y = pY;
+		this.xStart  = xPos;
+		this.yStart = yPos;
 
 		xDelta = pX - xZiel;
 		yDelta = pY - yZiel;
@@ -28,6 +30,7 @@ public class Schuss extends StandardObjectData {
 		yDelta /= tangente;
 		xDelta *= speed;
 		yDelta *= speed;
+		
 
 	}
 
@@ -35,6 +38,21 @@ public class Schuss extends StandardObjectData {
 		xPos -= xDelta;
 		yPos -= yDelta;
 		bild = getBild();
+		int abstand = checkReichweite(xPos, yPos, xStart, yStart);
+		
+		if(abstand > reichweite) {
+			setOutOfBounds(true);
+		}
+		else {
+			setOutOfBounds(false);
+		}
+	}
+	
+	private int checkReichweite(double xPos, double yPos, double xStart, double yStart) {
+		double xDelta = xPos - xStart;
+		double yDelta = yPos - yStart;
+		double abstand = Math.hypot(xDelta, yDelta);
+		return (int) abstand;
 	}
 
 	public void render(Graphics g) {
@@ -64,6 +82,14 @@ public class Schuss extends StandardObjectData {
 
 	public void setBild(int pBild) {
 		this.bild = pBild;
+	}
+
+	public boolean isOutOfBounds() {
+		return outOfBounds;
+	}
+
+	public void setOutOfBounds(boolean outOfBounds) {
+		this.outOfBounds = outOfBounds;
 	}
 
 }
