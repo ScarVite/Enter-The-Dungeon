@@ -57,7 +57,7 @@ public class RaumOberklasse {
 		powerupliste = new ArrayList<Powerup>();
 
 		hindernisliste = new ArrayList<Hindernis>();
-		// SubHidnernis fuer Gegner KI
+		// SubHindnernis fuer Gegner KI
 		hindernisOben = new ArrayList<Hindernis>();
 		hindernisUnten = new ArrayList<Hindernis>();
 		hindernisRechts = new ArrayList<Hindernis>();
@@ -137,7 +137,7 @@ public class RaumOberklasse {
 	}
 
 	public void starteRaum(int pRaumNr) {
-		setRaumNr(pRaumNr);
+		setRaumNr(pRaumNr=5);
 		
 			
 //		raum1.erstelleRaum();

@@ -22,7 +22,9 @@ public class Texturen {
 	public BufferedImage falleZU;
 	public BufferedImage falleBereit;
 	public BufferedImage falleOffen;
-	public BufferedImage powerUp;
+	public BufferedImage speedpowerUp;
+	public BufferedImage schadenpowerUp;
+	public BufferedImage heartpowerUp;
 	private Game game;
 
 	public Texturen(Game game) {
@@ -46,7 +48,9 @@ public class Texturen {
 			falleZU = ImageIO.read(filesystem.readFile("/images/FalleZu.png"));
 			falleBereit = ImageIO.read(filesystem.readFile("/images/FalleBereit.png"));
 			falleOffen = ImageIO.read(filesystem.readFile("/images/FalleOffen.png"));
-			powerUp = ImageIO.read(filesystem.readFile("/images/Powerup.png"));
+			speedpowerUp = ImageIO.read(filesystem.readFile("/images/Powerup.png"));
+			schadenpowerUp = ImageIO.read(filesystem.readFile("/images/schaden.png"));
+			heartpowerUp = ImageIO.read(filesystem.readFile("/images/heart.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

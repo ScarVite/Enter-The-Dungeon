@@ -212,10 +212,9 @@ public class Game extends JPanel {
 	private void collisionSchussMitObject(Rectangle spC, int waffe) {
 		for (int i = 0; i < schussliste.size(); i++) {
 			Rectangle s = schussliste.get(i).getBounds();
-//			schussOutOfBounds(i);
+			schussOutOfBounds(i);
 			for (int b = 0; b < gegnerliste.size(); b++) {
 				Rectangle g = gegnerliste.get(b).getBounds();
-
 				// schuss und gegner Ueberschneiden && spielerwaffe dann wird gegner getroffen
 				if (g.intersects(s) && waffe == 1) {
 //					gegnerliste.remove(b);
@@ -226,10 +225,11 @@ public class Game extends JPanel {
 					} catch (Exception e) {
 						// TODO: handle exception
 					}
-					gegnerliste.get(b).setLeben(gegnerliste.get(b).getLeben() - 1);
+					gegnerliste.get(b).setLeben(gegnerliste.get(b).getLeben() - getWaffenSchaden());
+					System.out.println(getWaffenSchaden());
 				}
 
-				if (gegnerliste.get(b).getLeben() == 0) {
+				if (gegnerliste.get(b).getLeben() <= 0) {
 					raumliste.get(rNr).removeGegner(gegnerliste.get(b));
 					if (gegnerliste.isEmpty()) {
 						raum.setGegnerliste(gegnerliste);
@@ -438,13 +438,30 @@ public class Game extends JPanel {
 	}
 
 	// Getter und Setter
+	public int getSpielerLeben(){
+		return spieler.getLeben();
+	}
+	public void setSpielerLeben(int leben) {
+		spieler.setLeben(leben);
+	}
+	public int getWaffenSchaden() {
+		waffe = spieler.getWaffe();
+		return waffe.getSchaden();
+	}
+	
+	public void setWaffenSchaden(int schaden) {
+		System.out.println(schaden);
+		waffe = spieler.getWaffe();
+		waffe.setSchaden(schaden);
+	}
+	
 	public double getSpeedSpieler() {
 		return spieler.getSpeed();
 	}
 	public void setSpeedSpieler(double speed) {
 		spieler.setSpeed(speed);
 	}
-
+	
 
 	public double getxPosSpieler() {
 		return spieler.getxPos();

@@ -5,10 +5,10 @@ import java.awt.Graphics;
 import enterTheDungeon.game.Game;
 import enterTheDungeon.resource.Texturen;
 
-public class Speedpowerup extends Powerup {
+public class Schadenpowerup extends Powerup {
 	private double effect;
 
-	public Speedpowerup(double pX, double pY, double pWidth, double pHeight, Texturen pTex, Game pGame) {
+	public Schadenpowerup(double pX, double pY, double pWidth, double pHeight, Texturen pTex, Game pGame) {
 		super(pX, pY, pWidth, pHeight, pTex, pGame);
 		setPowerup(this);
 	}
@@ -19,7 +19,7 @@ public class Speedpowerup extends Powerup {
 
 	public void render(Graphics g) {
 		if (isVisible()) {
-			g.drawImage(tex.speedpowerUp, (int) xPos, (int) yPos, (int) width, (int) height, null);
+			g.drawImage(tex.schadenpowerUp, (int) xPos, (int) yPos, (int) width, (int) height, null);
 		}
 	}
 
@@ -33,8 +33,8 @@ public class Speedpowerup extends Powerup {
 
 	@Override
 	public void effect() {
-		System.out.println("Speed Powerup Aktiviert");
-		game.setSpeedSpieler(5);
+		System.out.println("Schaden Powerup Aktiviert");
+		game.setWaffenSchaden(2);
 	}
 
 }

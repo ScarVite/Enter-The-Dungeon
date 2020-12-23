@@ -18,7 +18,7 @@ public abstract class Powerup extends StandardObjectData {
 
 	public Powerup(double pX, double pY, double pWidth, double pHeight, Texturen pTex,Game pGame) {
 		super(pX, pY, pWidth, pHeight, pTex);
-		this.game = pGame;
+		this.game = pGame;;
 		setVisible(true);
 	}
 

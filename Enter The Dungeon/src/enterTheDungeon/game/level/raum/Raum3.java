@@ -6,6 +6,7 @@ import enterTheDungeon.game.Game;
 import enterTheDungeon.game.level.Falle;
 import enterTheDungeon.game.level.Hindernis;
 import enterTheDungeon.game.level.Powerup;
+import enterTheDungeon.game.level.Schadenpowerup;
 import enterTheDungeon.game.level.Speedpowerup;
 import enterTheDungeon.game.level.Gegner;
 import enterTheDungeon.resource.Texturen;

@@ -7,6 +7,7 @@ import java.awt.Shape;
 import java.util.ArrayList;
 
 import enterTheDungeon.game.Game;
+import enterTheDungeon.game.Lebensbalken;
 import enterTheDungeon.game.Spieler;
 import enterTheDungeon.game.Oberklassen.ExtendedObjectData;
 import enterTheDungeon.game.waffen.Magazin;
@@ -34,6 +35,7 @@ public class Gegner extends ExtendedObjectData {
 	private ArrayList<Hindernis> hindernisliste;
 	private ArrayList<Hindernis> hindernisOben, hindernisUnten, hindernisRechts, hindernisLinks;
 	private int hindernisnummer;
+	private Lebensbalken lebensbalken;
 
 	private Game game;
 
@@ -59,11 +61,13 @@ public class Gegner extends ExtendedObjectData {
 		hindernisUnten = new ArrayList<Hindernis>();
 		hindernisRechts = new ArrayList<Hindernis>();
 		hindernisLinks = new ArrayList<Hindernis>();
-
+		lebensbalken = new Lebensbalken(xPos, yPos - 20, 10, 10, leben, tex);
 	}
 	
 
 	public void update() {
+		lebensbalken.setLeben(getLeben());
+		lebensbalken.update((int) xPos, (int) yPos);
 		hindernisliste = game.getHindernisListe();
 		hindernisOben = game.getHindernisOben();
 		hindernisUnten = game.getHindernisUnten();
@@ -77,7 +81,7 @@ public class Gegner extends ExtendedObjectData {
 		nachRechts = isNachRechts();
 		nachLinks = isNachLinks();
 
-		laufen();
+//		laufen();
 
 		collision.setBounds((int) xPos - 20, (int) yPos - 20, (int) width + 40, (int) height + 40);
 		vision.setBounds((int) xPos - sicht, (int) yPos - sicht, (int) width + sicht * 2, (int) height + sicht * 2);
@@ -135,6 +139,7 @@ public class Gegner extends ExtendedObjectData {
 //				int height = (int) hindernisLinks.get(i).getHeight();
 //				g.fillRect(x, y, 1, height);
 //			}
+			lebensbalken.render(g);
 			g.setColor(new Color(8).RED);
 			int x = (int) getxPos();
 			int y = (int) (getyPos() + getHeight());

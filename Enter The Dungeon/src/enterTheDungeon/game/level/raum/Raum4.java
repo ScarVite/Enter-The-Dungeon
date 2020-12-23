@@ -6,8 +6,10 @@ import enterTheDungeon.game.Game;
 import enterTheDungeon.game.level.Falle;
 import enterTheDungeon.game.level.Hindernis;
 import enterTheDungeon.game.level.Powerup;
+import enterTheDungeon.game.level.Schadenpowerup;
 import enterTheDungeon.game.level.Speedpowerup;
 import enterTheDungeon.game.level.Gegner;
+import enterTheDungeon.game.level.Heartpowerup;
 import enterTheDungeon.resource.Texturen;
 
 
@@ -69,8 +71,6 @@ public class Raum4 extends RaumOberklasse {
 				hindernisliste.add(hindernis);
 				hindernis = new Hindernis(1790,520 , 100, 100, tex);
 				hindernisliste.add(hindernis);
-				powerup = new Speedpowerup(50, 120	, 50, 50, tex, game);
-				powerupliste.add(powerup);
 				offset= 160;
 				for(int i=4;i<getAnzHindernis();i++){
 					hindernis = new Hindernis(1320,height-offset , 100, 100, tex);
@@ -118,6 +118,9 @@ public class Raum4 extends RaumOberklasse {
 						falle = new Falle(1320, 120	, 100, 100, tex);
 						fallenliste.add(falle);
 				
+			//Powerups
+						powerup = new Heartpowerup(50, 120	, 50, 50, tex, game);
+						powerupliste.add(powerup);
 		for (int i = 150; i < width; i += width / 2) {
 			
 			gegner = new Gegner(i, 400, 65, 65, 3, 3, tex, game);

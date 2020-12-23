@@ -23,7 +23,7 @@ public class Waffe extends StandardObjectData {
 
 	public Waffe(double pX, double pY, double pWidth, double pHeight, Texturen pTex) {
 		super(pX, pY, pWidth, pHeight, pTex);
-
+		setSchaden(1);
 		schussliste = new ArrayList<Schuss>();
 	}
 
