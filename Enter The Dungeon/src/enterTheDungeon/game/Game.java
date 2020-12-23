@@ -52,10 +52,10 @@ public class Game extends JPanel {
 //	private boolean isPortal = false;
 	private Pausemenu pausemenu;
 	private Mainmenu mainmenu;
-	private boolean pausemenuOpen;
 	private RaumOberklasse raum;
 	private int rNr;
 	private Filesystem filesystem;
+	private boolean pausemenuOpen;
 
 	public Game(Mainmenu pmainmenu) {
 		init();
@@ -169,7 +169,7 @@ public class Game extends JPanel {
 				int maxRaum = raum.getMaxRaum() - 1;
 				boolean weiter = portalliste.get(i).getWeiter();
 				rNr = raum.getRaumNr();
-				// nächster Raum
+				// n�chster Raum
 				if (weiter) {
 					rNr++;
 					raumliste.get(rNr).removePortal(portalliste.get(i));
@@ -204,7 +204,6 @@ public class Game extends JPanel {
 			for (int b = 0; b < gegnerliste.size(); b++) {
 				Rectangle g = gegnerliste.get(b).getBounds();
 
-				// schuss und gegner überschneiden && spielerwaffe dann wird gegner getroffen
 				if (g.intersects(s) && waffe == 1) {
 //					gegnerliste.remove(b);
 					try {
@@ -221,7 +220,7 @@ public class Game extends JPanel {
 					raumliste.get(rNr).removeGegner(gegnerliste.get(b));
 					if (gegnerliste.isEmpty()) {
 						raum.setGegnerliste(gegnerliste);
-						// Portal für das nächste Level
+						// Portal f�r das naechste Level
 						int max = raum.getMaxRaum() - 1;
 						int nr = raum.getRaumNr();
 						Portal portal;
@@ -231,7 +230,7 @@ public class Game extends JPanel {
 							raumliste.get(rNr).addPortal(portal);
 						}
 
-						// Portal für das vorherige Level
+						// Portal f�r das vorherige Level
 						if (nr != 0) {
 							portal = new Portal(800, 800, spieler.getWidth(), spieler.getHeight(), tex);
 							portal.setWeiter(false);
@@ -242,7 +241,7 @@ public class Game extends JPanel {
 
 			}
 
-			// schuss und gegner überschneiden && gegnerwaffe dann wird spieler getroffen
+			// schuss und gegner ueberschneiden && gegnerwaffe dann wird spieler getroffen
 
 			boolean spielerGetroffen = spieler.isGetroffenVonSchuss();
 			if (spC.intersects(s) && waffe == 0 && !spielerGetroffen) {
@@ -277,14 +276,13 @@ public class Game extends JPanel {
 	}
 
 	private void schussOutOfBounds(int i) {
-		if (schussliste.get(i).isOutOfBounds()) {
+		/*if (schussliste.get(i).isOutOfBounds()) {
 			schussliste.remove(i);
-		}
+		}*/
 	}
 
 	public void beendeSpiel() {
-//		 Music auf mainmenu music �ndern
-		mainmenu.setSpielOffen(false);
+//		 Music auf mainmenu music ndern
 		hindernisliste.clear();
 		fallenliste.clear();
 		gegnerliste.clear();
@@ -304,6 +302,7 @@ public class Game extends JPanel {
 		hindernisRechts = new ArrayList<Hindernis>();
 		hindernisLinks = new ArrayList<Hindernis>();
 		pausemenuOpen = true;
+
 //		gegner = new Gegner(0, 0, 30, 30, 3, 3, tex, this);
 		tex = new Texturen(this);
 		spieler = new Spieler(200, 400, 35, 60, 6, 3, tex);
@@ -489,7 +488,7 @@ public class Game extends JPanel {
 	public int getAnzHindernis() {
 		return maxHindernis;
 	}
-	
+
 	public Rectangle spielerBounds() {
 		return spieler.getBounds();
 	}
@@ -506,7 +505,6 @@ public class Game extends JPanel {
 		return screenheight;
 	}
 
-
 	public boolean isPause() {
 		return pause;
 	}
@@ -515,8 +513,6 @@ public class Game extends JPanel {
 		this.pause = pause;
 	}
 	
-	
-
 	public boolean isPausemenuOpen() {
 		return pausemenuOpen;
 	}
@@ -524,5 +520,4 @@ public class Game extends JPanel {
 	public void setPausemenuOpen(boolean pausemenuopen) {
 		pausemenuOpen = pausemenuopen;
 	}
-
 }
