@@ -15,6 +15,8 @@ public class Spieler extends ExtendedObjectData {
 	private boolean getroffenVonSchuss;
 	private int immunVorSchuss;
 	private int immunVorFalle;
+	private boolean powerupAn;
+
 
 	public Spieler(double pX, double pY, double pWidth, double pHeight, int pLeben, int pSpeed, Texturen pTex) {
 		super(pX, pY, pWidth, pHeight, pLeben, pSpeed, pTex);
@@ -50,6 +52,9 @@ public class Spieler extends ExtendedObjectData {
 		}
 		if(getroffenVonSchuss) {
 			immunitaetVorSchuss();
+		}
+		if(powerupAn) {
+			
 		}
 		
 	}
@@ -110,5 +115,15 @@ public class Spieler extends ExtendedObjectData {
 	public void setGetroffenVonSchuss(boolean getroffenVonSchuss) {
 		this.getroffenVonSchuss = getroffenVonSchuss;
 	}
+	
+	public boolean getPowerupAn() {
+		return powerupAn;
+	}
+	
+	public void setPowerupAn(boolean pPowerup) {
+		this.powerupAn = pPowerup;
+	}
+
+
 
 }

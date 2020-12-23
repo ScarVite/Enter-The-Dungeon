@@ -19,15 +19,25 @@ public class Waffe extends StandardObjectData {
 	protected int schussnr;
 	protected ArrayList<Schuss> schussliste;
 	protected boolean renderable;
+	protected int reichweite;
+
 	public Waffe(double pX, double pY, double pWidth, double pHeight, Texturen pTex) {
 		super(pX, pY, pWidth, pHeight, pTex);
-		
+
 		schussliste = new ArrayList<Schuss>();
 	}
 
 //	public void createWaffe(Pistole pistole) {
 //		this.typ = pistole;
 //	}
+
+	public int getReichweite() {
+		return reichweite;
+	}
+
+	public void setReichweite(int reichweite) {
+		this.reichweite = reichweite;
+	}
 
 	// Getter und Setter
 	public ArrayList<Schuss> getSchussarray() {

@@ -6,6 +6,7 @@ import enterTheDungeon.game.Game;
 import enterTheDungeon.game.level.Falle;
 import enterTheDungeon.game.level.Hindernis;
 import enterTheDungeon.game.level.Powerup;
+import enterTheDungeon.game.level.Speedpowerup;
 import enterTheDungeon.game.level.Gegner;
 import enterTheDungeon.resource.Texturen;
 
@@ -19,8 +20,6 @@ public class Raum3 extends RaumOberklasse {
 		setAnzGegner(2);
 		setAnzPowerup(5);
 		setRaum(this);
-
-		
 		setxSpawn(50);
 		setySpawn(150);
 	}
@@ -109,7 +108,10 @@ public class Raum3 extends RaumOberklasse {
 		fallenliste.add(falle);
 		falle = new Falle(720, 120	, 100, 100, tex);
 		fallenliste.add(falle);
-
+		//Powerups
+		powerup = new Speedpowerup(1320, 950, 50, 50, tex, game);
+		powerupliste.add(powerup);
+		
 		for (int i = 150; i < width; i += width / 4) {
 
 			gegner = new Gegner(i, 900, 65, 65, 3, 3, tex, game);
@@ -118,6 +120,7 @@ public class Raum3 extends RaumOberklasse {
 
 		setHindernisliste(hindernisliste);
 		setGegnerliste(gegnerliste);
+		setPowerupliste(powerupliste);
 		erstelleSubHindernisOben();
 		erstelleSubHindernisUnten();
 		erstelleSubHindernisRechts();

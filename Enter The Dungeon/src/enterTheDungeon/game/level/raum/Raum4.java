@@ -6,6 +6,7 @@ import enterTheDungeon.game.Game;
 import enterTheDungeon.game.level.Falle;
 import enterTheDungeon.game.level.Hindernis;
 import enterTheDungeon.game.level.Powerup;
+import enterTheDungeon.game.level.Speedpowerup;
 import enterTheDungeon.game.level.Gegner;
 import enterTheDungeon.resource.Texturen;
 
@@ -68,7 +69,7 @@ public class Raum4 extends RaumOberklasse {
 				hindernisliste.add(hindernis);
 				hindernis = new Hindernis(1790,520 , 100, 100, tex);
 				hindernisliste.add(hindernis);
-				powerup = new Powerup(50, 120	, 50, 50, tex);
+				powerup = new Speedpowerup(50, 120	, 50, 50, tex, game);
 				powerupliste.add(powerup);
 				offset= 160;
 				for(int i=4;i<getAnzHindernis();i++){

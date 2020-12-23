@@ -63,7 +63,6 @@ public class Networking {
 			userToken = new User().getToken();
 		HttpGet request = new HttpGet(baseUrl + "/validatekey?key=" + key);
 		request.setHeader("authorization", userToken);
-		System.out.println(userToken);
 		try (CloseableHttpResponse response = httpClient.execute(request)) {
 			System.out.println(response.getStatusLine().toString());
 			HttpEntity entity = response.getEntity();
@@ -92,7 +91,7 @@ public class Networking {
 		return false;
 	}
 
-	public static boolean updateLeaderboard(String username, int score) {
+	public static void  updateLeaderboard(String username, int score) {
 		if (userToken == null)
 			userToken = new User().getToken();
 		HttpPost post = new HttpPost(baseUrl + "/updateleaderboard");
@@ -114,7 +113,7 @@ public class Networking {
 			System.out.println(headers);
 			if (entity != null) {
 				try {
-					return true;
+					System.out.println(response.getStatusLine());
 				} catch (ParseException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -129,7 +128,6 @@ public class Networking {
 			e1.printStackTrace();
 		}
 		System.exit(1);
-		return false;
 	}
 
 	public static JSONArray getLeaderboard() {

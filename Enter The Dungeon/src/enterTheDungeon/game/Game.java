@@ -151,51 +151,63 @@ public class Game extends JPanel {
 
 		}
 
-		for (Falle falle : fallenliste) {
-			boolean aufgeklappt = falle.isAufgeklappt();
-			boolean getroffen = spieler.isGetroffenVonFalle();
-			Rectangle falleRect = falle.getBounds();
-			falle.setBounds((int) falle.getxPos() + 10, (int) falle.getyPos() + 10, (int) falle.getWidth() - 20,
-					(int) falle.getHeight() - 20);
-			if (falleRect.intersects(spielerBounds) && !getroffen && aufgeklappt) {
-				spieler.setGetroffenVonFalle(true);
-				spieler.setLeben(spieler.getLeben() - 1);
+		for (Powerup powerup : powerupliste) {
+			Rectangle powerupRect = powerup.getBounds();
+			powerup.setBounds((int) powerup.getxPos() + 10, (int) powerup.getyPos() + 10, (int) powerup.getWidth() - 20,
+					(int) powerup.getHeight() - 20);
+			if (powerupRect.intersects(spielerBounds) && !powerup.isPowerupAktiviert()) {
+				powerup = powerup.getPowerup();
+				powerup.setPowerupAktiviert(true);
+				powerup.effect();
+				powerup.setVisible(false);
 			}
+		}	
 
-		}
-		for (int i = 0; i < portalliste.size(); i++) {
-			Rectangle portalR = portalliste.get(i).getBounds();
-			if (portalR.intersects(spielerBounds)) {
-				int maxRaum = raum.getMaxRaum() - 1;
-				boolean weiter = portalliste.get(i).getWeiter();
-				rNr = raum.getRaumNr();
-				// naechster Raum
-				if (weiter) {
-					rNr++;
-					raumliste.get(rNr).removePortal(portalliste.get(i));
-					raum.starteRaum(rNr);
-					spieler.setxPos(raumliste.get(rNr).getxSpawn());
-					spieler.setyPos(raumliste.get(rNr).getySpawn());
-
-					// vorletzter Raum
-				} else if (!weiter) {
-					rNr--;
-					raumliste.get(rNr).removePortal(portalliste.get(i));
-					raum.starteRaum(rNr);
-					spieler.setxPos(raumliste.get(rNr).getxSpawn());
-					spieler.setyPos(raumliste.get(rNr).getySpawn());
+			for (Falle falle : fallenliste) {
+				boolean aufgeklappt = falle.isAufgeklappt();
+				boolean getroffen = spieler.isGetroffenVonFalle();
+				Rectangle falleRect = falle.getBounds();
+				falle.setBounds((int) falle.getxPos() + 10, (int) falle.getyPos() + 10, (int) falle.getWidth() - 20,
+						(int) falle.getHeight() - 20);
+				if (falleRect.intersects(spielerBounds) && !getroffen && aufgeklappt) {
+					spieler.setGetroffenVonFalle(true);
+					spieler.setLeben(spieler.getLeben() - 1);
 				}
-				schussliste.clear();
-				raum.clearHindernisliste();
+
+			}
+			for (int i = 0; i < portalliste.size(); i++) {
+				Rectangle portalR = portalliste.get(i).getBounds();
+				if (portalR.intersects(spielerBounds)) {
+					spieler.setSpeed(3);
+					int maxRaum = raum.getMaxRaum() - 1;
+					boolean weiter = portalliste.get(i).getWeiter();
+					rNr = raum.getRaumNr();
+					// naechster Raum
+					if (weiter) {
+						rNr++;
+						raumliste.get(rNr).removePortal(portalliste.get(i));
+						raum.starteRaum(rNr);
+						spieler.setxPos(raumliste.get(rNr).getxSpawn());
+						spieler.setyPos(raumliste.get(rNr).getySpawn());
+
+						// vorletzter Raum
+					} else if (!weiter) {
+						rNr--;
+						raumliste.get(rNr).removePortal(portalliste.get(i));
+						raum.starteRaum(rNr);
+						spieler.setxPos(raumliste.get(rNr).getxSpawn());
+						spieler.setyPos(raumliste.get(rNr).getySpawn());
+					}
+					schussliste.clear();
+					raum.clearHindernisliste();
+				}
+
 			}
 
+			if (spieler.getLeben() <= 0) {
+				beendeSpiel();
+			}
 		}
-
-		if (spieler.getLeben() <= 0) {
-			beendeSpiel();
-		}
-
-	}
 
 	private void collisionSchussMitObject(Rectangle spC, int waffe) {
 		for (int i = 0; i < schussliste.size(); i++) {
@@ -286,8 +298,8 @@ public class Game extends JPanel {
 //		 Music auf mainmenu music aendern
 		// Music auf mainmenu music aendern
 		if (sound.getHintergrundmusik()) {
-		sound.getClip().stop();
-		sound.playSound(filesystem.readFile("/sound/mainmenu.wav"));
+			sound.getClip().stop();
+			sound.playSound(filesystem.readFile("/sound/mainmenu.wav"));
 		}
 		mainmenu.setSpielOffen(false);
 		hindernisliste.clear();
@@ -307,6 +319,7 @@ public class Game extends JPanel {
 		}
 		gegnerliste = new ArrayList<Gegner>();
 		schussliste = new ArrayList<Schuss>();
+		powerupliste = new ArrayList<Powerup>();
 		hindernisliste = new ArrayList<Hindernis>();
 		hindernisOben = new ArrayList<Hindernis>();
 		hindernisUnten = new ArrayList<Hindernis>();
@@ -368,14 +381,14 @@ public class Game extends JPanel {
 				pausemenu = new Pausemenu(mainmenu, this);
 				pause = !pause;
 				setPausemenuOpen(false);
-				if(sound.getHintergrundmusik()) {
-				sound.getClip().stop();
+				if (sound.getHintergrundmusik()) {
+					sound.getClip().stop();
 				}
 			}
-		}	
-		if(pausemenu!=null){
-		if (pausemenu.isSound()&&sound.getHintergrundmusik()) {
-			sound.getClip().start();
+		}
+		if (pausemenu != null) {
+			if (pausemenu.isSound() && sound.getHintergrundmusik()) {
+				sound.getClip().start();
 			}
 		}
 	}
@@ -425,6 +438,13 @@ public class Game extends JPanel {
 	}
 
 	// Getter und Setter
+	public double getSpeedSpieler() {
+		return spieler.getSpeed();
+	}
+	public void setSpeedSpieler(double speed) {
+		spieler.setSpeed(speed);
+	}
+
 
 	public double getxPosSpieler() {
 		return spieler.getxPos();
@@ -541,5 +561,5 @@ public class Game extends JPanel {
 	public void setPowerupliste(ArrayList<Powerup> powerupliste) {
 		this.powerupliste = powerupliste;
 	}
-	
+
 }

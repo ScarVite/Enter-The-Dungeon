@@ -45,7 +45,7 @@ public class Gegner extends ExtendedObjectData {
 		pistole = new Pistole(pX, pY, pWidth, pHeight, pTex);
 		this.game = pGame;
 		pistole.setRenderable(false);
-//		sicht = pistole.getReichweite() - 100;
+		sicht = pistole.getReichweite() - 100;
 		vision = new Rectangle((int) xPos - sicht, (int) yPos - sicht, (int) width + sicht * 2,
 				(int) height + sicht * 2);
 		collision = new Rectangle((int) xPos - 20, (int) yPos - 20, (int) width + 40, (int) height + 40);
@@ -99,16 +99,16 @@ public class Gegner extends ExtendedObjectData {
 
 	public void render(Graphics g) {
 		if (isVisible()) {
-			g.drawRect((int) xPos, (int) yPos, (int) width, (int) height);
+//			g.drawRect((int) xPos, (int) yPos, (int) width, (int) height);
 			g.drawImage(tex.gegner, (int) xPos, (int) yPos, (int) width, (int) height, null);
-			g.setColor(new Color(0).RED);
-			g.drawRect((int) xPos - sicht, (int) yPos - sicht, (int) width + sicht * 2, (int) height + sicht * 2);
-			g.setColor(new Color(0).PINK);
-			g.drawRect((int) xPos - 20, (int) yPos - 20, (int) width + 40, (int) height + 40);
+//			g.setColor(new Color(0).RED);
+//			g.drawRect((int) xPos - sicht, (int) yPos - sicht, (int) width + sicht * 2, (int) height + sicht * 2);
+//			g.setColor(new Color(0).PINK);
+//			g.drawRect((int) xPos - 20, (int) yPos - 20, (int) width + 40, (int) height + 40);
 			g.setColor(new Color(0).YELLOW);
 			g.fillRect((int) xMarker, (int) yMarker, 10, 10);
-			g.drawLine((int) getxMitte(), (int) getyMitte(), (int) xMarker, (int) yMarker); // Ziellinie
-			g.setColor(new Color(4). cyan);
+//			g.drawLine((int) getxMitte(), (int) getyMitte(), (int) xMarker, (int) yMarker); // Ziellinie
+//			g.setColor(new Color(4). cyan);
 //			for(int i = 0; i < hindernisOben.size(); i++) {
 //				int x = (int) hindernisOben.get(i).getxPos();
 //				int y = (int) hindernisOben.get(i).getyPos();
@@ -135,6 +135,13 @@ public class Gegner extends ExtendedObjectData {
 //				int height = (int) hindernisLinks.get(i).getHeight();
 //				g.fillRect(x, y, 1, height);
 //			}
+			g.setColor(new Color(8).RED);
+			int x = (int) getxPos();
+			int y = (int) (getyPos() + getHeight());
+			int height = (int) getHeight();
+			int width = (int) getWidth();
+			g.drawRect(x, y, width, height);
+			
 		}
 		pistole.render(g);
 	}
@@ -231,7 +238,6 @@ public class Gegner extends ExtendedObjectData {
 				if(yMarker >= yMitte) {
 					//nachUnten
 					setNachUnten(true);
-					System.out.println("hi");
 				}
 				if(yMarker < yMitte) {
 					//nach Oben
@@ -243,6 +249,30 @@ public class Gegner extends ExtendedObjectData {
 		return false;
 	}
 
+	private boolean ueberpruefeUnten() {
+		int x = (int) getxPos();
+		int y = (int) (getyPos() + getHeight());
+		int height = (int) getHeight();
+		int width = (int) getWidth();
+		Rectangle untenFrei = new Rectangle(x,y,width, height) ;
+		return false;
+	}
+	
+	private boolean ueberpruefeOben() {
+		return false;
+	}
+	
+	private boolean ueberpruefeRechts() {
+		return false;
+	}
+	
+	private boolean ueberpruefeLinks() {
+		return false;
+	}
+	
+	
+	
+	
 	private void nachObenLaufen() {
 		setyPos(getyPos() - speed);
 		Rectangle geg= collision.getBounds();
@@ -312,30 +342,29 @@ public class Gegner extends ExtendedObjectData {
 		Rectangle markerRect = new Rectangle((int) xMarker, (int) yMarker, 1, 1);
 		if (markerRect.intersects(collision)) {
 			return true;
+			
 		}
 
 		return false;
 	}
 
 	private void erstelleMarker() {
-		boolean check = true;
 		do {
 			setxMarker(Math.random()* 1500 + 100);
 			setyMarker(Math.random() * 900 + 100);
 //			setyMarker(200);
-			check = ueberpruefeMarkerPos();
-		} while (check);
+		} while (ueberpruefeMarkerPos());
 
 	}
 
+	@SuppressWarnings("deprecation")
 	private boolean ueberpruefeMarkerPos() {
 
 		ArrayList<Hindernis> hindernisliste = new ArrayList<Hindernis>();
 		hindernisliste = game.getHindernisListe();
 		for (Hindernis hindernis : hindernisliste) {
 			Rectangle hindi = hindernis.getBounds();
-			Rectangle markerRect = new Rectangle((int) xMarker, (int) yMarker, 1, 1);
-			if (hindi.intersects(markerRect) && isDown()) {
+			if (hindi.inside((int) xMarker, (int) yMarker)) {
 				return true;
 			}
 		}

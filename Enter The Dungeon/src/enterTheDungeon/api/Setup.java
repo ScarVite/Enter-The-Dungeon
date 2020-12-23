@@ -52,6 +52,9 @@ public class Setup extends JFrame implements KeyListener {
 				// return;
 
 			}
+			else {
+				Popup.error("Ihr Key war falsch", "Error");
+			}
 		} else {
 			Popup.error("Bitte Geben sie einen Key ein", "Error");
 		}

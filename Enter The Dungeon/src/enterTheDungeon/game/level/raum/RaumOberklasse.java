@@ -57,7 +57,7 @@ public class RaumOberklasse {
 		powerupliste = new ArrayList<Powerup>();
 
 		hindernisliste = new ArrayList<Hindernis>();
-		// SubHidnernis für Gegner KI
+		// SubHidnernis fuer Gegner KI
 		hindernisOben = new ArrayList<Hindernis>();
 		hindernisUnten = new ArrayList<Hindernis>();
 		hindernisRechts = new ArrayList<Hindernis>();
@@ -137,8 +137,8 @@ public class RaumOberklasse {
 	}
 
 	public void starteRaum(int pRaumNr) {
-		setRaumNr(pRaumNr=2);
-
+		setRaumNr(pRaumNr);
+		
 			
 //		raum1.erstelleRaum();
 //		raum2.erstelleRaum();
@@ -422,6 +422,14 @@ public class RaumOberklasse {
 
 	public void setySpawn(int ySpawn) {
 		this.ySpawn = ySpawn;
+	}
+	
+	public Powerup getPowerup() {
+		return powerup;
+	}
+
+	public void setPowerup(Powerup powerup) {
+		this.powerup = powerup;
 	}
 
 
