@@ -46,8 +46,8 @@ public class Setup extends JFrame implements KeyListener {
 				Popup.info("Nice", "Nice");
 			}
 			if (Networking.validatekey(jTextField1.getText())) {
-				filesystem.createFileIfNotExist("/Files/KeyValid.txt");
-				filesystem.writeTxtFile("/Files/KeyValid.txt", "Hiermit-wird-das-Spiel-aktiviert");
+				filesystem.createFileIfNotExist("/files/KeyValid.txt");
+				filesystem.writeTxtFile("/files/KeyValid.txt", "Hiermit-wird-das-Spiel-aktiviert");
 				new Mainmenu();
 				this.dispose();
 				// System.out.println("True");
