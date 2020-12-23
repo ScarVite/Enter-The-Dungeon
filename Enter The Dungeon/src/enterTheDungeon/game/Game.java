@@ -9,17 +9,14 @@ import enterTheDungeon.game.level.Falle;
 import enterTheDungeon.game.level.Gegner;
 import enterTheDungeon.game.level.Hindernis;
 import enterTheDungeon.game.level.Portal;
-import enterTheDungeon.game.level.raum.Raum1;
-import enterTheDungeon.game.level.LevelCreator;
+import enterTheDungeon.game.level.Powerup;
 import enterTheDungeon.game.level.raum.RaumOberklasse;
 import enterTheDungeon.game.waffen.Schuss;
 import enterTheDungeon.game.waffen.Waffe;
 import enterTheDungeon.input.*;
 
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -41,6 +38,7 @@ public class Game extends JPanel {
 	private ArrayList<Hindernis> hindernisOben, hindernisUnten, hindernisRechts, hindernisLinks;
 	private ArrayList<Portal> portalliste;
 	private ArrayList<Falle> fallenliste;
+	private ArrayList<Powerup> powerupliste;
 	private ArrayList<RaumOberklasse> raumliste;
 	private Sound sound;
 	private MausInput mausinput;
@@ -81,6 +79,7 @@ public class Game extends JPanel {
 		raumliste.get(rNr).update();
 		spieler.update();
 		fallenliste = raumliste.get(rNr).getFallenliste();
+		powerupliste = raumliste.get(rNr).getPowerupliste();
 		gegnerliste = raumliste.get(rNr).getGegnerliste();
 		hindernisliste = raumliste.get(rNr).getHindernisliste();
 		setHindernisOben(raumliste.get(rNr).getHindernisOben());
@@ -277,17 +276,19 @@ public class Game extends JPanel {
 
 	}
 
-//	private void schussOutOfBounds(int i) {
-//		if (schussliste.get(i).isOutOfBounds()) {
-//			schussliste.remove(i);
-//		}
-//	}
+	private void schussOutOfBounds(int i) {
+		if (schussliste.get(i).isOutOfBounds()) {
+			schussliste.remove(i);
+		}
+	}
 
 	public void beendeSpiel() {
 //		 Music auf mainmenu music aendern
-		// Music auf mainmenu music �ndern
+		// Music auf mainmenu music aendern
+		if (sound.getHintergrundmusik()) {
 		sound.getClip().stop();
 		sound.playSound(filesystem.readFile("/sound/mainmenu.wav"));
+		}
 		mainmenu.setSpielOffen(false);
 		hindernisliste.clear();
 		fallenliste.clear();
@@ -300,8 +301,10 @@ public class Game extends JPanel {
 	private void init() {
 		filesystem = new Filesystem();
 		sound = new Sound();
-		sound.playSound(filesystem.readFile("/sound/background.wav"));
-		sound.getClip().loop(Clip.LOOP_CONTINUOUSLY);
+		if (sound.getHintergrundmusik()) {
+			sound.playSound(filesystem.readFile("/sound/background.wav"));
+			sound.getClip().loop(Clip.LOOP_CONTINUOUSLY);
+		}
 		gegnerliste = new ArrayList<Gegner>();
 		schussliste = new ArrayList<Schuss>();
 		hindernisliste = new ArrayList<Hindernis>();
@@ -365,7 +368,9 @@ public class Game extends JPanel {
 				pausemenu = new Pausemenu(mainmenu, this);
 				pause = !pause;
 				setPausemenuOpen(false);
+				if(sound.getHintergrundmusik()) {
 				sound.getClip().stop();
+				}
 			}
 		}	
 		if(pausemenu!=null){
@@ -529,4 +534,12 @@ public class Game extends JPanel {
 		pausemenuOpen = pausemenuopen;
 	}
 
+	public ArrayList<Powerup> getPowerupliste() {
+		return powerupliste;
+	}
+
+	public void setPowerupliste(ArrayList<Powerup> powerupliste) {
+		this.powerupliste = powerupliste;
+	}
+	
 }

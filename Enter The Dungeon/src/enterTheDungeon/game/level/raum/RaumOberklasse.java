@@ -13,12 +13,16 @@ public class RaumOberklasse {
 	protected int anzHindernis;
 	protected int anzGegner;
 	protected int anzFallen;
+	protected int anzPowerup;
+
+
 	protected int xSpawn;
 	protected int ySpawn;
 
 	protected ArrayList<Hindernis> hindernisliste;
 	protected ArrayList<Gegner> gegnerliste;
 	protected ArrayList<Falle> fallenliste;
+	protected ArrayList<Powerup> powerupliste;
 	protected ArrayList<Portal> portalliste;
 	protected ArrayList<RaumOberklasse> raumliste;
 	private ArrayList<Hindernis> hindernisOben, hindernisUnten, hindernisRechts, hindernisLinks;
@@ -28,6 +32,7 @@ public class RaumOberklasse {
 	protected Gegner gegner;
 	protected Rectangle spieler;
 	protected Hindernis hindernis;
+	protected Powerup powerup;
 	protected Falle falle;
 	protected Game game;
 	protected Texturen tex;
@@ -39,6 +44,7 @@ public class RaumOberklasse {
 	private Raum4 raum4;
 	private Raum5 raum5;
 	private Raum6 raum6;
+	private Raum7 raum7;
 
 	public RaumOberklasse(Game pGame, Texturen pTex) {
 		this.game = pGame;
@@ -48,6 +54,7 @@ public class RaumOberklasse {
 		fallenliste = new ArrayList<Falle>();
 		portalliste = new ArrayList<Portal>();
 		raumliste = new ArrayList<RaumOberklasse>();
+		powerupliste = new ArrayList<Powerup>();
 
 		hindernisliste = new ArrayList<Hindernis>();
 		// SubHidnernis für Gegner KI
@@ -75,6 +82,7 @@ public class RaumOberklasse {
 		raumliste.add(raum4 = new Raum4(game, tex));
 		raumliste.add(raum5 = new Raum5(game, tex));
 		raumliste.add(raum6 = new Raum6(game, tex));
+		raumliste.add(raum7 = new Raum7(game, tex));
 
 		raum1.erstelleRaum();
 		raum2.erstelleRaum();
@@ -82,6 +90,7 @@ public class RaumOberklasse {
 		raum4.erstelleRaum();
 		raum5.erstelleRaum();
 		raum6.erstelleRaum();
+		raum7.erstelleRaum();
 
 		setMaxRaum(raumliste.size());
 
@@ -128,7 +137,7 @@ public class RaumOberklasse {
 	}
 
 	public void starteRaum(int pRaumNr) {
-		setRaumNr(pRaumNr);
+		setRaumNr(pRaumNr=2);
 
 			
 //		raum1.erstelleRaum();
@@ -179,6 +188,9 @@ public class RaumOberklasse {
 		for (int i = 0; i < gegnerliste.size(); i++) {
 			gegnerliste.get(i).render(g);
 		}
+		for (int i = 0; i < powerupliste.size(); i++) {
+			powerupliste.get(i).render(g);
+		}
 
 	}
 
@@ -221,7 +233,7 @@ public class RaumOberklasse {
 	public void setAnzGegner(int anzGegner) {
 		this.anzGegner = anzGegner;
 	}
-
+	
 	public int getAnzFallen() {
 		return anzFallen;
 	}
@@ -229,7 +241,14 @@ public class RaumOberklasse {
 	public void setAnzFallen(int anzFallen) {
 		this.anzFallen = anzFallen;
 	}
+	
+	public int getAnzPowerup() {
+		return anzPowerup;
+	}
 
+	public void setAnzPowerup(int anzPowerup) {
+		this.anzPowerup = anzPowerup;
+	}
 	public ArrayList<Hindernis> getHindernisliste() {
 		return hindernisliste;
 	}
@@ -293,7 +312,14 @@ public class RaumOberklasse {
 	public void setPortalliste(ArrayList<Portal> portalliste) {
 		this.portalliste = portalliste;
 	}
-
+	
+	public void setPowerupliste(ArrayList<Powerup> powerupliste) {
+		this.powerupliste = powerupliste;
+	}
+	public ArrayList <Powerup> getPowerupliste() {
+		return powerupliste;
+	}
+	
 	public ArrayList<RaumOberklasse> getRaumliste() {
 		return raumliste;
 	}
@@ -397,5 +423,6 @@ public class RaumOberklasse {
 	public void setySpawn(int ySpawn) {
 		this.ySpawn = ySpawn;
 	}
+
 
 }

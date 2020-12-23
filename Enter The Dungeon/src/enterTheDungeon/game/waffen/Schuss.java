@@ -12,6 +12,7 @@ public class Schuss extends StandardObjectData {
 	private double xDelta, yDelta;
 	private double xZiel, yZiel, x, y;
 	private int bild = 0;
+	private boolean outOfBounds;
 
 	public Schuss(double pX, double pY, double pWidth, double pHeight, double xZiel, double yZiel, Texturen pTex) {
 		super(pX, pY, pWidth, pHeight, pTex);
@@ -64,6 +65,14 @@ public class Schuss extends StandardObjectData {
 
 	public void setBild(int pBild) {
 		this.bild = pBild;
+	}
+
+	public boolean isOutOfBounds() {
+		return outOfBounds;
+	}
+
+	public void setOutOfBounds(boolean outOfBounds) {
+		this.outOfBounds = outOfBounds;
 	}
 
 }

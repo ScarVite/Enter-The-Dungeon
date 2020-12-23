@@ -104,6 +104,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 		gui.setVisible(true);
 	}
 
+
 	public void Credits() {
 		credits = new JPanel();
 		credits.setLayout(null);
@@ -122,7 +123,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 	}
 
 	private void createMainMenuButtons() {
-		// Hauptmen�
+		// Hauptmenu
 		startButton = new JButton("Spielen");
 		startButton.setBounds(310, 155, 160, 40);
 		startButton.addActionListener(this);
@@ -150,7 +151,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 //		closeButton.setIcon(new ImageIcon("Bilder/closebutton.png"));
 		closeButton.setBorderPainted(false);
 
-		// Untermen�s
+		// Untermenus
 
 		soundButton = new JButton("Ton aus");
 		soundButton.setBounds(310, 225, 160, 40);
@@ -160,10 +161,18 @@ public class Mainmenu extends JFrame implements ActionListener {
 		soundAnButton.setBounds(310, 225, 160, 40);
 		soundAnButton.addActionListener(this);
 
-		backButton = new JButton("Zur�ck");
+		backButton = new JButton("Zurueck");
 		backButton.setBounds(310, 295, 160, 40);
 		backButton.addActionListener(this);
 
+	}
+
+	public JButton getSoundAnButton() {
+		return soundAnButton;
+	}
+
+	public JButton getSoundButton() {
+		return soundButton;
 	}
 
 	public JButton getCloseButton() {
@@ -192,12 +201,9 @@ public class Mainmenu extends JFrame implements ActionListener {
 			screenHeight = 1080;
 			if (!spielOffen) {
 				gameWindow();
-				if (sound.getHintergrundmusik()) {
+					if(sound.getHintergrundmusik()) {
 					sound.getClip().stop();
-					sound.playSound(filesystem.readFile("/sound/background.wav"));
-					sound.getClip().loop(Clip.LOOP_CONTINUOUSLY);
-					sound.getClip().start();
-				}
+					}
 			}
 		}
 
@@ -254,5 +260,4 @@ public class Mainmenu extends JFrame implements ActionListener {
 	public void setSpielOffen(Boolean par) {
 		spielOffen = par;
 	}
-
 }

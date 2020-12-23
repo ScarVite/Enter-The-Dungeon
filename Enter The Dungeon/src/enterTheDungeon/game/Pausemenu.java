@@ -1,15 +1,14 @@
 package enterTheDungeon.game;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import enterTheDungeon.input.TastaturInput;
-import enterTheDungeon.resource.Sound;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
 
 public class Pausemenu extends JFrame implements ActionListener {
 	private JFrame gui;
@@ -18,7 +17,7 @@ public class Pausemenu extends JFrame implements ActionListener {
 	private int screenwidth;
 	private int screenheight;
 	private JButton zurueckSpiel;
-	private JButton options;
+	private JPanel options;
 	private Game game;
 	private TastaturInput tastaturinput;
 	private boolean sound;
@@ -27,6 +26,7 @@ public class Pausemenu extends JFrame implements ActionListener {
 		//Erzeugung
 		this.game = pGame;
 		this.main = mainmenu;
+		
 		screenwidth = 800;
 		screenheight = 600;
 		gui = new JFrame("Enter the Dungeon");
@@ -38,14 +38,12 @@ public class Pausemenu extends JFrame implements ActionListener {
 		zurueckSpiel.setBounds(310, 295, 160, 40);
 		zurueckSpiel.addActionListener(this);
 		zurueckSpiel.setBorderPainted(false);
-		options = new JButton("Einstellungen");
-		options.setBounds(310, 225, 160, 40);
-		options.addActionListener(this);
-		options.setBorderPainted(false);
+		mainmenu.getCloseButton();
+
+		
 		//JPanel
 		pausemenuw.add(zurueckSpiel);
 		pausemenuw.add(main.getCloseButton());
-		pausemenuw.add(options);
 		gui.addKeyListener(tastaturinput);
 		pausemenuw.addKeyListener(tastaturinput);
 		//JFrame
@@ -57,7 +55,6 @@ public class Pausemenu extends JFrame implements ActionListener {
 		gui.setVisible(true);
 		gui.setFocusable(true);
 		pausemenuw.setFocusable(true);
-
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -67,15 +64,12 @@ public class Pausemenu extends JFrame implements ActionListener {
 			game.setPause(false);
 			game.setPausemenuOpen(true);
 		}
-		if (e.getSource() == options) {
-			
-		}
 	}
 
 	public void keyPressed(KeyEvent e) {
-		System.out.println("ESC im Pausemenü gedrückt");
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_ESCAPE) {
+			System.out.println("ESC im Pausemenü gedrückt");
 			if (!game.isPausemenuOpen()) {
 				gui.setVisible(false);
 				game.setPause(false);
@@ -85,6 +79,7 @@ public class Pausemenu extends JFrame implements ActionListener {
 
 		}
 	}
+	
 
 	public boolean isSound() {
 		return sound;
