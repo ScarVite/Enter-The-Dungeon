@@ -192,12 +192,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 			screenHeight = 1080;
 			if (!spielOffen) {
 				gameWindow();
-				if (sound.getHintergrundmusik()) {
 					sound.getClip().stop();
-					sound.playSound(filesystem.readFile("/sound/background.wav"));
-					sound.getClip().loop(Clip.LOOP_CONTINUOUSLY);
-					sound.getClip().start();
-				}
 			}
 		}
 
