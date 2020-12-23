@@ -369,7 +369,9 @@ public class Game extends JPanel {
 				pausemenu = new Pausemenu(mainmenu, this);
 				pause = !pause;
 				setPausemenuOpen(false);
+				if(sound.getHintergrundmusik()) {
 				sound.getClip().stop();
+				}
 			}
 		}	
 		if(pausemenu!=null){
