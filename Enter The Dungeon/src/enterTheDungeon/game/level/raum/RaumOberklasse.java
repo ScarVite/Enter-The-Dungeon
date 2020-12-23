@@ -137,7 +137,7 @@ public class RaumOberklasse {
 	}
 
 	public void starteRaum(int pRaumNr) {
-		setRaumNr(pRaumNr=5);
+		setRaumNr(pRaumNr);
 		
 			
 //		raum1.erstelleRaum();
