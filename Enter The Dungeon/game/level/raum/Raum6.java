@@ -6,7 +6,6 @@ import enterTheDungeon.game.Game;
 import enterTheDungeon.game.level.Falle;
 import enterTheDungeon.game.level.Hindernis;
 import enterTheDungeon.game.level.Gegner;
-import enterTheDungeon.game.level.Heartpowerup;
 import enterTheDungeon.resource.Texturen;
 
 
@@ -57,31 +56,12 @@ public class Raum6 extends RaumOberklasse {
 			offset=offset+100;
 			}	
 			
-//		for (int i = 150; i < width; i += width / 2) {
-//			
-//			gegner = new Gegner(i, 400, 65, 65, 3, 3, tex, game);
-//			gegnerliste.add(gegner);
-//		}
-		//Hindernisse
-		hindernis = new Hindernis(220, 220, 100, 100, tex);
-		hindernisliste.add(hindernis);
-		hindernis = new Hindernis(220, 720, 100, 100, tex);
-		hindernisliste.add(hindernis);
-		hindernis = new Hindernis(1520, 220, 100, 100, tex);
-		hindernisliste.add(hindernis);
-		hindernis = new Hindernis(1520, 720, 100, 100, tex);
-		hindernisliste.add(hindernis);
-		//Extraleben
-		powerup = new Heartpowerup(50, 40, 50, 50, tex, game);
-		powerupliste.add(powerup);
-		powerup = new Heartpowerup(50, 940, 50, 50, tex, game);
-		powerupliste.add(powerup);
-		powerup = new Heartpowerup(1820, 50, 50, 50, tex, game);
-		powerupliste.add(powerup);
-		powerup = new Heartpowerup(1820, 950, 50, 50, tex, game);
-		powerupliste.add(powerup);
-		
-		
+		for (int i = 150; i < width; i += width / 2) {
+			
+			gegner = new Gegner(i, 400, 65, 65, 3, 3, tex, game);
+			gegnerliste.add(gegner);
+		}
+
 		setHindernisliste(hindernisliste);
 		setGegnerliste(gegnerliste);
 		erstelleSubHindernisOben();
