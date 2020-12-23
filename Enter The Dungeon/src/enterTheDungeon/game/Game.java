@@ -388,7 +388,7 @@ public class Game extends JPanel {
 	public void mouseClicked(MouseEvent e) {
 		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
 		if (sound.getHintergrundmusik()) {
-			sound.playSound(filesystem.readFile("/sound/Feuerball.wav"));
+			sound.playSound(filesystem.readFile("/sound/feuerball-fixed.wav"));
 			sound.getClip().start();
 		}
 	}
