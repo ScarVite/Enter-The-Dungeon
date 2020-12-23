@@ -212,7 +212,7 @@ public class Game extends JPanel {
 	private void collisionSchussMitObject(Rectangle spC, int waffe) {
 		for (int i = 0; i < schussliste.size(); i++) {
 			Rectangle s = schussliste.get(i).getBounds();
-			schussOutOfBounds(i);
+//			schussOutOfBounds(i);
 			for (int b = 0; b < gegnerliste.size(); b++) {
 				Rectangle g = gegnerliste.get(b).getBounds();
 				// schuss und gegner Ueberschneiden && spielerwaffe dann wird gegner getroffen
@@ -288,11 +288,11 @@ public class Game extends JPanel {
 
 	}
 
-	private void schussOutOfBounds(int i) {
-		if (schussliste.get(i).isOutOfBounds()) {
-			schussliste.remove(i);
-		}
-	}
+//	private void schussOutOfBounds(int i) {
+//		if (schussliste.get(i).isOutOfBounds()) {
+//			schussliste.remove(i);
+//		}
+//	}
 
 	public void beendeSpiel() {
 //		 Music auf mainmenu music aendern
