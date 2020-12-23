@@ -1,5 +1,6 @@
 package enterTheDungeon.game;
 
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -132,7 +133,7 @@ public class Game extends JPanel {
 			if (hindi.intersects(spielerBounds) && spieler.isRight()) {
 				spieler.setxPos(spieler.getxPos() - spieler.getSpeed());
 			}
-			
+
 //			for (Gegner gegner : gegnerliste) {
 //				Rectangle geg = gegner.getBounds();
 //				if (hindi.intersects(geg) && gegner.isDown()) {
@@ -150,7 +151,7 @@ public class Game extends JPanel {
 //			}
 
 		}
-		
+
 		for (Falle falle : fallenliste) {
 			boolean aufgeklappt = falle.isAufgeklappt();
 			boolean getroffen = spieler.isGetroffenVonFalle();
@@ -169,7 +170,7 @@ public class Game extends JPanel {
 				int maxRaum = raum.getMaxRaum() - 1;
 				boolean weiter = portalliste.get(i).getWeiter();
 				rNr = raum.getRaumNr();
-				// nächster Raum
+				// naechster Raum
 				if (weiter) {
 					rNr++;
 					raumliste.get(rNr).removePortal(portalliste.get(i));
@@ -200,11 +201,11 @@ public class Game extends JPanel {
 	private void collisionSchussMitObject(Rectangle spC, int waffe) {
 		for (int i = 0; i < schussliste.size(); i++) {
 			Rectangle s = schussliste.get(i).getBounds();
-			schussOutOfBounds(i);
+//			schussOutOfBounds(i);
 			for (int b = 0; b < gegnerliste.size(); b++) {
 				Rectangle g = gegnerliste.get(b).getBounds();
 
-				// schuss und gegner überschneiden && spielerwaffe dann wird gegner getroffen
+				// schuss und gegner Ueberschneiden && spielerwaffe dann wird gegner getroffen
 				if (g.intersects(s) && waffe == 1) {
 //					gegnerliste.remove(b);
 					try {
@@ -221,7 +222,7 @@ public class Game extends JPanel {
 					raumliste.get(rNr).removeGegner(gegnerliste.get(b));
 					if (gegnerliste.isEmpty()) {
 						raum.setGegnerliste(gegnerliste);
-						// Portal für das nächste Level
+						// Portal fuer das naechste Level
 						int max = raum.getMaxRaum() - 1;
 						int nr = raum.getRaumNr();
 						Portal portal;
@@ -231,7 +232,7 @@ public class Game extends JPanel {
 							raumliste.get(rNr).addPortal(portal);
 						}
 
-						// Portal für das vorherige Level
+						// Portal fuer das vorherige Level
 						if (nr != 0) {
 							portal = new Portal(800, 800, spieler.getWidth(), spieler.getHeight(), tex);
 							portal.setWeiter(false);
@@ -242,7 +243,7 @@ public class Game extends JPanel {
 
 			}
 
-			// schuss und gegner überschneiden && gegnerwaffe dann wird spieler getroffen
+			// schuss und gegner Ueberschneiden && gegnerwaffe dann wird spieler getroffen
 
 			boolean spielerGetroffen = spieler.isGetroffenVonSchuss();
 			if (spC.intersects(s) && waffe == 0 && !spielerGetroffen) {
@@ -276,14 +277,17 @@ public class Game extends JPanel {
 
 	}
 
-	private void schussOutOfBounds(int i) {
-		if (schussliste.get(i).isOutOfBounds()) {
-			schussliste.remove(i);
-		}
-	}
+//	private void schussOutOfBounds(int i) {
+//		if (schussliste.get(i).isOutOfBounds()) {
+//			schussliste.remove(i);
+//		}
+//	}
 
 	public void beendeSpiel() {
-//		 Music auf mainmenu music �ndern
+//		 Music auf mainmenu music aendern
+		// Music auf mainmenu music �ndern
+		sound.getClip().stop();
+		sound.playSound(filesystem.readFile("/sound/mainmenu.wav"));
 		mainmenu.setSpielOffen(false);
 		hindernisliste.clear();
 		fallenliste.clear();
@@ -296,6 +300,8 @@ public class Game extends JPanel {
 	private void init() {
 		filesystem = new Filesystem();
 		sound = new Sound();
+		sound.playSound(filesystem.readFile("/sound/background.wav"));
+		sound.getClip().loop(Clip.LOOP_CONTINUOUSLY);
 		gegnerliste = new ArrayList<Gegner>();
 		schussliste = new ArrayList<Schuss>();
 		hindernisliste = new ArrayList<Hindernis>();
@@ -309,13 +315,12 @@ public class Game extends JPanel {
 		spieler = new Spieler(200, 400, 35, 60, 6, 3, tex);
 //		levelcreator = new LevelCreator(this, tex);
 		raum = new RaumOberklasse(this, tex);
-
 		mausinput = new MausInput(this);
 		tastinput = new TastaturInput(this, pausemenu);
 		spiel = new JFrame("Enter the Dungeon");
 
 //		spiel.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		spiel.setBounds(0, 0, screenwidth, screenwidth);
+		spiel.setBounds(0, 0, 1920, 1080);
 		spiel.setFocusable(true);
 		spiel.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		spiel.setLocationRelativeTo(null);
@@ -362,9 +367,11 @@ public class Game extends JPanel {
 				setPausemenuOpen(false);
 				sound.getClip().stop();
 			}
-		}
-		if(pausemenu.isSound()) {
+		}	
+		if(pausemenu!=null){
+		if (pausemenu.isSound()&&sound.getHintergrundmusik()) {
 			sound.getClip().start();
+			}
 		}
 	}
 
@@ -389,7 +396,7 @@ public class Game extends JPanel {
 	public void mouseClicked(MouseEvent e) {
 		spieler.schiessen(mausinput.getxMaus(), mausinput.getyMaus());
 		if (sound.getHintergrundmusik()) {
-			sound.playSound(filesystem.readFile("/sound/Feuerball.wav"));
+			sound.playSound(filesystem.readFile("/sound/feuerball-fixed.wav"));
 			sound.getClip().start();
 		}
 	}
@@ -429,7 +436,7 @@ public class Game extends JPanel {
 	public double getHeightSpieler() {
 		return spieler.getHeight();
 	}
-	
+
 	public Rectangle getSpielerBounds() {
 		return spieler.getBounds();
 	}
@@ -469,7 +476,7 @@ public class Game extends JPanel {
 	public void setHindernisLinks(ArrayList<Hindernis> hindernisLinks) {
 		this.hindernisLinks = hindernisLinks;
 	}
-	
+
 	public ArrayList<Hindernis> getHindernisUnten() {
 		return hindernisUnten;
 	}
@@ -489,12 +496,6 @@ public class Game extends JPanel {
 	public int getAnzHindernis() {
 		return maxHindernis;
 	}
-	
-	public Rectangle spielerBounds() {
-		return spieler.getBounds();
-	}
-
-
 
 	public Rectangle spielerBounds() {
 		return spieler.getBounds();
@@ -512,7 +513,6 @@ public class Game extends JPanel {
 		return screenheight;
 	}
 
-
 	public boolean isPause() {
 		return pause;
 	}
@@ -520,8 +520,6 @@ public class Game extends JPanel {
 	public void setPause(boolean pause) {
 		this.pause = pause;
 	}
-	
-	
 
 	public boolean isPausemenuOpen() {
 		return pausemenuOpen;
