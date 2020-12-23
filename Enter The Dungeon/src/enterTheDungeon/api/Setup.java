@@ -36,6 +36,15 @@ public class Setup extends JFrame implements KeyListener {
 
 	private void ButtonPressed(java.awt.event.ActionEvent evt) {
 		if (jTextField1.getText().isEmpty() == false) {
+			if(jTextField1.getText().equals("42")) {
+				Popup.info("auf Das Universem, das Leben und Alles", "Die Antwort");
+			}
+			if(jTextField1.getText().equals("420")) {
+				Popup.info("it", "Blaze");
+			}
+			if(jTextField1.getText().equals("69")) {
+				Popup.info("Nice", "Nice");
+			}
 			if (Networking.validatekey(jTextField1.getText())) {
 				filesystem.createFileIfNotExist("/Files/KeyValid.txt");
 				filesystem.writeTxtFile("/Files/KeyValid.txt", "Hiermit-wird-das-Spiel-aktiviert");
