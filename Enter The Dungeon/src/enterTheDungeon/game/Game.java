@@ -85,7 +85,6 @@ public class Game extends JPanel {
 		setHindernisRechts(raumliste.get(rNr).getHindernisRechts());
 		setHindernisLinks(raumliste.get(rNr).getHindernisLinks());
 		portalliste = raumliste.get(rNr).getPortalliste();
-
 		collision();
 
 	}
@@ -115,6 +114,8 @@ public class Game extends JPanel {
 			schussliste = waffe.getSchussarray();
 			collisionSchussMitObject(spielerBounds, 0);
 		}
+		
+		
 
 		for (Hindernis hindernis : hindernisliste) {
 			Rectangle hindi = hindernis.getBounds();
@@ -196,14 +197,16 @@ public class Game extends JPanel {
 	}
 
 	private void collisionSchussMitObject(Rectangle spC, int waffe) {
+		
+		
 		for (int i = 0; i < schussliste.size(); i++) {
 			Rectangle s = schussliste.get(i).getBounds();
 			schussOutOfBounds(i);
 			for (int b = 0; b < gegnerliste.size(); b++) {
-				Rectangle g = gegnerliste.get(b).getBounds();
+				Rectangle geg = gegnerliste.get(b).getBounds();
 
 				// schuss und gegner überschneiden && spielerwaffe dann wird gegner getroffen
-				if (g.intersects(s) && waffe == 1) {
+				if (geg.intersects(s) && waffe == 1) {
 //					gegnerliste.remove(b);
 					try {
 
@@ -214,8 +217,10 @@ public class Game extends JPanel {
 					}
 					gegnerliste.get(b).setLeben(gegnerliste.get(b).getLeben() - 1);
 				}
+				
+				
 
-				if (gegnerliste.get(b).getLeben() == 0) {
+				if (gegnerliste.get(b).getLeben() <= 0) {
 					raumliste.get(rNr).removeGegner(gegnerliste.get(b));
 					if (gegnerliste.isEmpty()) {
 						raum.setGegnerliste(gegnerliste);
@@ -239,6 +244,8 @@ public class Game extends JPanel {
 				}
 
 			}
+			
+			
 
 			// schuss und gegner überschneiden && gegnerwaffe dann wird spieler getroffen
 
@@ -385,7 +392,6 @@ public class Game extends JPanel {
 	}
 
 	public void mousePressed(MouseEvent e) {
-
 	}
 
 	public void mouseReleased(MouseEvent e) {

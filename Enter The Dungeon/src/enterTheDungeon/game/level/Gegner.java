@@ -7,6 +7,7 @@ import java.awt.Shape;
 import java.util.ArrayList;
 
 import enterTheDungeon.game.Game;
+import enterTheDungeon.game.Lebensbalken;
 import enterTheDungeon.game.Spieler;
 import enterTheDungeon.game.Oberklassen.ExtendedObjectData;
 import enterTheDungeon.game.waffen.Magazin;
@@ -18,33 +19,37 @@ import sun.java2d.loops.DrawLine;
 
 public class Gegner extends ExtendedObjectData {
 
-	private Magazin magazin;
-	private Pistole pistole;
-	private double xZiel, yZiel;
-	private boolean up, down, left, right;
-	private boolean nachOben, nachUnten, nachRechts, nachLinks;
-	private double xMarker, yMarker; // Zielpunkte zum Hinlaufen
-	private int sicht;
-	private boolean zielErreicht;
-	private double xMitte, yMitte;
-	private Rectangle vision;
-	private Rectangle collision;
-	private int prio = 1;
-	private boolean umgehung;
-	private double xDelta, yDelta;
-	private ArrayList<Hindernis> hindernisliste;
-	private ArrayList<Hindernis> hindernisOben, hindernisUnten, hindernisRechts, hindernisLinks;
-	private int hindernisnummer;
+	protected Magazin magazin;
+	protected Pistole pistole;
+	protected double xZiel, yZiel;
+	protected boolean up, down, left, right;
+	protected boolean nachOben, nachUnten, nachRechts, nachLinks;
+	protected double xMarker, yMarker; // Zielpunkte zum Hinlaufen
+	protected int sicht;
+	protected boolean zielErreicht;
+	protected double xMitte, yMitte;
+	protected Rectangle vision;
+	protected Rectangle collision;
+	protected int prio = 1;
+	protected boolean umgehung;
+	protected double xDelta, yDelta;
+	protected ArrayList<Hindernis> hindernisliste;
+	protected ArrayList<Hindernis> hindernisOben, hindernisUnten, hindernisRechts, hindernisLinks;
+	protected int hindernisnummer;
+	protected Lebensbalken lebensbalken;
+	protected Game game;
+	protected int feuerrate;
+	private int gegner;
+	private int ctr = 0;
 
-	private Game game;
-
-	private int feuerrate = 0;
-
-	public Gegner(double pX, double pY, double pWidth, double pHeight, int pLeben, int pSpeed, Texturen pTex,
+	public Gegner(double pX, double pY, double pWidth, double pHeight, int pLeben, double pSpeed, int pFeuerrate, Texturen pTex,
 			Game pGame) {
 		super(pX, pY, pWidth, pHeight, pLeben, pSpeed, pTex);
 		pistole = new Pistole(pX, pY, pWidth, pHeight, pTex);
 		this.game = pGame;
+		this.feuerrate = pFeuerrate;
+		lebensbalken = new Lebensbalken(xPos, yPos - 20, 10, 10, leben, tex);
+
 		pistole.setRenderable(false);
 		sicht = pistole.getReichweite() - 100;
 		vision = new Rectangle((int) xPos - sicht, (int) yPos - sicht, (int) width + sicht * 2,
@@ -55,14 +60,15 @@ public class Gegner extends ExtendedObjectData {
 		setNachRechts(false);
 		setNachLinks(false);
 		erstelleMarker();
+		setSpeed(1.5);
 		hindernisliste = new ArrayList<Hindernis>();
 		hindernisOben = new ArrayList<Hindernis>();
 		hindernisUnten = new ArrayList<Hindernis>();
 		hindernisRechts = new ArrayList<Hindernis>();
 		hindernisLinks = new ArrayList<Hindernis>();
+		setGegner(1);
 
 	}
-	
 
 	public void update() {
 		hindernisliste = game.getHindernisListe();
@@ -78,10 +84,10 @@ public class Gegner extends ExtendedObjectData {
 		nachRechts = isNachRechts();
 		nachLinks = isNachLinks();
 
-		laufen();
+//		laufen();
 
 		collision.setBounds((int) xPos - 20, (int) yPos - 20, (int) width + 40, (int) height + 40);
-		vision.setBounds((int) xPos - sicht, (int) yPos - sicht, (int) width + sicht * 2, (int) height + sicht * 2);
+		vision.setBounds(vision.getBounds());
 
 		setxMitte(berechneXMitte());
 		setyMitte(berechneYMitte());
@@ -89,62 +95,88 @@ public class Gegner extends ExtendedObjectData {
 
 		xZiel = game.getxPosSpieler() + game.getWidthSpieler() / 2;
 		yZiel = game.getyPosSpieler() + game.getHeightSpieler() / 2;
-		feuerrate++;
+		ctr++;
 //		
-		if (feuerrate >= 100) {
-			schiessen();
-			feuerrate = 0;
+		if (ctr >= getFeuerrate()) {
+//			schiessen();
+			ctr = 0;
 		}
-
+		lebensbalken.setLeben(getLeben());
+		lebensbalken.update((int) xPos, (int) yPos);
 	}
 
 	public void render(Graphics g) {
 		if (isVisible()) {
-			g.drawRect((int) xPos, (int) yPos, (int) width, (int) height);
+//			g.drawRect((int) xPos, (int) yPos, (int) width, (int) height);
 			g.drawImage(tex.gegner, (int) xPos, (int) yPos, (int) width, (int) height, null);
-			g.setColor(new Color(0).RED);
-			g.drawRect((int) xPos - sicht, (int) yPos - sicht, (int) width + sicht * 2, (int) height + sicht * 2);
-			g.setColor(new Color(0).PINK);
-			g.drawRect((int) xPos - 20, (int) yPos - 20, (int) width + 40, (int) height + 40);
+//			g.setColor(new Color(0).RED);
+//			g.drawRect((int) xPos - sicht, (int) yPos - sicht, (int) width + sicht * 2, (int) height + sicht * 2);
+//			g.setColor(new Color(0).PINK);
+//			g.drawRect((int) xPos - 20, (int) yPos - 20, (int) width + 40, (int) height + 40);
 			g.setColor(new Color(0).YELLOW);
 			g.fillRect((int) xMarker, (int) yMarker, 10, 10);
-			g.drawLine((int) getxMitte(), (int) getyMitte(), (int) xMarker, (int) yMarker); // Ziellinie
-			g.setColor(new Color(4). cyan);
-//			for(int i = 0; i < hindernisOben.size(); i++) {
+//			g.drawLine((int) getxMitte(), (int) getyMitte(), (int) xMarker, (int) yMarker); // Ziellinie
+//			g.setColor(new Color(4). cyan);
+//			for (int i = 0; i < 4; i++) {
 //				int x = (int) hindernisOben.get(i).getxPos();
 //				int y = (int) hindernisOben.get(i).getyPos();
 //				int width = (int) hindernisOben.get(i).getWidth();
 //				g.fillRect(x, y, width, 1);
 //			}
-//			for(int i = 0; i < hindernisUnten.size(); i++) {
+//			for (int i = 0; i < 4; i++) {
 //				int x = (int) hindernisUnten.get(i).getxPos();
 //				int y = (int) hindernisUnten.get(i).getyPos();
 //				int width = (int) hindernisUnten.get(i).getWidth();
 //				g.fillRect(x, y, width, 1);
 //			}
-//			
-//			for(int i = 0; i < hindernisRechts.size(); i++) {
+//
+//			for (int i = 0; i < 4; i++) {
 //				int x = (int) hindernisRechts.get(i).getxPos();
 //				int y = (int) hindernisRechts.get(i).getyPos();
 //				int height = (int) hindernisRechts.get(i).getHeight();
 //				g.fillRect(x, y, 1, height);
 //			}
-//			
-//			for(int i = 0; i < hindernisLinks.size(); i++) {
+//
+//			for (int i = 0; i < 4; i++) {
 //				int x = (int) hindernisLinks.get(i).getxPos();
 //				int y = (int) hindernisLinks.get(i).getyPos();
 //				int height = (int) hindernisLinks.get(i).getHeight();
 //				g.fillRect(x, y, 1, height);
 //			}
+//			g.setColor(new Color(8).RED);
+//			int x = (int) getxPos();
+//			int y = (int) (getyPos() + getHeight());
+//			int height = 121;
+//			int width = (int) getWidth();
+//			g.drawRect(x, y, width, height);
+//
+//			x = (int) getxPos();
+//			y = (int) (getyPos() - 121);
+//			height = 121;
+//			width = (int) getWidth();
+//			g.drawRect(x, y, width, height);
+//
+//			x = (int) (getxPos() + getWidth());
+//			y = (int) (getyPos());
+//			height = (int) getHeight();
+//			width = 121;
+//			g.drawRect(x, y, width, height);
+//
+//			x = (int) (getxPos() - 121);
+//			y = (int) (getyPos());
+//			height = (int) getHeight();
+//			width = 121;
+//			g.drawRect(x, y, width, height);
 		}
 		pistole.render(g);
+		lebensbalken.render(g);
 	}
 
 	public Waffe getWaffe() {
 		return pistole;
 	}
 
-	private void laufen() {
+	protected void laufen() {
 		vision = vision.getBounds();
 		collision = collision.getBounds();
 		if (!nachOben && !nachUnten && !nachRechts && !nachLinks) {
@@ -155,26 +187,26 @@ public class Gegner extends ExtendedObjectData {
 			}
 			checkCollisionMitHindernisProRichtung();
 		}
-		
-		if(nachOben) {
+
+		if (nachOben) {
 			nachObenLaufen();
 		}
-		if(nachUnten) {
+		if (nachUnten) {
 			nachUntenLaufen();
 		}
-		if(nachRechts) {
+		if (nachRechts) {
 			nachRechtsLaufen();
 		}
-		if(nachLinks) {
+		if (nachLinks) {
 			nachLinksLaufen();
 		}
-		if(ueberpruefeMarkerMitGegner()) {
+		if (ueberpruefeMarkerMitGegner()) {
 			erstelleMarker();
-//			checkCollisionMitHindernisProRichtung();
+			checkCollisionMitHindernisProRichtung();
 		}
 	}
 
-	private boolean checkCollisionMitHindernisProRichtung() {
+	protected boolean checkCollisionMitHindernisProRichtung() {
 		hindernisliste = game.getHindernisListe();
 		hindernisOben = game.getHindernisOben();
 		hindernisUnten = game.getHindernisUnten();
@@ -182,116 +214,267 @@ public class Gegner extends ExtendedObjectData {
 		hindernisLinks = game.getHindernisLinks();
 
 		Rectangle markerRect = new Rectangle((int) xMarker, (int) yMarker, 1, 1);
-		for (int i = 0; i < hindernisliste.size() - 1; i++) {
+		for (int i = 0; i < hindernisliste.size(); i++) {
 			Rectangle hindiOben = hindernisOben.get(i).getBounds();
 			Rectangle hindiUnten = hindernisUnten.get(i).getBounds();
 			Rectangle hindiRechts = hindernisRechts.get(i).getBounds();
 			Rectangle hindiLinks = hindernisLinks.get(i).getBounds();
-			
-			if(hindiOben.intersects(collision)) {
+
+			if (hindiOben.intersects(collision)) {
 				setHindernisnummer(i);
-				if(xMarker > xMitte) {
-					//nach rechts
-					setNachRechts(true);
-					
-				}
-				if(xMarker < xMitte) {
-					//nach Links
-					setNachLinks(true);
+				if (i != 3) { // untere Border vom FeldRand
+					if (xMarker >= xMitte) {
+
+						if (!ueberpruefeRechts()) { // keine Collision
+							setNachRechts(true); // nach Rechts
+						} else { // collison
+							setNachLinks(true); // nach Links
+						}
+
+					}
+					if (xMarker < xMitte) {
+
+						if (!ueberpruefeLinks()) { // keine Collision
+							setNachLinks(true); // nach Links
+						} else { // Collision
+							setNachRechts(true); // nach Rechts
+						}
+					}
+					if (ueberpruefeRechts() && ueberpruefeLinks()) {
+						setNachOben(true);
+						erstelleMarker();
+					}
+				} else {
+					setyPos(getyPos() - speed * 2);
+					erstelleMarker();
 				}
 			}
-			
-			if(hindiUnten.intersects(collision)) {
+
+			if (hindiUnten.intersects(collision)) {
 				setHindernisnummer(i);
-				if(xMarker > xMitte) {
-					//nach rechts
-					setNachRechts(true);
-					
-				}
-				if(xMarker < xMitte) {
-					//nach Links
-					setNachLinks(true);
+				if (i != 2) {
+					if (xMarker >= xMitte) {
+
+						if (!ueberpruefeRechts()) { // keine Collision
+							setNachRechts(true); // nach Rechts
+						} else { // collison
+							setNachLinks(true); // nach Links
+						}
+
+					}
+					if (xMarker < xMitte) {
+
+						if (!ueberpruefeLinks()) { // keine Collision
+							setNachLinks(true); // nach Links
+						} else { // Collision
+							setNachRechts(true); // nach Rechts
+						}
+					}
+					if (ueberpruefeRechts() && ueberpruefeLinks()) {
+						setNachUnten(true);
+						erstelleMarker();
+					}
+				} else {
+					setyPos(getyPos() + speed * 2);
+					erstelleMarker();
 				}
 			}
-			
-			if(hindiRechts.intersects(collision)) {
+
+			if (hindiRechts.intersects(collision)) {
 				setHindernisnummer(i);
-				if(yMarker > yMitte) {
-					//nachUnten
-					setNachUnten(true);
+				if (i != 0) {
+					if (yMarker >= yMitte) {
+
+						if (!ueberpruefeUnten()) { // keine Collision
+							setNachUnten(true); // nach Unten
+						} else { // collision
+							setNachOben(true); // nach Oben
+						}
+
+					}
+					if (yMarker < yMitte) {
+
+						if (!ueberpruefeOben()) { // keine Collision
+							setNachOben(true); // nach Oben
+						} else { // Collision
+							setNachUnten(true); // nach unten
+						}
+					}
+					if (!ueberpruefeOben() && !ueberpruefeUnten()) {
+						setNachRechts(true);
+						erstelleMarker();
+					}
+
+				} else {
+					setxPos(getxPos() - speed * 2);
+					erstelleMarker();
 				}
-				if(yMarker < yMitte) {
-					//nach Oben
-					setNachOben(true);
-				}
-				
 			}
-			
-			if(hindiLinks.intersects(collision)) {
+
+			if (hindiLinks.intersects(collision)) {
 				setHindernisnummer(i);
-				if(yMarker >= yMitte) {
-					//nachUnten
-					setNachUnten(true);
-					System.out.println("hi");
-				}
-				if(yMarker < yMitte) {
-					//nach Oben
-					setNachOben(true);
+				if (i != 1) {
+					if (yMarker >= yMitte) {
+
+						if (!ueberpruefeUnten()) { // keine Collision
+							setNachUnten(true); // nach Unten
+						} else { // collision
+							setNachOben(true); // nach Oben
+						}
+
+					}
+					if (yMarker < yMitte) {
+
+						if (!ueberpruefeOben()) { // keine Collision
+							setNachOben(true); // nach Oben
+						} else { // Collision
+							setNachUnten(true); // nach unten
+						}
+					}
+
+					if (!ueberpruefeOben() && !ueberpruefeUnten()) {
+						setNachLinks(true);
+						erstelleMarker();
+					}
+				} else {
+					setxPos(getxPos() - speed * 2);
+					erstelleMarker();
 				}
 			}
-			
+
 		}
 		return false;
 	}
 
-	private void nachObenLaufen() {
+	protected boolean ueberpruefeUnten() {
+		int x = (int) getxPos();
+		int y = (int) (getyPos() + getHeight());
+		int height = 121;
+		int width = (int) getWidth();
+		Rectangle untenFrei = new Rectangle(x, y, width, height);
+		// bei true -> collision sonst keine collision
+		return checkCollisionUnten(untenFrei);
+	}
+
+	protected boolean ueberpruefeOben() {
+		int x = (int) getxPos();
+		int y = (int) (getyPos() - 121);
+		int height = 101;
+		int width = (int) getWidth();
+		Rectangle obenFrei = new Rectangle(x, y, width, height);
+		// bei true -> collision sonst keine collision
+		return checkCollisionOben(obenFrei);
+	}
+
+	protected boolean ueberpruefeRechts() {
+		int x = (int) (getxPos() + getWidth());
+		int y = (int) (getyPos());
+		int height = (int) getHeight();
+		int width = 101;
+		Rectangle rechtsFrei = new Rectangle(x, y, width, height);
+		// bei true -> collision sonst keine collision
+		return checkCollisionRechts(rechtsFrei);
+	}
+
+	protected boolean ueberpruefeLinks() {
+		int x = (int) (getxPos()) - 121;
+		int y = (int) (getyPos());
+		int height = (int) getHeight();
+		int width = 101;
+		Rectangle linksFrei = new Rectangle(x, y, width, height);
+		// bei true -> collision sonst keine collision
+		return checkCollisionLinks(linksFrei);
+	}
+
+	protected boolean checkCollisionOben(Rectangle rect) {
+		for (Hindernis hindernis : hindernisUnten) {
+			Rectangle hindiUnten = hindernis.getBounds();
+			if (hindiUnten.intersects(rect)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	protected boolean checkCollisionUnten(Rectangle rect) {
+		for (Hindernis hindernis : hindernisOben) {
+			Rectangle hindiOben = hindernis.getBounds();
+			if (hindiOben.intersects(rect)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	protected boolean checkCollisionRechts(Rectangle rect) {
+		for (Hindernis hindernis : hindernisLinks) {
+			Rectangle hindiLinks = hindernis.getBounds();
+			if (hindiLinks.intersects(rect)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	protected boolean checkCollisionLinks(Rectangle rect) {
+		for (Hindernis hindernis : hindernisRechts) {
+			Rectangle hindiRechts = hindernis.getBounds();
+			if (hindiRechts.intersects(rect)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	protected void nachObenLaufen() {
 		setyPos(getyPos() - speed);
-		Rectangle geg= collision.getBounds();
+		Rectangle geg = collision.getBounds();
 		geg.setBounds((int) xPos - 40, (int) yPos - 40, (int) width + 80, (int) height + 80);
 		Rectangle hindiLinks = hindernisLinks.get(getHindernisnummer()).getBounds();
 		Rectangle hindiRechts = hindernisRechts.get(getHindernisnummer()).getBounds();
-		if(!hindiLinks.intersects(geg) && !hindiRechts.intersects(geg)) {
+		if (!hindiLinks.intersects(geg) && !hindiRechts.intersects(geg)) {
 			setNachOben(false);
 		}
 	}
 
-	private void nachUntenLaufen() {
+	protected void nachUntenLaufen() {
 		setyPos(getyPos() + speed);
-		Rectangle geg= collision.getBounds();
+		Rectangle geg = collision.getBounds();
 		geg.setBounds((int) xPos - 40, (int) yPos - 40, (int) width + 80, (int) height + 80);
 		Rectangle hindiLinks = hindernisLinks.get(getHindernisnummer()).getBounds();
 		Rectangle hindiRechts = hindernisRechts.get(getHindernisnummer()).getBounds();
-		if(!hindiLinks.intersects(geg) && !hindiRechts.intersects(geg)) {
+		if (!hindiLinks.intersects(geg) && !hindiRechts.intersects(geg)) {
 			setNachUnten(false);
 		}
-		
+
 	}
 
-	private void nachRechtsLaufen() {
+	protected void nachRechtsLaufen() {
 		setxPos(getxPos() + speed);
-		
-		Rectangle geg= collision.getBounds();
+
+		Rectangle geg = collision.getBounds();
 		geg.setBounds((int) xPos - 40, (int) yPos - 40, (int) width + 80, (int) height + 80);
 		Rectangle hindiUnten = hindernisUnten.get(getHindernisnummer()).getBounds();
 		Rectangle hindiOben = hindernisOben.get(getHindernisnummer()).getBounds();
-		if(!hindiOben.intersects(geg) && !hindiUnten.intersects(geg)) {
+		if (!hindiOben.intersects(geg) && !hindiUnten.intersects(geg)) {
 			setNachRechts(false);
 		}
 
 	}
 
-	private void nachLinksLaufen() {
+	protected void nachLinksLaufen() {
 		setxPos(getxPos() - speed);
-		Rectangle geg= collision.getBounds();
+		Rectangle geg = collision.getBounds();
 		geg.setBounds((int) xPos - 40, (int) yPos - 40, (int) width + 80, (int) height + 80);
 		Rectangle hindiUnten = hindernisUnten.get(getHindernisnummer()).getBounds();
 		Rectangle hindiOben = hindernisOben.get(getHindernisnummer()).getBounds();
-		if(!hindiOben.intersects(geg) && !hindiUnten.intersects(geg)) {
+		if (!hindiOben.intersects(geg) && !hindiUnten.intersects(geg)) {
 			setNachLinks(false);
 		}
 	}
 
-	private boolean laufeRichtungMarker() {
+	protected boolean laufeRichtungMarker() {
 		double xDavor = yMitte;
 		double yDavor = yMitte;
 		double xDelta = xMitte - xMarker;
@@ -309,34 +492,34 @@ public class Gegner extends ExtendedObjectData {
 		return ueberpruefeMarkerMitGegner();
 	}
 
-	private boolean ueberpruefeMarkerMitGegner() {
+	protected boolean ueberpruefeMarkerMitGegner() {
 		Rectangle markerRect = new Rectangle((int) xMarker, (int) yMarker, 1, 1);
 		if (markerRect.intersects(collision)) {
 			return true;
+
 		}
 
 		return false;
 	}
 
-	private void erstelleMarker() {
-		boolean check = true;
+	protected void erstelleMarker() {
 		do {
-			setxMarker(Math.random()* 1500 + 100);
-			setyMarker(Math.random() * 900 + 100);
-//			setyMarker(200);
-			check = ueberpruefeMarkerPos();
-		} while (check);
+			setxMarker(Math.random() * 1720 + 200);
+			setyMarker(Math.random() * 1000 + 200);
+//			setyMarker(600);
+//			setxMarker(1900);
+		} while (ueberpruefeMarkerPos());
 
 	}
 
-	private boolean ueberpruefeMarkerPos() {
+	@SuppressWarnings("deprecation")
+	protected boolean ueberpruefeMarkerPos() {
 
 		ArrayList<Hindernis> hindernisliste = new ArrayList<Hindernis>();
 		hindernisliste = game.getHindernisListe();
 		for (Hindernis hindernis : hindernisliste) {
 			Rectangle hindi = hindernis.getBounds();
-			Rectangle markerRect = new Rectangle((int) xMarker, (int) yMarker, 1, 1);
-			if (hindi.intersects(markerRect) && isDown()) {
+			if (hindi.inside((int) xMarker, (int) yMarker)) {
 				return true;
 			}
 		}
@@ -344,16 +527,28 @@ public class Gegner extends ExtendedObjectData {
 		return false;
 	}
 
+	public int getGegner() {
+		return gegner;
+	}
+
+	public void setGegner(int gegner) {
+		this.gegner = gegner;
+	}
 
 	public int getHindernisnummer() {
 		return hindernisnummer;
 	}
 
+	protected void schiessen() {
+		if (vision.intersects(game.getSpielerBounds())) {
+			pistole.schiessen(xZiel, yZiel);
+		}
+
+	}
 
 	public void setHindernisnummer(int hindernisnummer) {
 		this.hindernisnummer = hindernisnummer;
 	}
-
 
 	public double getxMarker() {
 		return xMarker;
@@ -369,13 +564,6 @@ public class Gegner extends ExtendedObjectData {
 
 	public void setyMarker(double yMarker) {
 		this.yMarker = yMarker;
-	}
-
-	private void schiessen() {
-		if (vision.intersects(game.getSpielerBounds())) {
-			pistole.schiessen(xZiel, yZiel);
-		}
-
 	}
 
 	public boolean isUp() {
@@ -496,6 +684,22 @@ public class Gegner extends ExtendedObjectData {
 
 	public void setyDelta(double yDelta) {
 		this.yDelta = yDelta;
+	}
+
+	public int getFeuerrate() {
+		return feuerrate;
+	}
+
+	public void setFeuerrate(int feuerrate) {
+		this.feuerrate = feuerrate;
+	}
+
+	public Rectangle getVision() {
+		return vision;
+	}
+
+	public void setVision(Rectangle vision) {
+		this.vision = vision;
 	}
 
 }
