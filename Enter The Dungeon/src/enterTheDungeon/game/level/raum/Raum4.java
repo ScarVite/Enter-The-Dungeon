@@ -138,35 +138,35 @@ public class Raum4 extends RaumOberklasse {
 					offset=offset+100;
 					}	
 					//Gegner Raum 1
-					gegner = new Gegner(220, 650, 65, 65, 3, 3, tex, game);
+					gegner = new Gegner(220, 650, 65, 65, 3, 3, 80, tex, game);
 					gegnerliste.add(gegner);
-					gegner = new Gegner(320, 750, 65, 65, 3, 3, tex, game);
+					gegner = new Gegner(320, 750, 65, 65, 3, 3, 80, tex, game);
 					gegnerliste.add(gegner);
-					gegner = new Gegner(420, 850, 65, 65, 3, 3, tex, game);
+					gegner = new Gegner(420, 850, 65, 65, 3, 3, 80, tex, game);
 					gegnerliste.add(gegner);
 					//Gegner Raum 2
-					gegner = new Gegner(120, 50, 65, 65, 3, 3, tex, game);
+					gegner = new Gegner(120, 50, 65, 65, 3, 3, 80, tex, game);
 					gegnerliste.add(gegner);
-					gegner = new Gegner(220, 150, 65, 65, 3, 3, tex, game);
+					gegner = new Gegner(220, 150, 65, 65, 3, 3, 80, tex, game);
 					gegnerliste.add(gegner);
 					//Gegner Raum 3
-					gegner = new Gegner(820, 650, 65, 65, 3, 3, tex, game);
+					gegner = new Gegner(820, 650, 65, 65, 3, 3, 80, tex, game);
 					gegnerliste.add(gegner);
-					gegner = new Gegner(820, 550, 65, 65, 3, 3, tex, game);
+					gegner = new Gegner(820, 550, 65, 65, 3, 3, 80, tex, game);
 					gegnerliste.add(gegner);
-					gegner = new Gegner(820, 450, 65, 65, 3, 3, tex, game);
+					gegner = new Gegner(820, 450, 65, 65, 3, 3, 80, tex, game);
 					gegnerliste.add(gegner);
 					//Gegner Raum 4
-					gegner = new Gegner(820, 250, 65, 65, 3, 3, tex, game);
+					gegner = new Gegner(820, 250, 65, 65, 3, 3, 80, tex, game);
 					gegnerliste.add(gegner);
-					gegner = new Gegner(820, 50, 65, 65, 3, 3, tex, game);
+					gegner = new Gegner(820, 50, 65, 65, 3, 3, 80, tex, game);
 					gegnerliste.add(gegner);
-					gegner = new Gegner(820, 150, 65, 65, 3, 3, tex, game);
+					gegner = new Gegner(820, 150, 65, 65, 3, 3, 80, tex, game);
 					gegnerliste.add(gegner);
 					//Gegner Raum 5
-					gegner = new Gegner(1520, 550, 65, 65, 3, 3, tex, game);
+					gegner = new Gegner(1520, 550, 65, 65, 3, 3, 80, tex, game);
 					gegnerliste.add(gegner);
-					gegner = new Gegner(1520, 750, 65, 65, 3, 3, tex, game);
+					gegner = new Gegner(1520, 750, 65, 65, 3, 3, 80, tex, game);
 					gegnerliste.add(gegner);
 			// Fallen 
 						falle = new Falle(120, 400	, 100, 100, tex);
