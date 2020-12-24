@@ -42,6 +42,8 @@ public class Mainmenu extends JFrame implements ActionListener {
 	private Mainmenutex mainmenutex;
 	private ImageIcon imageIcon;
 	private Mainmenudraw mainmenudraw;
+	
+
 	private boolean spielOffen = false;
 
 	// Mainmenu kreieren und Buttons hinzuf�gen
@@ -256,7 +258,13 @@ public class Mainmenu extends JFrame implements ActionListener {
 		}
 
 	}
-	
+	public Mainmenudraw getMainmenudraw() {
+		return mainmenudraw;
+	}
+
+	public void setMainmenudraw(Mainmenudraw mainmenudraw) {
+		this.mainmenudraw = mainmenudraw;
+	}
 	public void setSpielOffen(Boolean par) {
 		spielOffen = par;
 	}
