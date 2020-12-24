@@ -116,7 +116,7 @@ public class Gegner extends ExtendedObjectData {
 //			g.setColor(new Color(0).PINK);
 //			g.drawRect((int) xPos - 20, (int) yPos - 20, (int) width + 40, (int) height + 40);
 			g.setColor(new Color(0).YELLOW);
-			g.fillRect((int) xMarker, (int) yMarker, 10, 10);
+//			g.fillRect((int) xMarker, (int) yMarker, 10, 10);
 //			g.drawLine((int) getxMitte(), (int) getyMitte(), (int) xMarker, (int) yMarker); // Ziellinie
 //			g.setColor(new Color(4). cyan);
 //			for(int i = 0; i < hindernisOben.size(); i++) {
@@ -151,7 +151,7 @@ public class Gegner extends ExtendedObjectData {
 			int y = (int) (getyPos() + getHeight());
 			int height = (int) getHeight();
 			int width = (int) getWidth();
-			g.drawRect(x, y, width, height);
+//			g.drawRect(x, y, width, height);
 		}
 		pistole.render(g);
 		lebensbalken.render(g);

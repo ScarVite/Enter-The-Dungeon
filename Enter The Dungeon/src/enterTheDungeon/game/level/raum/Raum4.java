@@ -20,9 +20,10 @@ public class Raum4 extends RaumOberklasse {
 		setAnzFallen(4);
 		setAnzGegner(5);
 		setRaum(this);
-
 		setxSpawn(400);
 		setySpawn(400);
+		setPortalX(1650);
+		setPortalY(920);
 	}
 
 	public void erstelleRaum() {

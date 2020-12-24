@@ -23,6 +23,8 @@ public class Raum3 extends RaumOberklasse {
 		setRaum(this);
 		setxSpawn(50);
 		setySpawn(150);
+		setPortalX(1700);
+		setPortalY(920);		
 	}
 
 	public void erstelleRaum() {
@@ -118,6 +120,11 @@ public class Raum3 extends RaumOberklasse {
 			gegner = new Gegner(i, 900, 65, 65, 3, 3, 80, tex, game);
 			gegnerliste.add(gegner);
 		}
+		
+		gegner = new Gegner(920, 120, 65, 65, 3, 3, 80, tex, game);
+		gegnerliste.add(gegner);
+		gegner = new Gegner(620, 120, 65, 65, 3, 3, 80, tex, game);
+		gegnerliste.add(gegner);
 
 		setHindernisliste(hindernisliste);
 		setGegnerliste(gegnerliste);

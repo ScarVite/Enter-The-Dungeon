@@ -238,17 +238,17 @@ public class Game extends JPanel {
 						int nr = raum.getRaumNr();
 						Portal portal;
 						if (nr < max) {
-							portal = new Portal(400, 400, spieler.getWidth(), spieler.getHeight(), tex);
+							portal = new Portal(raumliste.get(rNr).getPortalX(),raumliste.get(rNr).getPortalY() , spieler.getWidth(), spieler.getHeight(), tex);
 							portal.setWeiter(true);
 							raumliste.get(rNr).addPortal(portal);
 						}
 
-						// Portal fuer das vorherige Level
-						if (nr != 0) {
-							portal = new Portal(800, 800, spieler.getWidth(), spieler.getHeight(), tex);
-							portal.setWeiter(false);
-							raumliste.get(rNr).addPortal(portal);
-						}
+//						// Portal fuer das vorherige Level
+//						if (nr != 0) {
+//							portal = new Portal(portalX,portalY , spieler.getWidth(), spieler.getHeight(), tex);
+//							portal.setWeiter(false);
+//							raumliste.get(rNr).addPortal(portal);
+//						}
 					}
 				}
 
@@ -438,6 +438,7 @@ public class Game extends JPanel {
 	}
 
 	// Getter und Setter
+	
 	public int getSpielerLeben(){
 		return spieler.getLeben();
 	}

@@ -18,6 +18,8 @@ public class RaumOberklasse {
 
 	protected int xSpawn;
 	protected int ySpawn;
+	protected int portalY;
+	protected int portalX;
 
 	protected ArrayList<Hindernis> hindernisliste;
 	protected ArrayList<Gegner> gegnerliste;
@@ -44,8 +46,7 @@ public class RaumOberklasse {
 	private Raum4 raum4;
 	private Raum5 raum5;
 	private Raum6 raum6;
-	private Raum7 raum7;
-
+	
 	public RaumOberklasse(Game pGame, Texturen pTex) {
 		this.game = pGame;
 		this.tex = pTex;
@@ -82,7 +83,6 @@ public class RaumOberklasse {
 		raumliste.add(raum4 = new Raum4(game, tex));
 		raumliste.add(raum5 = new Raum5(game, tex));
 		raumliste.add(raum6 = new Raum6(game, tex));
-		raumliste.add(raum7 = new Raum7(game, tex));
 
 		raum1.erstelleRaum();
 		raum2.erstelleRaum();
@@ -90,7 +90,6 @@ public class RaumOberklasse {
 		raum4.erstelleRaum();
 		raum5.erstelleRaum();
 		raum6.erstelleRaum();
-		raum7.erstelleRaum();
 
 		setMaxRaum(raumliste.size());
 
@@ -191,6 +190,23 @@ public class RaumOberklasse {
 		}
 
 	}
+	
+	public int getPortalY() {
+		return portalY;
+	}
+
+	public void setPortalY(int portalY) {
+		this.portalY = portalY;
+	}
+
+	public int getPortalX() {
+		return portalX;
+	}
+
+	public void setPortalX(int portalX) {
+		this.portalX = portalX;
+	}
+
 
 	public int getMaxRaum() {
 		return maxRaum;

@@ -63,7 +63,7 @@ public class Schuss extends Waffe {
 			yZiel -= yDelta;
 		}
 
-		g.drawLine((int) xPos, (int) yPos, (int) xZiel, (int) yZiel);
+//		g.drawLine((int) xPos, (int) yPos, (int) xZiel, (int) yZiel);
 
 		if (bild == 1) {
 			g.drawImage(tex.feuerball1, (int) xPos, (int) yPos, (int) width, (int) height, null);
@@ -73,7 +73,7 @@ public class Schuss extends Waffe {
 		}
 
 		g.setColor(new Color(0).GREEN);
-		g.drawRect((int) xPos, (int) yPos, (int) width, (int) height);
+//		g.drawRect((int) xPos, (int) yPos, (int) width, (int) height);
 	}
 
 	public int getBild() {
