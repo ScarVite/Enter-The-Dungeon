@@ -10,7 +10,7 @@ public class ExtendedObjectData extends StandardObjectData {
 	protected double speed;
 	private boolean right, left, up, down;
 
-	public ExtendedObjectData(double pX, double pY, double pWidth, double pHeight, int pLeben, int pSpeed,
+	public ExtendedObjectData(double pX, double pY, double pWidth, double pHeight, int pLeben, double pSpeed,
 			Texturen pTex) {
 		super(pX, pY, pWidth, pHeight, pTex);
 		this.leben = pLeben;

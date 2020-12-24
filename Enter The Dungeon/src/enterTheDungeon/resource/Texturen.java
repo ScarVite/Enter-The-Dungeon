@@ -28,11 +28,12 @@ public class Texturen {
 	private Game game;
 
 	public Texturen(Game game) {
-		this.game = game;
+
 		getTextures();
 	}
 
 	private void getTextures() {
+
 		try {
 			Filesystem filesystem = new Filesystem();
 			spieler = ImageIO.read(filesystem.readFile("/images/spieler.png"));

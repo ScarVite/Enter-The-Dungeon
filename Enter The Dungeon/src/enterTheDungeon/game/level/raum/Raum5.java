@@ -166,12 +166,50 @@ public class Raum5 extends RaumOberklasse {
 		powerup = new Schadenpowerup(40, 340, 50, 50, tex, game);
 		powerupliste.add(powerup);
 
-		setHindernisliste(hindernisliste);
-		setGegnerliste(gegnerliste);
-		erstelleSubHindernisOben();
-		erstelleSubHindernisUnten();
-		erstelleSubHindernisRechts();
-		erstelleSubHindernisLinks();
+			// Fallen 
+				//Ersten beiden Fallen
+				falle = new Falle(520, 220	, 100, 100, tex);
+				fallenliste.add(falle);
+				falle = new Falle(620, 220	, 100, 100, tex);
+				fallenliste.add(falle);
+				// 2ten Fallen
+				falle = new Falle(20, 520	, 100, 100, tex);
+				fallenliste.add(falle);
+				falle = new Falle(120, 520	, 100, 100, tex);
+				fallenliste.add(falle);
+				//3ten Fallen
+				falle = new Falle(720, 720	, 100, 100, tex);
+				fallenliste.add(falle);
+				falle = new Falle(720, 820	, 100, 100, tex);
+				fallenliste.add(falle);
+				//4ten Fallen
+				falle = new Falle(1120, 520	, 100, 100, tex);
+				fallenliste.add(falle);
+				falle = new Falle(1220, 520	, 100, 100, tex);
+				fallenliste.add(falle);
+				//5ten Fallen
+				falle = new Falle(820, 220	, 100, 100, tex);
+				fallenliste.add(falle);
+				falle = new Falle(920, 220	, 100, 100, tex);
+				fallenliste.add(falle);
+				//Death Valley of Fallen 
+				offset=100;
+				for(int i=5;i<getAnzFallen();i++){
+					falle = new Falle(1220+offset, 120, 100, 100, tex);
+					fallenliste.add(falle);
+					offset=offset+100;
+					}
+				falle = new Falle(1720, 220	, 100, 100, tex);
+				fallenliste.add(falle);
+				//7ten Fallen
+				falle = new Falle(1420, 520	, 100, 100, tex);
+				fallenliste.add(falle);
+				setHindernisliste(hindernisliste);
+				setGegnerliste(gegnerliste);
+				erstelleSubHindernisOben();
+				erstelleSubHindernisUnten();
+				erstelleSubHindernisRechts();
+				erstelleSubHindernisLinks();
 	}
 
 	public void update() {

@@ -8,11 +8,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import enterTheDungeon.input.TastaturInput;
 
-public class Pausemenu extends JFrame implements ActionListener {
+public class Pausemenu implements ActionListener {
 	private JFrame gui;
-	private JPanel pausemenuw;
+	private JPanel pausemenu;
 	private Mainmenu main;
 	private int screenwidth;
 	private int screenheight;
@@ -48,19 +50,16 @@ public class Pausemenu extends JFrame implements ActionListener {
 		pausemenuw.addKeyListener(tastaturinput);
 		//JFrame
 		gui.setSize(screenwidth, screenheight);
-		gui.add(pausemenuw);
+		gui.add(pausemenu);
 		gui.setResizable(false);
 		gui.setLocationRelativeTo(null);
-		gui.setDefaultCloseOperation(gui.HIDE_ON_CLOSE);
+		gui.setDefaultCloseOperation(gui.HIDE_ON_CLOSE);		
 		gui.setVisible(true);
 		gui.setFocusable(true);
 		pausemenuw.setFocusable(true);
 	}
-
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == zurueckSpiel) {
-			setSound(true);
-			gui.setVisible(false);
 			game.setPause(false);
 			game.setPausemenuOpen(true);
 		}
@@ -76,11 +75,10 @@ public class Pausemenu extends JFrame implements ActionListener {
 				game.setPausemenuOpen(true);
 				setSound(true);
 			}
-
 		}
+		
 	}
 	
-
 	public boolean isSound() {
 		return sound;
 	}

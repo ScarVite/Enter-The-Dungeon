@@ -19,7 +19,7 @@ public class LevelCreator {
 	private Gegner gegner;
 	private Rectangle spieler;
 	private Hindernis hindernis;
-	private double x, y, width, height; // für Hindernisse
+	private double x, y, width, height; // fï¿½r Hindernisse
 
 	public LevelCreator(Game pGame, Texturen pTex) {
 
@@ -57,7 +57,7 @@ public class LevelCreator {
 			setY(Math.random() * (game.getScreenheight() - 80 - 65) + 30);
 			setWidth(100);
 			setHeight(100);
-			gegner = new Gegner(x, y, getWidth(), getHeight(), 3, 3, tex, game);
+			gegner = new Gegner(x, y, getWidth(), getHeight(), 3, 3, 80,tex, game);
 			gegnerliste.add(gegner);
 		}
 
