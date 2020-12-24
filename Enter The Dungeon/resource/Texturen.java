@@ -35,20 +35,20 @@ public class Texturen {
 	private void getTextures() {
 		try {
 			Filesystem filesystem = new Filesystem();
-			spieler = ImageIO.read(filesystem.readFile("/images/spieler.png"));
-			gegner = ImageIO.read(filesystem.readFile("/images/gegner.png"));
-			schuss = ImageIO.read(filesystem.readFile("/images/schuss.png"));
-			hintergrund = ImageIO.read(filesystem.readFile("/images/background1.png"));
-			shotgun = ImageIO.read(filesystem.readFile("/images/shotgun.png"));
-			pistole = ImageIO.read(filesystem.readFile("/images/scifi-pistole.png"));
-			hindernis = ImageIO.read(filesystem.readFile("/images/hindernis.png"));
-			feuerball1 = ImageIO.read(filesystem.readFile("/images/feuerball1.png"));
-			feuerball2 = ImageIO.read(filesystem.readFile("/images/feuerball2.png"));
-			portal = ImageIO.read(filesystem.readFile("/images/portal.png"));
-			falleZU = ImageIO.read(filesystem.readFile("/images/falle-zu.png"));
-			falleBereit = ImageIO.read(filesystem.readFile("/images/falle-bereit.png"));
-			falleOffen = ImageIO.read(filesystem.readFile("/images/falle-offen.png"));
-      speedpowerUp = ImageIO.read(filesystem.readFile("/images/power-up.png"));
+			spieler = ImageIO.read(filesystem.readFile("/images/Spieler.png"));
+			gegner = ImageIO.read(filesystem.readFile("/images/Gegner.png"));
+			schuss = ImageIO.read(filesystem.readFile("/images/Schuss.png"));
+			hintergrund = ImageIO.read(filesystem.readFile("/images/Background1.png"));
+			shotgun = ImageIO.read(filesystem.readFile("/images/Shotgun.png"));
+			pistole = ImageIO.read(filesystem.readFile("/images/SciFiPistole.png"));
+			hindernis = ImageIO.read(filesystem.readFile("/images/Hindernis.png"));
+			feuerball1 = ImageIO.read(filesystem.readFile("/images/Feuerball1.png"));
+			feuerball2 = ImageIO.read(filesystem.readFile("/images/Feuerball2.png"));
+			portal = ImageIO.read(filesystem.readFile("/images/Portal.png"));
+			falleZU = ImageIO.read(filesystem.readFile("/images/FalleZu.png"));
+			falleBereit = ImageIO.read(filesystem.readFile("/images/FalleBereit.png"));
+			falleOffen = ImageIO.read(filesystem.readFile("/images/FalleOffen.png"));
+			speedpowerUp = ImageIO.read(filesystem.readFile("/images/Powerup.png"));
 			schadenpowerUp = ImageIO.read(filesystem.readFile("/images/schaden.png"));
 			heartpowerUp = ImageIO.read(filesystem.readFile("/images/heart.png"));
 		} catch (IOException e) {
