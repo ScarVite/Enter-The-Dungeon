@@ -39,13 +39,13 @@ public class Pausemenu extends JFrame implements ActionListener {
 		zurueckSpiel.addActionListener(this);
 		zurueckSpiel.setBorderPainted(false);
 		mainmenu.getCloseButton();
-
 		
 		//JPanel
 		pausemenuw.add(zurueckSpiel);
 		pausemenuw.add(main.getCloseButton());
 		gui.addKeyListener(tastaturinput);
 		pausemenuw.addKeyListener(tastaturinput);
+		pausemenuw.add(main.getMainmenudraw());
 		//JFrame
 		gui.setSize(screenwidth, screenheight);
 		gui.add(pausemenuw);

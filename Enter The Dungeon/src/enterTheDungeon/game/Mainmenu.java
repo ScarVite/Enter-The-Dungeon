@@ -44,6 +44,8 @@ public class Mainmenu extends JFrame implements ActionListener {
 	private Mainmenutex mainmenutex;
 	private ImageIcon imageIcon;
 	private Mainmenudraw mainmenudraw;
+	
+
 	private boolean spielOffen = false;
 	private Register register;
 	private boolean registerOpen = false;
@@ -274,7 +276,6 @@ public class Mainmenu extends JFrame implements ActionListener {
 		}
 
 	}
-	
 	public boolean isRegisterOpen() {
 		return registerOpen;
 	}
@@ -283,6 +284,13 @@ public class Mainmenu extends JFrame implements ActionListener {
 		this.registerOpen = registerOpen;
 	}
 
+	public Mainmenudraw getMainmenudraw() {
+		return mainmenudraw;
+	}
+
+	public void setMainmenudraw(Mainmenudraw mainmenudraw) {
+		this.mainmenudraw = mainmenudraw;
+	}
 	public void setSpielOffen(Boolean par) {
 		spielOffen = par;
 	}
