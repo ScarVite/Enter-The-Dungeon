@@ -31,7 +31,7 @@ public class Start {
 
 	@SuppressWarnings("unchecked")
 	private static Filesystem initSystems() {
-		// Networking.checkPing();
+		Networking.checkPing();
 		Filesystem.SetMainPath(System.getProperty("user.home"));
 		Filesystem filesystem = new Filesystem();
 		filesystem.createFolderIfNotExist("/files");
