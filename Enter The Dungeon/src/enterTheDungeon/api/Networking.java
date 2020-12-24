@@ -59,225 +59,233 @@ public class Networking {
 	private final static CloseableHttpClient httpClient = HttpClients.createDefault();
 
 	public static boolean validatekey(String key) {
-		if (userToken == null)
-			userToken = new User().getToken();
-		HttpGet request = new HttpGet(baseUrl + "/validatekey?key=" + key);
-		request.setHeader("authorization", userToken);
-		try (CloseableHttpResponse response = httpClient.execute(request)) {
-			System.out.println(response.getStatusLine().toString());
-			HttpEntity entity = response.getEntity();
-			Header headers = entity.getContentType();
-			System.out.println(headers);
-			if (entity != null) {
-				try {
-					return Boolean.parseBoolean(EntityUtils.toString(entity));
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+		if (connected) {
+			if (userToken == null)
+				userToken = new User().getToken();
+			HttpGet request = new HttpGet(baseUrl + "/validatekey?key=" + key);
+			request.setHeader("authorization", userToken);
+			try (CloseableHttpResponse response = httpClient.execute(request)) {
+				System.out.println(response.getStatusLine().toString());
+				HttpEntity entity = response.getEntity();
+				Header headers = entity.getContentType();
+				System.out.println(headers);
+				if (entity != null) {
+					try {
+						return Boolean.parseBoolean(EntityUtils.toString(entity));
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-			}
 
-		} catch (ClientProtocolException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			} catch (ClientProtocolException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		System.exit(1);
 		return false;
 	}
 
-	public static void  updateLeaderboard(String username, int score) {
-		if (userToken == null)
-			userToken = new User().getToken();
-		HttpPost post = new HttpPost(baseUrl + "/updateleaderboard");
-		post.setHeader("authorization", userToken);
-		/*
-		 * List<NameValuePair> urlParameters = new ArrayList<>(); urlParameters.add(new
-		 * BasicNameValuePair("username", username)); urlParameters.add(new
-		 * BasicNameValuePair("score", Integer.toString(score))); urlParameters.add(new
-		 * BasicNameValuePair("token", "33317-200-10-5-5-992")); try {
-		 * post.setEntity(new UrlEncodedFormEntity(urlParameters)); } catch
-		 * (UnsupportedEncodingException e2) { // TODO Auto-generated catch block
-		 * e2.printStackTrace(); }
-		 */
-		try (CloseableHttpClient httpClient = HttpClients.createDefault();
-				CloseableHttpResponse response = httpClient.execute(post)) {
-			System.out.println(response.getStatusLine().toString());
-			HttpEntity entity = response.getEntity();
-			Header headers = entity.getContentType();
-			System.out.println(headers);
-			if (entity != null) {
-				try {
-					System.out.println(response.getStatusLine());
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+	public static void updateLeaderboard(String username, int score) {
+		if (connected) {
+			if (userToken == null)
+				userToken = new User().getToken();
+			HttpPost post = new HttpPost(baseUrl + "/updateleaderboard");
+			post.setHeader("authorization", userToken);
+			/*
+			 * List<NameValuePair> urlParameters = new ArrayList<>(); urlParameters.add(new
+			 * BasicNameValuePair("username", username)); urlParameters.add(new
+			 * BasicNameValuePair("score", Integer.toString(score))); urlParameters.add(new
+			 * BasicNameValuePair("token", "33317-200-10-5-5-992")); try {
+			 * post.setEntity(new UrlEncodedFormEntity(urlParameters)); } catch
+			 * (UnsupportedEncodingException e2) { // TODO Auto-generated catch block
+			 * e2.printStackTrace(); }
+			 */
+			try (CloseableHttpClient httpClient = HttpClients.createDefault();
+					CloseableHttpResponse response = httpClient.execute(post)) {
+				System.out.println(response.getStatusLine().toString());
+				HttpEntity entity = response.getEntity();
+				Header headers = entity.getContentType();
+				System.out.println(headers);
+				if (entity != null) {
+					try {
+						System.out.println(response.getStatusLine());
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-			}
 
-		} catch (ClientProtocolException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			} catch (ClientProtocolException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
-		System.exit(1);
 	}
 
 	public static JSONArray getLeaderboard() {
-		if (userToken == null)
-			userToken = new User().getToken();
-		HttpGet request = new HttpGet(baseUrl + "/getleaderboard");
-		request.setHeader("authorization", userToken);
-		try (CloseableHttpResponse response = httpClient.execute(request)) {
-			System.out.println(response.getStatusLine().toString());
-			HttpEntity entity = response.getEntity();
-			Header headers = entity.getContentType();
-			System.out.println(headers);
-			if (entity != null) {
-				try {
-					JSONParser parser = new JSONParser();
-					JSONArray jsonarray = (JSONArray) parser.parse(EntityUtils.toString(entity));
-					System.out.println(jsonarray.get(0));
-					return jsonarray;
-				} catch (org.json.simple.parser.ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+		if (connected) {
+			if (userToken == null)
+				userToken = new User().getToken();
+			HttpGet request = new HttpGet(baseUrl + "/getleaderboard");
+			request.setHeader("authorization", userToken);
+			try (CloseableHttpResponse response = httpClient.execute(request)) {
+				System.out.println(response.getStatusLine().toString());
+				HttpEntity entity = response.getEntity();
+				Header headers = entity.getContentType();
+				System.out.println(headers);
+				if (entity != null) {
+					try {
+						JSONParser parser = new JSONParser();
+						JSONArray jsonarray = (JSONArray) parser.parse(EntityUtils.toString(entity));
+						System.out.println(jsonarray.get(0));
+						return jsonarray;
+					} catch (org.json.simple.parser.ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-			}
 
-		} catch (ClientProtocolException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			} catch (ClientProtocolException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
-		System.exit(1);
 		return null;
 	}
 
 	public static void addUser(String email, String username, String password) {
-		String hashedPassword = " ";
-		try {
-			hashedPassword = hashPW(password);
-		} catch (NoSuchAlgorithmException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-			System.exit(2);
-		}
-		if (hashedPassword == " ") {
-			System.exit(2);
-		}
-		HttpPost post = new HttpPost(baseUrl + "/addUser");
-		post.setHeader("authorization", userToken);
-		List<NameValuePair> urlParameters = new ArrayList<>();
-		urlParameters.add(new BasicNameValuePair("username", username));
-		urlParameters.add(new BasicNameValuePair("password", hashedPassword));
-		urlParameters.add(new BasicNameValuePair("email", email));
-		try {
-			post.setEntity(new UrlEncodedFormEntity(urlParameters));
-		} catch (UnsupportedEncodingException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-		try (CloseableHttpClient httpClient = HttpClients.createDefault();
-				CloseableHttpResponse response = httpClient.execute(post)) {
-			System.out.println(response.getStatusLine().toString());
-			HttpEntity entity = response.getEntity();
-			Header headers = entity.getContentType();
-			System.out.println(headers);
-			if (entity != null) {
-				try {
-					JSONParser parser = new JSONParser();
-					JSONObject UserObj;
-					UserObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
-					if (UserObj.get("error") != null)
-						User.setUser(UserObj);
-					else {
-						JSONObject error = (JSONObject) UserObj.get("error");
-						Popup.error(error.get("message") + " Code: " + error.get("code"), "Something Went Wrong");
-					}
-					if (userToken == null)
-						userToken = new User().getToken();
-				} catch (ParseException | org.json.simple.parser.ParseException | IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		if (connected) {
+			String hashedPassword = " ";
+			try {
+				hashedPassword = hashPW(password);
+			} catch (NoSuchAlgorithmException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+				System.exit(2);
 			}
+			if (hashedPassword == " ") {
+				System.exit(2);
+			}
+			HttpPost post = new HttpPost(baseUrl + "/addUser");
+			post.setHeader("authorization", userToken);
+			List<NameValuePair> urlParameters = new ArrayList<>();
+			urlParameters.add(new BasicNameValuePair("username", username));
+			urlParameters.add(new BasicNameValuePair("password", hashedPassword));
+			urlParameters.add(new BasicNameValuePair("email", email));
+			try {
+				post.setEntity(new UrlEncodedFormEntity(urlParameters));
+			} catch (UnsupportedEncodingException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			try (CloseableHttpClient httpClient = HttpClients.createDefault();
+					CloseableHttpResponse response = httpClient.execute(post)) {
+				System.out.println(response.getStatusLine().toString());
+				HttpEntity entity = response.getEntity();
+				Header headers = entity.getContentType();
+				System.out.println(headers);
+				if (entity != null) {
+					try {
+						JSONParser parser = new JSONParser();
+						JSONObject UserObj;
+						UserObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
+						if (UserObj.get("error") != null)
+							User.setUser(UserObj);
+						else {
+							JSONObject error = (JSONObject) UserObj.get("error");
+							Popup.error(error.get("message") + " Code: " + error.get("code"), "Something Went Wrong");
+						}
+						if (userToken == null)
+							userToken = new User().getToken();
+					} catch (ParseException | org.json.simple.parser.ParseException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 
-		} catch (ClientProtocolException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			} catch (ClientProtocolException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 
 	public static void login(String email, String password) {
-		String hashedPassword = password;
-		/*
-		 * try { hashedPassword = hashPW(password); } catch (NoSuchAlgorithmException
-		 * e2) { // TODO Auto-generated catch block e2.printStackTrace(); }
-		 */
-		if (hashedPassword == " ") {
-			System.exit(2);
-		}
-		HttpPost post = new HttpPost(baseUrl + "/login");
-		post.setHeader("authorization", userToken);
-		List<NameValuePair> urlParameters = new ArrayList<>();
-		urlParameters.add(new BasicNameValuePair("email", email));
-		urlParameters.add(new BasicNameValuePair("password", hashedPassword));
-		try {
-			post.setEntity(new UrlEncodedFormEntity(urlParameters));
-		} catch (UnsupportedEncodingException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
-		}
-		try (CloseableHttpClient httpClient = HttpClients.createDefault();
-				CloseableHttpResponse response = httpClient.execute(post)) {
-			System.out.println(response.getStatusLine().toString());
-			HttpEntity entity = response.getEntity();
-			Header headers = entity.getContentType();
-			System.out.println(headers);
-			if (entity != null) {
-				try {
-					JSONParser parser = new JSONParser();
-					JSONObject UserObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
-					System.out.println(UserObj.get("error"));
-					if (UserObj.get("error") == null)
-						User.setUser(UserObj);
-					else {
-						JSONObject error = (JSONObject) UserObj.get("error");
-						Popup.error(error.get("message") + " Code: " + error.get("code"), "Something Went Wrong");
-					}
-					if (userToken == null)
-						userToken = new User().getToken();
-				} catch (org.json.simple.parser.ParseException | ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+		if (connected) {
+			String hashedPassword = password;
+			/*
+			 * try { hashedPassword = hashPW(password); } catch (NoSuchAlgorithmException
+			 * e2) { // TODO Auto-generated catch block e2.printStackTrace(); }
+			 */
+			if (hashedPassword == " ") {
+				System.exit(2);
 			}
+			HttpPost post = new HttpPost(baseUrl + "/login");
+			post.setHeader("authorization", userToken);
+			List<NameValuePair> urlParameters = new ArrayList<>();
+			urlParameters.add(new BasicNameValuePair("email", email));
+			urlParameters.add(new BasicNameValuePair("password", hashedPassword));
+			try {
+				post.setEntity(new UrlEncodedFormEntity(urlParameters));
+			} catch (UnsupportedEncodingException e2) {
+				// TODO Auto-generated catch block
+				e2.printStackTrace();
+			}
+			try (CloseableHttpClient httpClient = HttpClients.createDefault();
+					CloseableHttpResponse response = httpClient.execute(post)) {
+				System.out.println(response.getStatusLine().toString());
+				HttpEntity entity = response.getEntity();
+				Header headers = entity.getContentType();
+				System.out.println(headers);
+				if (entity != null) {
+					try {
+						JSONParser parser = new JSONParser();
+						JSONObject UserObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
+						System.out.println(UserObj.get("error"));
+						if (UserObj.get("error") == null)
+							User.setUser(UserObj);
+						else {
+							JSONObject error = (JSONObject) UserObj.get("error");
+							Popup.error(error.get("message") + " Code: " + error.get("code"), "Something Went Wrong");
+						}
+						if (userToken == null)
+							userToken = new User().getToken();
+					} catch (org.json.simple.parser.ParseException | ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
 
-		} catch (ClientProtocolException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			} catch (ClientProtocolException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 	}
 
@@ -294,70 +302,77 @@ public class Networking {
 		} catch (IOException e1) {
 			System.out.println("Offline");
 			connected = false;
+			Popup.error(
+					"Sie oder die API sind offline.\n Falls dies der erste Start sein sollte, verbinden sie sich bitte mit dem Internet",
+					"Netzwerk Fehler");
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}
 
 	public static JSONObject getJSONObject(String link) {
-		HttpGet request = new HttpGet(link);
-		request.setHeader("authorization", userToken);
-		try (CloseableHttpResponse response = httpClient.execute(request)) {
-			System.out.println(response.getStatusLine().toString());
-			HttpEntity entity = response.getEntity();
-			Header headers = entity.getContentType();
-			System.out.println(headers);
-			if (entity != null) {
-				try {
-					JSONParser parser = new JSONParser();
-					JSONObject jsonobject = (JSONObject) parser.parse(EntityUtils.toString(entity));
-					System.out.println(jsonobject.get(0));
-					return jsonobject;
-				} catch (org.json.simple.parser.ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+		if (connected) {
+			HttpGet request = new HttpGet(link);
+			request.setHeader("authorization", userToken);
+			try (CloseableHttpResponse response = httpClient.execute(request)) {
+				System.out.println(response.getStatusLine().toString());
+				HttpEntity entity = response.getEntity();
+				Header headers = entity.getContentType();
+				System.out.println(headers);
+				if (entity != null) {
+					try {
+						JSONParser parser = new JSONParser();
+						JSONObject jsonobject = (JSONObject) parser.parse(EntityUtils.toString(entity));
+						System.out.println(jsonobject.get(0));
+						return jsonobject;
+					} catch (org.json.simple.parser.ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
-			}
 
-		} catch (ClientProtocolException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			} catch (ClientProtocolException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
-		System.exit(1);
 		return null;
 	}
 
 	public static Image downloadImage(String link) {
-		try {
-			URL url = new URL(link);
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			return ImageIO.read(connection.getInputStream());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (connected) {
+			try {
+				URL url = new URL(link);
+				HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+				return ImageIO.read(connection.getInputStream());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return null;
 	}
 
 	public static void downloadSoundandSave(String url, String name) {
-		Filesystem filesystem = new Filesystem();
-		try (InputStream in = URI.create(url).toURL().openStream()) {
-			filesystem.createFolderIfNotExist("/sound");
-			Files.copy(in, Paths.get(filesystem.getMainPath() + "/sound/" + name));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (connected) {
+			Filesystem filesystem = new Filesystem();
+			try (InputStream in = URI.create(url).toURL().openStream()) {
+				filesystem.createFolderIfNotExist("/sound");
+				Files.copy(in, Paths.get(filesystem.getMainPath() + "/sound/" + name));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
 	protected static String Tokengen(int ziel, int lenght, int max) {
-
 		int a = 0;
 		while (a != ziel) {
 			Random random = new Random();
