@@ -36,6 +36,7 @@ public class User {
 	}
 	
 	public static void setUserRegister(JSONObject User) {
+		System.out.println(User);
 		Email = User.get("email").toString();
 		Name = User.get("username").toString();
 		JSONObject tok = (JSONObject) User.get("token");

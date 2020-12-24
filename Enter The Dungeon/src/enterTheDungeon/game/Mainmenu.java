@@ -159,7 +159,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 		closeButton.setBorderPainted(false);
 
 		registerButton = new JButton("Registrieren");
-		registerButton.setBounds(310, 415, 100, 40);
+		registerButton.setBounds(660, 520, 120, 40);
 		registerButton.addActionListener(this);
 //		closeButton.setIcon(new ImageIcon("Bilder/closebutton.png"));
 		registerButton.setBorderPainted(false);

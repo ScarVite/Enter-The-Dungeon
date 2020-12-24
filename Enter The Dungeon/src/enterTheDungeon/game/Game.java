@@ -207,6 +207,7 @@ public class Game extends JPanel {
 
 			if (spieler.getLeben() <= 0) {
 				beendeSpiel();
+				
 			}
 		}
 
@@ -309,7 +310,6 @@ public class Game extends JPanel {
 		portalliste.clear();
 		spiel.setVisible(false);
 		spiel.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		Popup.info("Sie sind Gestorben", "Gut Gemacht");
 	}
 
 	private void init() {

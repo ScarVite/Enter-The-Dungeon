@@ -202,7 +202,7 @@ public class Networking {
 					JSONObject UserObj;
 					UserObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
 					if (UserObj.get("error") == null) { 
-						User.setUser(UserObj);
+						User.setUserRegister(UserObj);
 						Popup.info("User Created", "Sucess");
 					}
 					else {

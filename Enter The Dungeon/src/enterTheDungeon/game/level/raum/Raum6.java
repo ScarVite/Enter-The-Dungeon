@@ -29,7 +29,7 @@ public class Raum6 extends RaumOberklasse {
 
 	public void erstelleRaum() {
 
-		Popup.error("Der Boss spawnt leider nicht, Wir wissen nicht wieso und die zeit ging aus", "Entschuldigung");
+		//Popup.error("Der Boss spawnt leider nicht, Wir wissen nicht wieso und die zeit ging aus", "Entschuldigung");
 		System.out.println();
 		createBorder();
 		int width = 1920;
@@ -63,11 +63,11 @@ public class Raum6 extends RaumOberklasse {
 			offset=offset+100;
 			}	
 			
-//		for (int i = 150; i < width; i += width / 2) {
-//			
-//			gegner = new Gegner(i, 400, 65, 65, 3, 3, tex, game);
-//			gegnerliste.add(gegner);
-//		}
+		for (int i = 150; i < width; i += width / 2) {
+			
+			gegner = new Gegner(i, 400, 65, 65, 3, 3, 80, tex, game);
+			gegnerliste.add(gegner);
+		}
 		//Hindernisse
 		hindernis = new Hindernis(220, 220, 100, 100, tex);
 		hindernisliste.add(hindernis);

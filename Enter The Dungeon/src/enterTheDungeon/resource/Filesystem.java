@@ -148,7 +148,6 @@ public class Filesystem {
 	}
 	
 	public File readFile(String filePath) {
-		System.out.println("hier");
 		return new File(mainPath, filePath);
 	}
 
