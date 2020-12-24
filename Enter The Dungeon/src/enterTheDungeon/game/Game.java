@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import enterTheDungeon.resource.*;
+import enterTheDungeon.api.Popup;
 import enterTheDungeon.game.level.Falle;
 import enterTheDungeon.game.level.Gegner;
 import enterTheDungeon.game.level.Hindernis;
@@ -308,6 +309,7 @@ public class Game extends JPanel {
 		portalliste.clear();
 		spiel.setVisible(false);
 		spiel.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		Popup.info("Sie sind Gestorben", "Gut Gemacht");
 	}
 
 	private void init() {

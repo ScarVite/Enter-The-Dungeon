@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import org.json.simple.JSONObject;
 
 import enterTheDungeon.resource.Sound;
+import enterTheDungeon.api.Register;
 import enterTheDungeon.resource.Filesystem;
 import enterTheDungeon.resource.Mainmenutex;
 
@@ -30,6 +31,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 	private JButton soundButton;
 	private JButton soundAnButton;
 	private JButton backButton;
+	private JButton registerButton;
 	private JPanel options;
 	private JPanel credits;
 	private static JFrame gui;
@@ -38,11 +40,13 @@ public class Mainmenu extends JFrame implements ActionListener {
 	private JPanel button;
 	public static JFrame gamewindow = new JFrame();
 	private Filesystem filesystem = new Filesystem();
-	private JSONObject settingsObj = (JSONObject) filesystem.readJsonFileasObject("/Files/Settings.json");
+	private JSONObject settingsObj = (JSONObject) filesystem.readJsonFileasObject("/files/Settings.json");
 	private Mainmenutex mainmenutex;
 	private ImageIcon imageIcon;
 	private Mainmenudraw mainmenudraw;
 	private boolean spielOffen = false;
+	private Register register;
+	private boolean registerOpen = false;
 
 	// Mainmenu kreieren und Buttons hinzuf�gen
 	@SuppressWarnings("unchecked")
@@ -50,7 +54,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 		if (settingsObj == null) {
 			settingsObj = new JSONObject();
 			settingsObj.put("music", true);
-			filesystem.writeJsonObjectToFile("/Files/Settings.json", settingsObj);
+			filesystem.writeJsonObjectToFile("/files/Settings.json", settingsObj);
 		}
 		// Hauptmen� Musik wird abgerufen und in einer Schleife abgespielt
 		if ((boolean) settingsObj.get("music")) {
@@ -58,6 +62,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 			sound.getClip().loop(Clip.LOOP_CONTINUOUSLY);
 		} else
 			sound.setHintergrundmusik(false);
+
 		screenWidth = 800;
 		screenHeight = 600;
 		mainmenudraw = new Mainmenudraw(this);
@@ -75,6 +80,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 		mainmenu.add(closeButton);
 		mainmenu.add(optionsButton);
 		mainmenu.add(creditsButton);
+		mainmenu.add(registerButton);
 		mainmenu.add(mainmenudraw);
 		gui.setSize(screenWidth, screenHeight);
 		gui.add(mainmenu);
@@ -103,7 +109,6 @@ public class Mainmenu extends JFrame implements ActionListener {
 		gui.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		gui.setVisible(true);
 	}
-
 
 	public void Credits() {
 		credits = new JPanel();
@@ -150,6 +155,12 @@ public class Mainmenu extends JFrame implements ActionListener {
 		closeButton.addActionListener(this);
 //		closeButton.setIcon(new ImageIcon("Bilder/closebutton.png"));
 		closeButton.setBorderPainted(false);
+
+		registerButton = new JButton("Registrieren");
+		registerButton.setBounds(310, 415, 100, 40);
+		registerButton.addActionListener(this);
+//		closeButton.setIcon(new ImageIcon("Bilder/closebutton.png"));
+		registerButton.setBorderPainted(false);
 
 		// Untermenus
 
@@ -201,9 +212,9 @@ public class Mainmenu extends JFrame implements ActionListener {
 			screenHeight = 1080;
 			if (!spielOffen) {
 				gameWindow();
-					if(sound.getHintergrundmusik()) {
+				if (sound.getHintergrundmusik()) {
 					sound.getClip().stop();
-					}
+				}
 			}
 		}
 
@@ -215,6 +226,13 @@ public class Mainmenu extends JFrame implements ActionListener {
 		if (e.getSource() == backButton) {
 			mainmenu.setVisible(true);
 			mainmenu.add(mainmenudraw);
+		}
+
+		if (e.getSource() == registerButton) {
+			if (!registerOpen) {
+				registerOpen = true;
+				register = new Register(this);
+			}
 		}
 
 		if (e.getSource() == optionsButton) {
@@ -232,7 +250,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 			sound.setHintergrundmusik(false);
 			settingsObj.put("music", false);
 			System.out.println(settingsObj);
-			filesystem.writeJsonObjectToFile("/Files/Settings.json", settingsObj);
+			filesystem.writeJsonObjectToFile("/files/Settings.json", settingsObj);
 			options.add(soundAnButton);
 			options.remove(soundButton);
 			options.add(mainmenudraw); // Mainmen� hintergrund wird hier bei An und Aus nochmals auf das JPanel
@@ -248,7 +266,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 			}
 			sound.setHintergrundmusik(true);
 			settingsObj.put("music", true);
-			filesystem.writeJsonObjectToFile("/Files/Settings.json", settingsObj);
+			filesystem.writeJsonObjectToFile("/files/Settings.json", settingsObj);
 			options.remove(soundAnButton);
 			options.add(soundButton);
 			options.add(mainmenudraw);
@@ -257,6 +275,14 @@ public class Mainmenu extends JFrame implements ActionListener {
 
 	}
 	
+	public boolean isRegisterOpen() {
+		return registerOpen;
+	}
+
+	public void setRegisterOpen(boolean registerOpen) {
+		this.registerOpen = registerOpen;
+	}
+
 	public void setSpielOffen(Boolean par) {
 		spielOffen = par;
 	}

@@ -201,8 +201,10 @@ public class Networking {
 					JSONParser parser = new JSONParser();
 					JSONObject UserObj;
 					UserObj = (JSONObject) parser.parse(EntityUtils.toString(entity));
-					if (UserObj.get("error") != null)
+					if (UserObj.get("error") == null) { 
 						User.setUser(UserObj);
+						Popup.info("User Created", "Sucess");
+					}
 					else {
 						JSONObject error = (JSONObject) UserObj.get("error");
 						Popup.error(error.get("message") + " Code: " + error.get("code"), "Something Went Wrong");
