@@ -138,6 +138,7 @@ public class RaumOberklasse {
 
 	public void starteRaum(int pRaumNr) {
 		setRaumNr(pRaumNr);
+		
 			
 //		raum1.erstelleRaum();
 //		raum2.erstelleRaum();
@@ -149,6 +150,7 @@ public class RaumOberklasse {
 	}
 
 	protected void tick() {
+
 		for (int i = 0; i < portalliste.size(); i++) {
 			portalliste.get(i).update();
 		}
@@ -405,7 +407,6 @@ public class RaumOberklasse {
 		hindernisRechts.clear();
 		hindernisLinks.clear();
 	}
-
 
 	public int getxSpawn() {
 		return xSpawn;

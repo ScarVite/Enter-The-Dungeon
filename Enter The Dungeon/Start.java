@@ -34,20 +34,20 @@ public class Start {
 		// Networking.checkPing();
 		Filesystem.SetMainPath(System.getProperty("user.home"));
 		Filesystem filesystem = new Filesystem();
-		filesystem.createFolderIfNotExist("/files");
+		filesystem.createFolderIfNotExist("/Files");
 		JSONObject obj = new JSONObject();
 		JSONArray arr = new JSONArray();
-		if (!filesystem.checkForFile("/files/Settings.json")) {
+		if (!filesystem.checkForFile("/Files/Settings.json")) {
 			obj.put("music", true);
-			filesystem.writeJsonObjectToFile("/files/Settings.json", obj);
+			filesystem.writeJsonObjectToFile("/Files/Settings.json", obj);
 		}
 		obj.clear();
-		if (!filesystem.checkForFile("/files/User.json")) {
-			filesystem.createFileIfNotExist("/files/User.json");
+		if (!filesystem.checkForFile("/Files/User.json")) {
+			filesystem.createFileIfNotExist("/Files/User.json");
 		}
 		obj.clear();
-		if (!filesystem.checkForFile("/files/Save.json")) {
-			filesystem.writeJsonArrayToFile("/files/Save.json", arr);
+		if (!filesystem.checkForFile("/Files/Save.json")) {
+			filesystem.writeJsonArrayToFile("/Files/Save.json", arr);
 		}
 		return filesystem;
 	}
