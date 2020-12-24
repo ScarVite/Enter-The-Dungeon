@@ -19,6 +19,8 @@ public class Raum5 extends RaumOberklasse {
 		setRaum(this);
 		setxSpawn(100);
 		setySpawn(100);
+		setPortalX(1750);
+		setPortalY(920);
 	}
 
 	public void erstelleRaum() {
@@ -97,12 +99,6 @@ public class Raum5 extends RaumOberklasse {
 		gegner = new Gegner(120, 400, 65, 65, 3, 3, 80, tex, game);
 		gegnerliste.add(gegner);
 		// Gegner Raum 2
-		gegner = new Gegner(20, 750, 65, 65, 3, 3, 80, tex, game);
-		gegnerliste.add(gegner);
-		gegner = new Gegner(20, 850, 65, 65, 3, 3, 80, tex, game);
-		gegnerliste.add(gegner);
-		gegner = new Gegner(20, 950, 65, 65, 3, 3, 80, tex, game);
-		gegnerliste.add(gegner);
 		// Gegner Raum 3
 		gegner = new Gegner(820, 750, 65, 65, 3, 3, 80, tex, game);
 		gegnerliste.add(gegner);
