@@ -26,7 +26,6 @@ public class Mainmenu extends JFrame implements ActionListener {
 	private JButton closeButton;
 	private JButton optionsButton;
 	private JButton creditsButton;
-	
 
 	private JButton soundButton;
 	private JButton soundAnButton;
@@ -43,21 +42,21 @@ public class Mainmenu extends JFrame implements ActionListener {
 	private Mainmenutex mainmenutex;
 	private ImageIcon imageIcon;
 	private Mainmenudraw mainmenudraw;
+	private boolean spielOffen = false;
 
 	// Mainmenu kreieren und Buttons hinzuf�gen
 	@SuppressWarnings("unchecked")
 	public Mainmenu() {
-		if(settingsObj == null) {
+		if (settingsObj == null) {
 			settingsObj = new JSONObject();
 			settingsObj.put("music", true);
 			filesystem.writeJsonObjectToFile("/Files/Settings.json", settingsObj);
 		}
 		// Hauptmen� Musik wird abgerufen und in einer Schleife abgespielt
-		if((boolean) settingsObj.get("music")) {
-			sound.playSound("Sound\\Mainmenu.wav");
+		if ((boolean) settingsObj.get("music")) {
+			sound.playSound(filesystem.readFile("/sound/Mainmenu.wav"));
 			sound.getClip().loop(Clip.LOOP_CONTINUOUSLY);
-		}
-		else 
+		} else
 			sound.setHintergrundmusik(false);
 		screenWidth = 800;
 		screenHeight = 600;
@@ -92,8 +91,10 @@ public class Mainmenu extends JFrame implements ActionListener {
 	public void Einstellung() {
 		options = new JPanel();
 		options.setLayout(null);
-		if(sound.getHintergrundmusik() && (boolean) settingsObj.get("music")) options.add(soundButton);
-		else options.add(soundAnButton);
+		if (sound.getHintergrundmusik() && (boolean) settingsObj.get("music"))
+			options.add(soundButton);
+		else
+			options.add(soundAnButton);
 		options.add(backButton);
 		options.add(mainmenudraw);
 		gui.add(options);
@@ -107,16 +108,18 @@ public class Mainmenu extends JFrame implements ActionListener {
 	public void Credits() {
 		credits = new JPanel();
 		credits.setLayout(null);
-		credits.add(backButton);		credits.add(mainmenudraw); //Mainmen� hintergrund
+		credits.add(backButton);
+		credits.add(mainmenudraw); // Mainmen� hintergrund
 		gui.add(credits);
 		gui.setResizable(false);
 		gui.setLocationRelativeTo(null);
 		gui.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		gui.setVisible(true);	
-		}
+		gui.setVisible(true);
+	}
 
 	private void gameWindow() {
 		gamewindow.add(new Game(this));
+		spielOffen = true;
 	}
 
 	private void createMainMenuButtons() {
@@ -124,13 +127,12 @@ public class Mainmenu extends JFrame implements ActionListener {
 		startButton = new JButton("Spielen");
 		startButton.setBounds(310, 155, 160, 40);
 		startButton.addActionListener(this);
-		//Bild auf den Button zeichnen
-		imageIcon = new ImageIcon("Bilder/startbutton.png");
+		// Bild auf den Button zeichnen
+		imageIcon = new ImageIcon(filesystem.getMainPath() + "/images/startbutton.png");
 		startButton.setIcon(imageIcon);
-		//Boarder 
+		// Boarder
 		startButton.setBorderPainted(false);
-		
-		
+
 		creditsButton = new JButton("Credits");
 		creditsButton.setBounds(310, 225, 160, 40);
 		creditsButton.addActionListener(this);
@@ -142,7 +144,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 		optionsButton.addActionListener(this);
 //		optionsButton.setIcon(new ImageIcon("Bilder/optionsbutton.png"));
 		optionsButton.setBorderPainted(false);
-		
+
 		closeButton = new JButton("Beenden");
 		closeButton.setBounds(310, 365, 160, 40);
 		closeButton.addActionListener(this);
@@ -162,9 +164,9 @@ public class Mainmenu extends JFrame implements ActionListener {
 		backButton = new JButton("Zurueck");
 		backButton.setBounds(310, 295, 160, 40);
 		backButton.addActionListener(this);
-		
 
 	}
+
 	public JButton getSoundAnButton() {
 		return soundAnButton;
 	}
@@ -172,6 +174,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 	public JButton getSoundButton() {
 		return soundButton;
 	}
+
 	public JButton getCloseButton() {
 		return closeButton;
 	}
@@ -187,7 +190,6 @@ public class Mainmenu extends JFrame implements ActionListener {
 	public JButton getBackButton() {
 		return backButton;
 	}
-	
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -206,14 +208,15 @@ public class Mainmenu extends JFrame implements ActionListener {
 		}
 
 		if (e.getSource() == closeButton) {
-			if(sound.getHintergrundmusik()) sound.getClip().stop();
+			if (sound.getHintergrundmusik())
+				sound.getClip().stop();
 			System.exit(0);
 		}
 		if (e.getSource() == backButton) {
 			mainmenu.setVisible(true);
 			mainmenu.add(mainmenudraw);
 		}
-		
+
 		if (e.getSource() == optionsButton) {
 			Einstellung();
 			mainmenu.setVisible(false);
@@ -221,23 +224,26 @@ public class Mainmenu extends JFrame implements ActionListener {
 
 		if (e.getSource() == creditsButton) {
 			Credits();
-			mainmenu.setVisible(false);	
+			mainmenu.setVisible(false);
 		}
 		if (e.getSource() == soundButton) {
-			if(sound.getHintergrundmusik()) sound.getClip().stop();
+			if (sound.getHintergrundmusik())
+				sound.getClip().stop();
 			sound.setHintergrundmusik(false);
 			settingsObj.put("music", false);
 			System.out.println(settingsObj);
 			filesystem.writeJsonObjectToFile("/Files/Settings.json", settingsObj);
 			options.add(soundAnButton);
 			options.remove(soundButton);
-			options.add(mainmenudraw); // Mainmen� hintergrund wird hier bei An und Aus nochmals auf das JPanel geadded
+			options.add(mainmenudraw); // Mainmen� hintergrund wird hier bei An und Aus nochmals auf das JPanel
+										// geadded
 										// sonst wird das Bild nicht angezeigt
 		}
 		if (e.getSource() == soundAnButton) {
-			if(sound.getHintergrundmusik()) sound.getClip().start();
+			if (sound.getHintergrundmusik())
+				sound.getClip().start();
 			else {
-				sound.playSound("Sound\\Mainmenu.wav");
+				sound.playSound(filesystem.readFile("/sound/Mainmenu.wav"));
 				sound.getClip().loop(Clip.LOOP_CONTINUOUSLY);
 			}
 			sound.setHintergrundmusik(true);
@@ -250,6 +256,7 @@ public class Mainmenu extends JFrame implements ActionListener {
 		}
 
 	}
+	
 	public void setSpielOffen(Boolean par) {
 		spielOffen = par;
 	}

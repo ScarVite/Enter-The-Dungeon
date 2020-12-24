@@ -28,7 +28,7 @@ public class Texturen {
 	private Game game;
 
 	public Texturen(Game game) {
-
+		this.game = game;
 		getTextures();
 	}
 

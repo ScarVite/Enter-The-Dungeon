@@ -14,8 +14,6 @@ import enterTheDungeon.game.waffen.Magazin;
 import enterTheDungeon.game.waffen.Waffe;
 import enterTheDungeon.game.waffen.typ.Pistole;
 import enterTheDungeon.resource.Texturen;
-import jdk.internal.org.jline.utils.DiffHelper;
-import sun.java2d.loops.DrawLine;
 
 
 public class Gegner extends ExtendedObjectData {
