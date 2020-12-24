@@ -1,16 +1,20 @@
 package enterTheDungeon.game.level.raum;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 import enterTheDungeon.game.Game;
 import enterTheDungeon.game.level.Falle;
 import enterTheDungeon.game.level.Hindernis;
+import enterTheDungeon.game.waffen.Waffe;
 import enterTheDungeon.game.level.Gegner;
 import enterTheDungeon.game.level.Heartpowerup;
 import enterTheDungeon.resource.Texturen;
 
-
 public class Raum6 extends RaumOberklasse {
+
+	private Waffe waffe;
+	private boolean spawnGegner = false;
 
 	public Raum6(Game pGame, Texturen pTex) {
 		super(pGame, pTex);
@@ -23,7 +27,7 @@ public class Raum6 extends RaumOberklasse {
 	}
 
 	public void erstelleRaum() {
-		
+
 		System.out.println();
 		createBorder();
 		int width = 1920;
@@ -90,12 +94,79 @@ public class Raum6 extends RaumOberklasse {
 		erstelleSubHindernisLinks();
 	}
 
+// Muss man maybe entfernen, kam von passis version rein
 	public void update() {
+		if (!gegnerliste.isEmpty()) {
+			int zahl = gegnerliste.get(0).getLeben();
+			if (zahl == 40 && !isSpawnGegner()) {
+				for (int i = 0; i < 5; i++) {
+					gegner = new Gegner(1000, 500, 65, 65, 3, 1.5, 80, tex, game);
+					gegnerliste.add(gegner);
+				}
+				setSpawnGegner(true);
+			}
+			if (zahl == 39) {
+				setSpawnGegner(false);
+			}
+
+			if (zahl == 30 && !isSpawnGegner()) {
+				for (int i = 0; i < 10; i++) {
+					gegner = new Gegner(1000, 500, 65, 65, 3, 1.5, 80, tex, game);
+					gegnerliste.add(gegner);
+				}
+				setSpawnGegner(true);
+			}
+			if (zahl == 29) {
+				setSpawnGegner(false);
+			}
+
+			if (zahl == 20 && !isSpawnGegner()) {
+				for (int i = 0; i < 15; i++) {
+					gegner = new Gegner(1000, 500, 65, 65, 3, 1.5, 80, tex, game);
+					gegnerliste.add(gegner);
+				}
+				setSpawnGegner(true);
+			}
+			if(zahl == 19) {
+				setSpawnGegner(false);
+			}
+			if (zahl == 10 && !isSpawnGegner()) {
+				for (int i = 0; i < 20; i++) {
+					gegner = new Gegner(1000, 500, 65, 65, 3, 1.5, 80, tex, game);
+					gegnerliste.add(gegner);
+				}
+				setSpawnGegner(true);
+
+			}
+			if(zahl == 9) {
+				setSpawnGegner(false);
+			}
+			if (zahl == 2 && !isSpawnGegner()) {
+				for (int i = 0; i < 25; i++) {
+					gegner = new Gegner(1000, 500, 65, 65, 3, 1.5, 80, tex, game);
+					gegnerliste.add(gegner);
+				}
+				setSpawnGegner(true);
+			}
+			if(zahl == 1) {
+				setSpawnGegner(false);
+			}
+			setGegnerliste(gegnerliste);
+		}
+
 		tick();
+
 	}
 
 	public void render(Graphics g) {
 		draw(g);
 	}
 
+	public boolean isSpawnGegner() {
+		return spawnGegner;
+	}
+
+	public void setSpawnGegner(boolean spawnGegner) {
+		this.spawnGegner = spawnGegner;
+	}
 }

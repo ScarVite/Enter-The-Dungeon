@@ -20,7 +20,7 @@ public class TastaturInput extends KeyAdapter{
 	
 	public void keyPressed(KeyEvent e) {
 		game.keyPressed(e);
-		//soll erst gemacht werden wenn Pausemenü erzeugt wird
+		//soll erst gemacht werden wenn PausemenÃ¼ erzeugt wird
 		if(pausemenu!=null) {
 		pausemenu.keyPressed(e);
 		}

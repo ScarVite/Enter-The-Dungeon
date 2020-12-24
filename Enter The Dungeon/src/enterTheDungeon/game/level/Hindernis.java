@@ -23,5 +23,7 @@ public class Hindernis extends StandardObjectData {
 		xPos = getxPos();
 		yPos = getyPos();
 	}
+	
+	
 
 }

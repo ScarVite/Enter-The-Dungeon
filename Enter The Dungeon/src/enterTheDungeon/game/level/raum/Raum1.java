@@ -35,7 +35,7 @@ public class Raum1 extends RaumOberklasse {
 		}
 //		for (int i = 550; i < width; i += width / 1) {
 
-			gegner = new Gegner(300, 500, 65, 65, 3, 2, tex, game);
+			gegner = new Gegner(950, 800, 65, 65, 3, 2, 80,tex, game);
 			gegnerliste.add(gegner);
 //		}
 		

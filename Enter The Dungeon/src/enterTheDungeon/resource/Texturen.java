@@ -33,6 +33,7 @@ public class Texturen {
 	}
 
 	private void getTextures() {
+
 		try {
 			Filesystem filesystem = new Filesystem();
 			spieler = ImageIO.read(filesystem.readFile("/images/spieler.png"));
@@ -48,7 +49,7 @@ public class Texturen {
 			falleZU = ImageIO.read(filesystem.readFile("/images/falle-zu.png"));
 			falleBereit = ImageIO.read(filesystem.readFile("/images/falle-bereit.png"));
 			falleOffen = ImageIO.read(filesystem.readFile("/images/falle-offen.png"));
-      speedpowerUp = ImageIO.read(filesystem.readFile("/images/powerup.png"));
+      speedpowerUp = ImageIO.read(filesystem.readFile("/images/power-up.png"));
 			schadenpowerUp = ImageIO.read(filesystem.readFile("/images/schaden.png"));
 			heartpowerUp = ImageIO.read(filesystem.readFile("/images/heart.png"));
 		} catch (IOException e) {

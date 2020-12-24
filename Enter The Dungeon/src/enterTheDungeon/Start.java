@@ -31,23 +31,23 @@ public class Start {
 
 	@SuppressWarnings("unchecked")
 	private static Filesystem initSystems() {
-		// Networking.checkPing();
+		Networking.checkPing();
 		Filesystem.SetMainPath(System.getProperty("user.home"));
 		Filesystem filesystem = new Filesystem();
-		filesystem.createFolderIfNotExist("/Files");
+		filesystem.createFolderIfNotExist("/files");
 		JSONObject obj = new JSONObject();
 		JSONArray arr = new JSONArray();
-		if (!filesystem.checkForFile("/Files/Settings.json")) {
+		if (!filesystem.checkForFile("/files/Settings.json")) {
 			obj.put("music", true);
-			filesystem.writeJsonObjectToFile("/Files/Settings.json", obj);
+			filesystem.writeJsonObjectToFile("/files/Settings.json", obj);
 		}
 		obj.clear();
-		if (!filesystem.checkForFile("/Files/User.json")) {
-			filesystem.createFileIfNotExist("/Files/User.json");
+		if (!filesystem.checkForFile("/files/User.json")) {
+			filesystem.createFileIfNotExist("/files/User.json");
 		}
 		obj.clear();
-		if (!filesystem.checkForFile("/Files/Save.json")) {
-			filesystem.writeJsonArrayToFile("/Files/Save.json", arr);
+		if (!filesystem.checkForFile("/files/Save.json")) {
+			filesystem.writeJsonArrayToFile("/files/Save.json", arr);
 		}
 		return filesystem;
 	}

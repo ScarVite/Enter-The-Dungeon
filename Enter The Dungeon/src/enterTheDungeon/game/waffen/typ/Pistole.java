@@ -45,11 +45,22 @@ public class Pistole extends Waffe {
 		setSchussnr(schussnr - 1);
 
 	}
+	
+//	public void bossSchiessen(double x1, double x2, double y1, double y2) {
+//		schussnr = getSchussnr();
+//		if (schussnr < 0) {
+//			setSchussnr(magazinsize - 1);
+//		}
+//		schuss = new Schuss(x1, y1, 25, 25, x2, y2, reichweite,tex);
+//		schussliste.add(schuss);
+//		setSchussnr(schussnr - 1);
+//	}
 
 	public void update(double pX, double pY) {
 		xPos = pX;
 		yPos = pY;
 		magazin.update();
+		setSchussarray(schussliste);
 		for (int i = 0; i < schussliste.size(); i++) {
 			if (schussliste.get(i).getBild() == 1) {
 				schussliste.get(i).setBild(schussliste.get(i).getBild() + 1);
