@@ -87,7 +87,7 @@ public class Gegner extends ExtendedObjectData {
 		nachRechts = isNachRechts();
 		nachLinks = isNachLinks();
 
-//		laufen();
+		laufen();
 
 		collision.setBounds((int) xPos - 20, (int) yPos - 20, (int) width + 40, (int) height + 40);
 		vision.setBounds(vision.getBounds());
@@ -100,7 +100,7 @@ public class Gegner extends ExtendedObjectData {
 		ctr++;
 //		
 		if (ctr >= getFeuerrate()) {
-//			schiessen();
+			schiessen();
 			ctr = 0;
 		}
 		lebensbalken.setLeben(getLeben());
