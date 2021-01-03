@@ -15,7 +15,7 @@ ScarVite#6606
 Major135#0911
 Pasiol#4575
 
-© ScarVite - 2020
+© ScarVite - 2021
 
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FScarVite%2FEnter-The-Dungeon.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FScarVite%2FEnter-The-Dungeon?ref=badge_large)
