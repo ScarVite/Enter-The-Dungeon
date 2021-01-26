@@ -18,6 +18,8 @@ public class RaumOberklasse {
 
 	protected int xSpawn;
 	protected int ySpawn;
+	protected int portalY;
+	protected int portalX;
 
 	protected ArrayList<Hindernis> hindernisliste;
 	protected ArrayList<Gegner> gegnerliste;
@@ -45,7 +47,7 @@ public class RaumOberklasse {
 	private Raum5 raum5;
 	private Raum6 raum6;
 	private Raum7 raum7;
-
+	
 	public RaumOberklasse(Game pGame, Texturen pTex) {
 		this.game = pGame;
 		this.tex = pTex;
@@ -191,6 +193,23 @@ public class RaumOberklasse {
 		}
 
 	}
+	
+	public int getPortalY() {
+		return portalY;
+	}
+
+	public void setPortalY(int portalY) {
+		this.portalY = portalY;
+	}
+
+	public int getPortalX() {
+		return portalX;
+	}
+
+	public void setPortalX(int portalX) {
+		this.portalX = portalX;
+	}
+
 
 	public int getMaxRaum() {
 		return maxRaum;

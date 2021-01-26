@@ -3,6 +3,7 @@ package enterTheDungeon.game.level.raum;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+import enterTheDungeon.api.Popup;
 import enterTheDungeon.game.Game;
 import enterTheDungeon.game.level.Falle;
 import enterTheDungeon.game.level.Hindernis;
@@ -28,6 +29,7 @@ public class Raum6 extends RaumOberklasse {
 
 	public void erstelleRaum() {
 
+		//Popup.error("Der Boss spawnt leider nicht, Wir wissen nicht wieso und die zeit ging aus", "Entschuldigung");
 		System.out.println();
 		createBorder();
 		int width = 1920;
@@ -62,9 +64,9 @@ public class Raum6 extends RaumOberklasse {
 			}	
 			
 //		for (int i = 150; i < width; i += width / 2) {
-//			
-//			gegner = new Gegner(i, 400, 65, 65, 3, 3, tex, game);
-//			gegnerliste.add(gegner);
+			
+			gegner = new Gegner(800, 400, 100, 100, 45, 3, 10, tex, game);
+			gegnerliste.add(gegner);
 //		}
 		//Hindernisse
 		hindernis = new Hindernis(220, 220, 100, 100, tex);
@@ -153,7 +155,7 @@ public class Raum6 extends RaumOberklasse {
 			}
 			setGegnerliste(gegnerliste);
 		}
-
+		
 		tick();
 
 	}

@@ -17,6 +17,8 @@ public class Raum1 extends RaumOberklasse {
 		setAnzFallen(0);
 		setAnzGegner(2);
 		setRaum(this);
+		setPortalX(1400);
+		setPortalY(240);
 		
 	}
 
@@ -36,6 +38,8 @@ public class Raum1 extends RaumOberklasse {
 //		for (int i = 550; i < width; i += width / 1) {
 
 			gegner = new Gegner(950, 800, 65, 65, 3, 2, 80,tex, game);
+			gegnerliste.add(gegner);
+			gegner = new Gegner(850, 600, 65, 65, 3, 2, 80,tex, game);
 			gegnerliste.add(gegner);
 //		}
 		

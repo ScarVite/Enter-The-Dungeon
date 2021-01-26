@@ -34,7 +34,7 @@ public class Spieler extends ExtendedObjectData {
 
 	public void render(Graphics g) {
 		lebensbalken.render(g);
-		g.drawRect((int) xPos, (int) yPos, (int) width, (int) height);
+//		g.drawRect((int) xPos, (int) yPos, (int) width, (int) height);
 		g.drawImage(tex.spieler, (int) xPos, (int) yPos, (int) width, (int) height, null);
 		pistole.render(g);
 

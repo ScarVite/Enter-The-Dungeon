@@ -16,22 +16,24 @@ public class Raum2 extends RaumOberklasse {
 		setAnzFallen(4);
 		setAnzGegner(3);
 		setRaum(this);
-		
-		setxSpawn(100);
-		setySpawn(500);
+		setPortalX(1600);
+		setPortalY(520);
+		setxSpawn(120);
+		setySpawn(40);
 	}
 
 	public void erstelleRaum() {
 		createBorder();
 		int width = game.getScreenwidth();
 		int height = game.getScreenheight();
+
 		for (int i = 150; i < width; i += width / 3) {
 
 			for (int j = 150; j < height; j += height / 2) {
 				hindernis = new Hindernis(i, j, 100, 100, tex);
 				hindernisliste.add(hindernis);
 				
-				for (int b = 300; b < width; b += width / anzFallen) {
+				for (int b = 300; b < width; b += width / 1) {
 
 					falle = new Falle(j + 100, b + 70, 100, 100, tex);
 					fallenliste.add(falle);
@@ -40,11 +42,12 @@ public class Raum2 extends RaumOberklasse {
 
 		}
 
-		for (int i = 150; i < width; i += width / anzGegner) {
-
-			gegner = new Gegner(i, 400, 65, 65, 3, 2, 80, tex, game);
+			gegner = new Gegner(700, 400, 65, 65, 3, 2, 80, tex, game);
 			gegnerliste.add(gegner);
-		}
+			gegner = new Gegner(900, 300, 65, 65, 3, 2, 80, tex, game);
+			gegnerliste.add(gegner);
+			gegner = new Gegner(1700, 700, 65, 65, 3, 2, 80, tex, game);
+			gegnerliste.add(gegner);
 		
 		setHindernisliste(hindernisliste);
 		setGegnerliste(gegnerliste);
