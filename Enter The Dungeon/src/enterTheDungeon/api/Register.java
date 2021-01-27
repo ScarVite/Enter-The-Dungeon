@@ -9,6 +9,10 @@ import enterTheDungeon.game.Mainmenu;
 public class Register extends javax.swing.JPanel {
 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5096806661074371593L;
 	private JFrame f;
 	private Mainmenu menu;
 	
@@ -17,7 +21,7 @@ public class Register extends javax.swing.JPanel {
 		initComponents();
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">
 	private void initComponents() {
 		f = new JFrame("Registrierung");

@@ -33,7 +33,6 @@ public class Texturen {
 	}
 
 	private void getTextures() {
-
 		try {
 			Filesystem filesystem = new Filesystem();
 			spieler = ImageIO.read(filesystem.readFile("/images/spieler.png"));

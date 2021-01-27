@@ -1,21 +1,12 @@
 package enterTheDungeon.api;
 
 import java.awt.Dimension;
-import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-
 import enterTheDungeon.game.Mainmenu;
 import enterTheDungeon.resource.Filesystem;
 

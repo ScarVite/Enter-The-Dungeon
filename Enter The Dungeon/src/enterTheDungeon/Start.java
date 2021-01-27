@@ -5,7 +5,6 @@ import org.json.simple.JSONObject;
 
 import enterTheDungeon.api.Networking;
 import enterTheDungeon.api.ProgressBar;
-import enterTheDungeon.api.Register;
 import enterTheDungeon.api.Setup;
 import enterTheDungeon.game.Mainmenu;
 import enterTheDungeon.game.Oberklassen.User;

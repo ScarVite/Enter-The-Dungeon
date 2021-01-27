@@ -6,14 +6,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import java.awt.Image;
-import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -24,11 +20,6 @@ import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -54,6 +45,7 @@ public class Networking {
 
 	private static String userToken = null;
 	private static String baseUrl = "https://api.scarvite.de/etd";
+	@SuppressWarnings("unused")
 	private static boolean connected = false;
 
 	private final static CloseableHttpClient httpClient = HttpClients.createDefault();
