@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Email
+    url: mailto:admin@scarvite.de
+    about: Please contact me on this email, if you have specific questions.
+- name: Website
+  url: https://www.scarvite.de
+  about: Find more Information here

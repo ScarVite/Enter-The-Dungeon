@@ -1,0 +1,35 @@
+{
+    "sound": [
+        "background.wav",
+        "feuerball-fixed.wav",
+        "feuerball.wav",
+        "gun.wav",
+        "mainmenu.wav"
+    ],
+    "images": [
+        "background.png",
+        "background1.png",
+        "character.png",
+        "falle-bereit.png",
+        "falle-offen.png",
+        "falle-zu.png",
+        "feuerball1.png",
+        "feuerball2.png",
+        "gegner.png",
+        "hindernis.png",
+        "java.png",
+        "mainmenu.png",
+	    "mainmenu2.png",
+        "pistole.png",
+        "portal.png",
+        "schuss.png",
+        "scifi-pistole.png",
+        "shoot.png",
+        "shotgun.png",
+        "spieler.png",
+        "startbutton.png",
+        "heart.png",
+        "schaden.png",
+        "power-up.png"
+    ]
+}

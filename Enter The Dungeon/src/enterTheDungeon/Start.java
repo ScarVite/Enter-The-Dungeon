@@ -5,6 +5,7 @@ import org.json.simple.JSONObject;
 
 import enterTheDungeon.api.Networking;
 import enterTheDungeon.api.ProgressBar;
+import enterTheDungeon.api.Register;
 import enterTheDungeon.api.Setup;
 import enterTheDungeon.game.Mainmenu;
 import enterTheDungeon.game.Oberklassen.User;
@@ -31,7 +32,7 @@ public class Start {
 
 	@SuppressWarnings("unchecked")
 	private static Filesystem initSystems() {
-		// Networking.checkPing();
+		Networking.checkPing();
 		Filesystem.SetMainPath(System.getProperty("user.home"));
 		Filesystem filesystem = new Filesystem();
 		filesystem.createFolderIfNotExist("/files");

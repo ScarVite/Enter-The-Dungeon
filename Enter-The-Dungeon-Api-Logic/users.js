@@ -49,14 +49,12 @@ function addUser(paraEmail, paraUser, ParaPassword) {
                         if (err) resolve(false);
                         console.log(`added user ${paraUser} into the db `)
                         resolve({
-                            user: {
                                 username: paraUser,
                                 email: paraEmail,
                                 token: {
                                     value: token,
                                     created: Math.round(new Date() / 1000)
                                 }
-                            }
                         })
                         return;
                     })

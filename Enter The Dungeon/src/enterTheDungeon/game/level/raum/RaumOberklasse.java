@@ -84,7 +84,6 @@ public class RaumOberklasse {
 		raumliste.add(raum4 = new Raum4(game, tex));
 		raumliste.add(raum5 = new Raum5(game, tex));
 		raumliste.add(raum6 = new Raum6(game, tex));
-		raumliste.add(raum7 = new Raum7(game, tex));
 
 		raum1.erstelleRaum();
 		raum2.erstelleRaum();
@@ -92,7 +91,6 @@ public class RaumOberklasse {
 		raum4.erstelleRaum();
 		raum5.erstelleRaum();
 		raum6.erstelleRaum();
-		raum7.erstelleRaum();
 
 		setMaxRaum(raumliste.size());
 
