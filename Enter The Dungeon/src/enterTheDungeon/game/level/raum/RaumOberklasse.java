@@ -46,6 +46,7 @@ public class RaumOberklasse {
 	private Raum4 raum4;
 	private Raum5 raum5;
 	private Raum6 raum6;
+	private Raum7 raum7;
 	
 	public RaumOberklasse(Game pGame, Texturen pTex) {
 		this.game = pGame;

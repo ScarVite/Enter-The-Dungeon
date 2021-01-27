@@ -15,7 +15,6 @@ import enterTheDungeon.game.waffen.Waffe;
 import enterTheDungeon.game.waffen.typ.Pistole;
 import enterTheDungeon.resource.Texturen;
 
-
 public class Gegner extends ExtendedObjectData {
 
 	protected Magazin magazin;
@@ -41,8 +40,8 @@ public class Gegner extends ExtendedObjectData {
 	private int gegner;
 	private int ctr = 0;
 
-	public Gegner(double pX, double pY, double pWidth, double pHeight, int pLeben, double pSpeed, int pFeuerrate, Texturen pTex,
-			Game pGame) {
+	public Gegner(double pX, double pY, double pWidth, double pHeight, int pLeben, double pSpeed, int pFeuerrate,
+			Texturen pTex, Game pGame) {
 		super(pX, pY, pWidth, pHeight, pLeben, pSpeed, pTex);
 		pistole = new Pistole(pX, pY, pWidth, pHeight, pTex);
 		this.game = pGame;
@@ -66,10 +65,10 @@ public class Gegner extends ExtendedObjectData {
 		hindernisRechts = new ArrayList<Hindernis>();
 		hindernisLinks = new ArrayList<Hindernis>();
 		setGegner(1);
-    // Hier bin ich mir Unsicher
+		// Hier bin ich mir Unsicher
 		lebensbalken = new Lebensbalken(xPos, yPos - 20, 10, 10, leben, tex);
+
 	}
-	
 
 	public void update() {
 		lebensbalken.setLeben(getLeben());
@@ -115,42 +114,42 @@ public class Gegner extends ExtendedObjectData {
 //			g.drawRect((int) xPos - sicht, (int) yPos - sicht, (int) width + sicht * 2, (int) height + sicht * 2);
 //			g.setColor(new Color(0).PINK);
 //			g.drawRect((int) xPos - 20, (int) yPos - 20, (int) width + 40, (int) height + 40);
-			g.setColor(new Color(0).YELLOW);
+//			g.setColor(new Color(0).YELLOW);
 //			g.fillRect((int) xMarker, (int) yMarker, 10, 10);
 //			g.drawLine((int) getxMitte(), (int) getyMitte(), (int) xMarker, (int) yMarker); // Ziellinie
-//			g.setColor(new Color(4). cyan);
-//			for(int i = 0; i < hindernisOben.size(); i++) {
+//			g.setColor(new Color(4).cyan);
+//			for (int i = 0; i < hindernisOben.size(); i++) {
 //				int x = (int) hindernisOben.get(i).getxPos();
 //				int y = (int) hindernisOben.get(i).getyPos();
 //				int width = (int) hindernisOben.get(i).getWidth();
 //				g.fillRect(x, y, width, 1);
 //			}
-//			for(int i = 0; i < hindernisUnten.size(); i++) {
+//			for (int i = 0; i < hindernisUnten.size(); i++) {
 //				int x = (int) hindernisUnten.get(i).getxPos();
 //				int y = (int) hindernisUnten.get(i).getyPos();
 //				int width = (int) hindernisUnten.get(i).getWidth();
 //				g.fillRect(x, y, width, 1);
 //			}
-//			
-//			for(int i = 0; i < hindernisRechts.size(); i++) {
+//
+//			for (int i = 0; i < hindernisRechts.size(); i++) {
 //				int x = (int) hindernisRechts.get(i).getxPos();
 //				int y = (int) hindernisRechts.get(i).getyPos();
 //				int height = (int) hindernisRechts.get(i).getHeight();
 //				g.fillRect(x, y, 1, height);
 //			}
-//			
-//			for(int i = 0; i < hindernisLinks.size(); i++) {
+//
+//			for (int i = 0; i < hindernisLinks.size(); i++) {
 //				int x = (int) hindernisLinks.get(i).getxPos();
 //				int y = (int) hindernisLinks.get(i).getyPos();
 //				int height = (int) hindernisLinks.get(i).getHeight();
 //				g.fillRect(x, y, 1, height);
 //			}
 			lebensbalken.render(g);
-			g.setColor(new Color(8).RED);
-			int x = (int) getxPos();
-			int y = (int) (getyPos() + getHeight());
-			int height = (int) getHeight();
-			int width = (int) getWidth();
+//			g.setColor(new Color(8).RED);
+//			int x = (int) getxPos();
+//			int y = (int) (getyPos() + getHeight());
+//			int height = (int) getHeight();
+//			int width = (int) getWidth();
 //			g.drawRect(x, y, width, height);
 		}
 		pistole.render(g);
@@ -171,6 +170,7 @@ public class Gegner extends ExtendedObjectData {
 				setZielErreicht(false);
 			}
 			checkCollisionMitHindernisProRichtung();
+
 		}
 
 		if (nachOben) {
@@ -189,7 +189,45 @@ public class Gegner extends ExtendedObjectData {
 			erstelleMarker();
 			checkCollisionMitHindernisProRichtung();
 		}
+
+		if(checkObOUtOfBounds()) {
+			setNachUnten(false);
+			setNachRechts(false);
+			setNachLinks(false);
+			setNachOben(false);
+		}
+//		checkCollisionMitHindernisProRichtung();
 	}
+
+	protected boolean checkObOUtOfBounds() {
+		if (getxPos() < 20) {
+			setxPos(21);
+			erstelleMarker();
+			return true;
+		}
+		if (getxPos() + 80 > 1960) {
+			setxPos(1800);
+			erstelleMarker();
+			return true;
+		}
+		if (getyPos() < 30) {
+			setyPos(31);
+			erstelleMarker();
+			return true;
+		}
+		if (getyPos() + 80 > 1000) {
+			setyPos(911);
+			erstelleMarker();
+			return true;
+			
+		}
+		
+		
+		
+		return false;
+
+	}
+
 	protected boolean checkCollisionMitHindernisProRichtung() {
 		hindernisliste = game.getHindernisListe();
 		hindernisOben = game.getHindernisOben();
@@ -228,10 +266,12 @@ public class Gegner extends ExtendedObjectData {
 						setNachOben(true);
 						erstelleMarker();
 					}
+
 				} else {
 					setyPos(getyPos() - speed * 2);
 					erstelleMarker();
 				}
+
 			}
 
 			if (hindiUnten.intersects(collision)) {
@@ -258,6 +298,7 @@ public class Gegner extends ExtendedObjectData {
 						setNachUnten(true);
 						erstelleMarker();
 					}
+
 				} else {
 					setyPos(getyPos() + speed * 2);
 					erstelleMarker();
@@ -320,6 +361,7 @@ public class Gegner extends ExtendedObjectData {
 						setNachLinks(true);
 						erstelleMarker();
 					}
+
 				} else {
 					setxPos(getxPos() - speed * 2);
 					erstelleMarker();
@@ -461,8 +503,8 @@ public class Gegner extends ExtendedObjectData {
 	protected boolean laufeRichtungMarker() {
 		double xDavor = yMitte;
 		double yDavor = yMitte;
-		double xDelta = xMitte - xMarker;
-		double yDelta = yMitte - yMarker;
+		double xDelta = xMitte - getxMarker();
+		double yDelta = yMitte - getyMarker();
 		double tangente = Math.hypot(xDelta, yDelta);
 		xDelta /= tangente;
 		xDelta *= speed;
@@ -487,10 +529,10 @@ public class Gegner extends ExtendedObjectData {
 
 	protected void erstelleMarker() {
 		do {
-			setxMarker(Math.random() * 1720 + 200);
-			setyMarker(Math.random() * 1000 + 200);
-//			setyMarker(600);
-//			setxMarker(1900);
+			setxMarker(Math.random() * 1700 + 150);
+			setyMarker(Math.random() * 960 + 150);
+//			setyMarker(1200);
+//			setxMarker(800);
 		} while (ueberpruefeMarkerPos());
 
 	}

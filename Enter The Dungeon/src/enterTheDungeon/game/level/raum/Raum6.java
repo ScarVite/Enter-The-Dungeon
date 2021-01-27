@@ -63,11 +63,11 @@ public class Raum6 extends RaumOberklasse {
 			offset=offset+100;
 			}	
 			
-		for (int i = 150; i < width; i += width / 2) {
+//		for (int i = 150; i < width; i += width / 2) {
 			
-			gegner = new Gegner(i, 400, 65, 65, 3, 3, 80, tex, game);
+			gegner = new Gegner(800, 400, 100, 100, 45, 3, 10, tex, game);
 			gegnerliste.add(gegner);
-		}
+//		}
 		//Hindernisse
 		hindernis = new Hindernis(220, 220, 100, 100, tex);
 		hindernisliste.add(hindernis);
@@ -155,7 +155,7 @@ public class Raum6 extends RaumOberklasse {
 			}
 			setGegnerliste(gegnerliste);
 		}
-
+		
 		tick();
 
 	}
